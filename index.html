@@ -809,7 +809,11 @@ async function submitProfile(){
     skipNextAuthReload = true;
     const res = await sb.from('profiles').update({name, description:desc, image_url, animation:anim}).eq('id', editingId);
     error = res.error;
-    data = error ? null : { ...profiles.find(p=>p.id===editingId), name, description:desc, image_url, animation:anim };
+    if(!error){
+      // Recharger depuis la DB pour avoir les vraies valeurs sauvegardées
+      const { data: fresh } = await sb.from('profiles').select('*').eq('id', editingId);
+      data = fresh?.[0] || { ...profiles.find(p=>p.id===editingId), name, description:desc, image_url, animation:anim };
+    }
   } else {
     const res = await sb.from('profiles').insert([{name, description:desc, image_url, animation:anim, user_id:currentUser.id, owner_email:currentUser.email}]).select();
     error = res.error;
