@@ -1,1696 +1,915 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev Center OS - Windows 11</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #202020;
-            --bg-secondary: #2b2b2b;
-            --bg-tertiary: #383838;
-            --accent: #0067c0;
-            --accent-hover: #005a9e;
-            --text-primary: #ffffff;
-            --text-secondary: #b3b3b3;
-            --border: rgba(255,255,255,0.08);
-            --taskbar-bg: rgba(25, 25, 25, 0.7);
-            --window-bg: rgba(32, 32, 32, 0.95);
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #f3f3f3;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #e8e8e8;
-            --text-primary: #000000;
-            --text-secondary: #5a5a5a;
-            --border: rgba(0,0,0,0.08);
-            --taskbar-bg: rgba(243, 243, 243, 0.7);
-            --window-bg: rgba(255, 255, 255, 0.95);
-            --glass: rgba(0, 0, 0, 0.03);
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #2a2a2a;
-            --accent: #4cc2ff;
-            --text-primary: #ffffff;
-            --text-secondary: #999999;
-            --border: rgba(255,255,255,0.1);
-            --taskbar-bg: rgba(10, 10, 10, 0.7);
-            --window-bg: rgba(26, 26, 26, 0.95);
-            --glass: rgba(255, 255, 255, 0.07);
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        /* LOCK SCREEN */
-        .lock-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-
-        .lock-screen.hidden { display: none; }
-
-        .lock-time {
-            font-size: 140px;
-            font-weight: 200;
-            letter-spacing: -3px;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.3);
-        }
-
-        .lock-date {
-            font-size: 32px;
-            font-weight: 400;
-            margin-bottom: 100px;
-            opacity: 0.9;
-        }
-
-        .lock-avatar {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(30px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 70px;
-            border: 3px solid rgba(255,255,255,0.2);
-            margin-bottom: 25px;
-        }
-
-        .lock-username {
-            font-size: 28px;
-            font-weight: 500;
-            margin-bottom: 40px;
-        }
-
-        .connect-btn {
-            padding: 18px 70px;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(30px);
-            border: 2px solid rgba(255,255,255,0.25);
-            border-radius: 10px;
-            color: white;
-            font-size: 19px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .connect-btn:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.03);
-        }
-
-        /* DISCORD AUTH */
-        .discord-auth {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #5865F2 0%, #7289DA 100%);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .discord-auth.active { display: flex; }
-
-        .discord-card {
-            background: white;
-            padding: 70px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.35);
-            animation: slideIn 0.4s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .discord-logo { font-size: 100px; margin-bottom: 30px; }
-        .discord-card h2 { color: #2c2f33; font-size: 36px; margin-bottom: 15px; }
-        .discord-card p { color: #72767d; font-size: 17px; margin-bottom: 40px; }
-
-        .discord-connect-btn {
-            padding: 20px 60px;
-            background: #5865F2;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 19px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-            transition: all 0.3s;
-        }
-
-        .discord-connect-btn:hover {
-            background: #4752C4;
-            transform: translateY(-3px);
-        }
-
-        /* DESKTOP */
-        .desktop {
-            width: 100%;
-            height: calc(100vh - 50px);
-            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
-            background-size: cover;
-            background-position: center;
-            padding: 25px;
-        }
-
-        .desktop-icons {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 110px);
-            grid-auto-rows: 110px;
-            gap: 20px;
-        }
-
-        .desktop-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-            padding: 12px;
-            transition: all 0.2s;
-            background: transparent;
-        }
-
-        .desktop-icon:hover {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            transform: translateY(-3px);
-        }
-
-        .desktop-icon-image {
-            font-size: 56px;
-            filter: drop-shadow(0 3px 10px rgba(0,0,0,0.4));
-        }
-
-        .desktop-icon-label {
-            font-size: 13px;
-            color: white;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-            font-weight: 500;
-            text-align: center;
-        }
-
-        /* WINDOWS */
-        .window {
-            position: absolute;
-            background: var(--window-bg);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            display: none;
-            flex-direction: column;
-            min-width: 450px;
-            min-height: 350px;
-        }
-
-        .window.active {
-            display: flex;
-            animation: windowOpen 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes windowOpen {
-            from { opacity: 0; transform: scale(0.92); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .window.maximized {
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: calc(100vh - 50px) !important;
-            border-radius: 0;
-        }
-
-        .window-titlebar {
-            background: var(--glass);
-            padding: 14px 18px;
-            display: flex;
-            justify-content: space-between;
-            cursor: move;
-            user-select: none;
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(15px);
-        }
-
-        .window-title {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .window-icon { font-size: 20px; }
-
-        .window-controls {
-            display: flex;
-            gap: 14px;
-        }
-
-        .window-controls button {
-            width: 48px;
-            height: 34px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 7px;
-            transition: all 0.2s;
-        }
-
-        .window-controls button:hover {
-            background: var(--glass);
-        }
-
-        .window-controls .close-btn:hover {
-            background: #e81123;
-            color: white;
-        }
-
-        .window-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 25px;
-        }
-
-        /* TASKBAR - WINDOWS 11 CENTERED */
-        .taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: var(--taskbar-bg);
-            backdrop-filter: blur(40px) saturate(180%);
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9000;
-        }
-
-        .taskbar-center {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--glass);
-            padding: 5px 10px;
-            border-radius: 10px;
-            backdrop-filter: blur(15px);
-        }
-
-        .start-btn {
-            width: 44px;
-            height: 44px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 22px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .start-btn:hover {
-            background: var(--glass);
-            transform: scale(1.08);
-        }
-
-        .search-box {
-            padding: 11px 18px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            color: var(--text-primary);
-            width: 300px;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg-secondary);
-        }
-
-        .search-box::placeholder { color: var(--text-secondary); }
-
-        .taskbar-apps {
-            display: flex;
-            gap: 6px;
-            margin-left: 10px;
-        }
-
-        .taskbar-app {
-            width: 44px;
-            height: 44px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 22px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .taskbar-app:hover {
-            background: var(--glass);
-            transform: scale(1.08);
-        }
-
-        .taskbar-app.running::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 5px;
-            height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-
-        .system-tray {
-            position: absolute;
-            right: 15px;
-            display: flex;
-            gap: 18px;
-            font-size: 13px;
-        }
-
-        .tray-icon {
-            cursor: pointer;
-            padding: 9px;
-            border-radius: 7px;
-            transition: all 0.2s;
-        }
-
-        .tray-icon:hover { background: var(--glass); }
-
-        /* START MENU - WINDOWS 11 CENTERED */
-        .start-menu {
-            position: fixed;
-            bottom: 65px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 650px;
-            height: 700px;
-            background: var(--window-bg);
-            backdrop-filter: blur(50px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-            display: none;
-            flex-direction: column;
-            z-index: 9100;
-        }
-
-        .start-menu.active {
-            display: flex;
-            animation: startOpen 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes startOpen {
-            from { opacity: 0; transform: translateX(-50%) translateY(25px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        .start-header {
-            padding: 28px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .start-user {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .start-avatar {
-            width: 55px;
-            height: 55px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-        }
-
-        .start-apps {
-            padding: 28px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 18px;
-        }
-
-        .app-tile {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .app-tile:hover {
-            background: var(--bg-tertiary);
-            transform: scale(1.06);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-        }
-
-        .app-tile-icon { font-size: 40px; }
-        .app-tile-name { font-size: 12px; font-weight: 500; }
-
-        /* FORMS */
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 16px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg-secondary);
-        }
-
-        .form-group textarea {
-            min-height: 180px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            padding: 16px 40px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 18px rgba(0, 103, 192, 0.35);
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(0, 103, 192, 0.45);
-        }
-
-        .success-message {
-            background: #10b981;
-            color: white;
-            padding: 18px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .success-message.show { display: block; }
-
-        /* MODULES */
-        .modules-grid { display: grid; gap: 24px; }
-
-        .module-card {
-            background: var(--glass);
-            border: 2px solid var(--border);
-            border-radius: 14px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .module-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 16px 40px rgba(0,120,212,0.3);
-        }
-
-        .module-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 22px;
-        }
-
-        .module-name {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .module-price {
-            font-size: 17px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .module-features {
-            list-style: none;
-        }
-
-        .module-features li {
-            padding: 12px 0 12px 32px;
-            position: relative;
-        }
-
-        .module-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        /* PARTNER */
-        .partner-section {
-            background: linear-gradient(135deg, var(--accent) 0%, #00bcf2 100%);
-            padding: 36px;
-            border-radius: 14px;
-            color: white;
-        }
-
-        .partner-header {
-            margin-bottom: 28px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .partner-content {
-            line-height: 1.9;
-            font-size: 16px;
-            margin-bottom: 32px;
-        }
-
-        .partner-buttons {
-            display: flex;
-            gap: 18px;
-        }
-
-        .partner-btn {
-            flex: 1;
-            padding: 16px 32px;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: block;
-        }
-
-        .partner-btn:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-3px);
-        }
-
-        /* SETTINGS */
-        .settings-section {
-            margin-bottom: 36px;
-        }
-
-        .settings-section h3 {
-            margin-bottom: 20px;
-            font-size: 19px;
-            font-weight: 600;
-        }
-
-        .theme-selector,
-        .wallpaper-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 18px;
-        }
-
-        .theme-option {
-            padding: 18px;
-            background: var(--glass);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .theme-option:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .theme-option.active {
-            border-color: var(--accent);
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 6px 18px rgba(0, 103, 192, 0.35);
-        }
-
-        .wallpaper-option {
-            height: 100px;
-            background-size: cover;
-            background-position: center;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-end;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-            transition: all 0.3s;
-        }
-
-        .wallpaper-option:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .wallpaper-option.active {
-            border-color: var(--accent);
-            box-shadow: 0 6px 18px rgba(0, 103, 192, 0.35);
-        }
-
-        .file-upload-btn {
-            padding: 16px 32px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .file-upload-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .file-input { display: none; }
-
-        /* GOOGLE */
-        .google-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-
-        /* DISCORD APP */
-        .discord-app {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .discord-topbar {
-            background: #2f3136;
-            padding: 14px 18px;
-            border-bottom: 1px solid #202225;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .discord-channel-name {
-            font-weight: 600;
-            color: #dcddde;
-            font-size: 16px;
-        }
-
-        .discord-main {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .discord-sidebar {
-            width: 260px;
-            background: #2f3136;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid #202225;
-        }
-
-        .discord-server-header {
-            padding: 18px;
-            border-bottom: 1px solid #202225;
-            font-weight: 700;
-            color: white;
-            background: #36393f;
-            font-size: 16px;
-        }
-
-        .discord-channels {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .discord-channel {
-            padding: 10px 14px;
-            margin: 3px 0;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #96989d;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-        }
-
-        .discord-channel:hover {
-            background: #36393f;
-            color: #dcddde;
-        }
-
-        .discord-channel.active {
-            background: #404249;
-            color: white;
-        }
-
-        .discord-chat {
-            flex: 1;
-            background: #36393f;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .discord-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .discord-message {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 14px;
-        }
-
-        .discord-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .discord-message-content { flex: 1; }
-
-        .discord-message-header {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
-
-        .discord-username {
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .discord-timestamp {
-            color: #72767d;
-            font-size: 12px;
-        }
-
-        .discord-message-text {
-            color: #dcddde;
-            line-height: 1.5;
-            font-size: 15px;
-        }
-
-        .discord-input-container {
-            padding: 18px;
-            background: #36393f;
-        }
-
-        .discord-input {
-            width: 100%;
-            padding: 14px 18px;
-            background: #40444b;
-            border: none;
-            border-radius: 10px;
-            color: #dcddde;
-            font-size: 15px;
-            font-family: inherit;
-        }
-
-        .discord-input:focus { outline: none; }
-        .discord-input::placeholder { color: #72767d; }
-
-        /* SEARCH */
-        .search-results {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 550px;
-            max-height: 450px;
-            background: var(--window-bg);
-            backdrop-filter: blur(50px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-            display: none;
-            overflow-y: auto;
-            z-index: 9200;
-        }
-
-        .search-results.active {
-            display: block;
-            animation: searchOpen 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes searchOpen {
-            from { opacity: 0; transform: translateX(-50%) translateY(-15px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        .search-result-item {
-            padding: 18px 24px;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            transition: background 0.2s;
-        }
-
-        .search-result-item:hover { background: var(--glass); }
-        .search-result-item:last-child { border-bottom: none; }
-        .search-result-icon { font-size: 32px; }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>adoptme.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --ink: #1a1208;
+  --ink2: #3d2e18;
+  --sand: #f5f0e8;
+  --sand2: #ede6d8;
+  --sand3: #e2d8c8;
+  --gold: #c8952a;
+  --gold-l: #f0d48a;
+  --gold-ll: #fdf6e0;
+  --coral: #e05a3a;
+  --coral-l: #f8d4cb;
+  --sage: #5a8a6a;
+  --sage-l: #d4ead8;
+  --sky: #3a6a9a;
+  --sky-l: #ccdff0;
+  --violet: #7a4a9a;
+  --violet-l: #e8d4f8;
+  --r: 20px;
+  --r2: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--sand);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── CURSOR ─── */
+* { cursor: default; }
+a, button, label, [role=button], .card, .anim-opt, .btn { cursor: pointer !important; }
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* ─── HEADER ─── */
+header {
+  position: sticky; top: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 72px;
+  background: rgba(245,240,232,.85);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgba(26,18,8,.07);
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 30px; font-weight: 900; letter-spacing: -1.5px;
+  color: var(--ink);
+  display: flex; align-items: baseline; gap: 1px;
+  user-select: none;
+}
+.logo-dot { color: var(--coral); font-size: 36px; line-height: 0; position: relative; top: 4px; }
+.logo-tld { font-size: 13px; font-weight: 400; color: var(--ink2); opacity: .6; font-family: 'Instrument Sans', sans-serif; margin-left: 2px; }
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.pill-count {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--sand2); border-radius: 30px; padding: 6px 14px;
+  font-size: 13px; color: var(--ink2);
+}
+.pill-count strong { color: var(--ink); }
+
+/* ─── ADD BUTTON ─── */
+.btn-add {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--ink);
+  color: var(--sand);
+  border: none; border-radius: 50px;
+  padding: 12px 24px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  letter-spacing: .01em;
+  position: relative; overflow: hidden;
+  transition: transform .18s, box-shadow .18s;
+  box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 4px 16px rgba(26,18,8,.15);
+}
+.btn-add::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-add:hover { transform: translateY(-2px); box-shadow: 0 4px 0 rgba(0,0,0,.22), 0 8px 24px rgba(26,18,8,.2); }
+.btn-add:active { transform: translateY(0); box-shadow: 0 1px 0 rgba(0,0,0,.25), 0 2px 8px rgba(26,18,8,.12); }
+.btn-add .plus-icon {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; line-height: 1; font-weight: 300;
+  flex-shrink: 0;
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 72px 40px 56px;
+  text-align: center;
+  position: relative;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold-ll); border: 1px solid var(--gold-l);
+  border-radius: 30px; padding: 5px 16px;
+  font-size: 12px; font-weight: 600; color: var(--gold);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-eyebrow span { font-size: 14px; }
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(44px, 6vw, 80px);
+  font-weight: 900; line-height: 1.0;
+  letter-spacing: -3px;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.hero h1 em {
+  font-style: italic; font-weight: 300;
+  color: var(--coral);
+}
+.hero-sub {
+  font-size: 17px; color: var(--ink2); opacity: .7;
+  max-width: 440px; margin: 0 auto; line-height: 1.7;
+}
+
+/* ─── GRID ─── */
+.grid-section { padding: 0 40px 80px; max-width: 1280px; margin: 0 auto; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+/* ─── EMPTY ─── */
+.empty {
+  grid-column: 1/-1;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 100px 32px; gap: 16px;
+  color: var(--ink2); opacity: .45;
+}
+.empty svg { width: 56px; height: 56px; }
+.empty p { font-size: 15px; text-align: center; line-height: 1.6; }
+.empty em { font-style: normal; font-weight: 600; }
+
+/* ─── CARD ─── */
+.card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 0 0 1px rgba(26,18,8,.06),
+    0 4px 20px rgba(26,18,8,.07);
+  transition: box-shadow .25s, transform .25s;
+  animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both;
+}
+.card:hover {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 0 0 1px rgba(26,18,8,.08),
+    0 16px 48px rgba(26,18,8,.14);
+  transform: translateY(-6px) scale(1.01);
+}
+@keyframes cardIn {
+  from { opacity:0; transform: translateY(24px) scale(.97); }
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* image */
+.card-media {
+  width: 100%; aspect-ratio: 4/3;
+  position: relative; overflow: hidden;
+  background: var(--sand2);
+}
+.card-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .4s;
+}
+.card:hover .card-media img { transform: scale(1.06); }
+.card-media-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 72px;
+  background: linear-gradient(145deg, var(--sand2) 0%, var(--sand3) 100%);
+}
+
+/* anim badge */
+.anim-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(26,18,8,.72);
+  backdrop-filter: blur(8px);
+  border-radius: 20px; padding: 4px 10px 4px 8px;
+  font-size: 11px; font-weight: 500; color: #fff;
+  display: flex; align-items: center; gap: 5px;
+  letter-spacing: .02em;
+}
+.anim-badge-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold-l);
+  animation: ablink 1.8s ease-in-out infinite;
+}
+@keyframes ablink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* delete */
+.btn-del {
+  position: absolute; top: 12px; right: 12px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(26,18,8,.55); backdrop-filter: blur(8px);
+  border: none; color: #fff; font-size: 14px; font-weight: 300;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s, background .2s;
+}
+.card:hover .btn-del { opacity: 1; }
+.btn-del:hover { background: var(--coral) !important; }
+
+/* body */
+.card-body { padding: 20px 22px 8px; }
+.card-name {
+  font-family: 'Fraunces', serif;
+  font-size: 24px; font-weight: 700; letter-spacing: -.5px;
+  color: var(--ink); margin-bottom: 8px; line-height: 1.1;
+}
+.card-desc {
+  font-size: 13.5px; line-height: 1.65; color: var(--ink2); opacity: .8;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* footer */
+.card-footer {
+  padding: 16px 22px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.card-meta { font-size: 11.5px; color: var(--ink2); opacity: .5; }
+
+.btn-adopt {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--coral);
+  color: white;
+  border: none; border-radius: 40px;
+  padding: 10px 20px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 2px 0 rgba(180,50,20,.4), 0 4px 12px rgba(224,90,58,.25);
+  transition: transform .15s, box-shadow .15s, background .15s;
+  position: relative; overflow: hidden;
+}
+.btn-adopt::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: rgba(255,255,255,.15);
+  pointer-events: none;
+}
+.btn-adopt:hover { transform: translateY(-2px); box-shadow: 0 4px 0 rgba(180,50,20,.35), 0 8px 20px rgba(224,90,58,.35); }
+.btn-adopt:active { transform: translateY(0); }
+.btn-adopt.adopted { background: var(--sage); box-shadow: 0 2px 0 rgba(40,100,50,.3), 0 4px 12px rgba(90,138,106,.25); }
+
+/* ─── CARD ANIMATIONS ─── */
+.anim-float { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, afloat 3.5s ease-in-out infinite 1s; }
+.anim-bounce { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, abounce 1.2s cubic-bezier(.36,.07,.19,.97) infinite 1s; }
+.anim-spin .card-media img, .anim-spin .card-media-placeholder { animation: aspin 6s linear infinite; transform-origin: center; }
+.anim-shake { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, ashake .5s ease-in-out infinite 1s; }
+.anim-pulse { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, apulse 2s ease-in-out infinite 1s; }
+.anim-glow { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both; }
+.anim-glow:not(:hover) { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, aglow 2.5s ease-in-out infinite 1s; }
+.anim-swing { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both, aswing 2.5s ease-in-out infinite 1s; transform-origin: top center; }
+.anim-rainbow .card-media { animation: arainbow 4s linear infinite; }
+.anim-none { animation: cardIn .4s cubic-bezier(.22,.68,0,1.2) both; }
+
+@keyframes afloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes abounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-20px)} 60%{transform:translateY(-10px)} }
+@keyframes aspin { to{transform:rotate(360deg)} }
+@keyframes ashake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+@keyframes apulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+@keyframes aglow { 0%,100%{box-shadow:0 0 0 rgba(224,90,58,0),0 0 0 1px rgba(26,18,8,.06),0 4px 20px rgba(26,18,8,.07)} 50%{box-shadow:0 0 32px rgba(224,90,58,.45),0 0 0 1px rgba(224,90,58,.2),0 4px 20px rgba(26,18,8,.07)} }
+@keyframes aswing { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
+@keyframes arainbow { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }
+
+/* ─── MODAL ─── */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(26,18,8,.45);
+  backdrop-filter: blur(8px) saturate(1.2);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+.overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal {
+  background: white;
+  border-radius: 28px;
+  width: 100%; max-width: 500px;
+  max-height: 90vh; overflow-y: auto;
+  transform: translateY(30px) scale(.97);
+  transition: transform .3s cubic-bezier(.22,.68,0,1.15);
+  box-shadow: 0 0 0 1px rgba(26,18,8,.06), 0 40px 80px rgba(26,18,8,.22);
+  scrollbar-width: none;
+}
+.modal::-webkit-scrollbar { display: none; }
+
+.modal-header {
+  padding: 32px 36px 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  position: sticky; top: 0; background: white; z-index: 2;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(26,18,8,.06);
+}
+.modal-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px; font-weight: 900; letter-spacing: -1px;
+  color: var(--ink);
+}
+.modal-title span { font-style: italic; font-weight: 300; color: var(--coral); }
+
+.btn-close {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sand2); border: none;
+  color: var(--ink2); font-size: 18px; font-weight: 300;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, transform .15s;
+  flex-shrink: 0; margin-top: 2px;
+}
+.btn-close:hover { background: var(--sand3); transform: rotate(90deg); }
+
+.modal-body { padding: 28px 36px 36px; }
+
+/* ─── FORM ─── */
+.fg { margin-bottom: 22px; }
+.fg label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink2); opacity: .7;
+  margin-bottom: 8px;
+}
+.fg label .req { color: var(--coral); }
+
+.fg input, .fg textarea {
+  width: 100%;
+  background: var(--sand);
+  border: 1.5px solid rgba(26,18,8,.1);
+  border-radius: var(--r2);
+  padding: 13px 16px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 15px; color: var(--ink);
+  outline: none; transition: border-color .18s, box-shadow .18s, background .18s;
+}
+.fg input::placeholder, .fg textarea::placeholder { color: var(--ink2); opacity: .35; }
+.fg input:focus, .fg textarea:focus {
+  border-color: var(--coral);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(224,90,58,.1);
+}
+.fg textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+
+/* upload zone */
+.upload-zone {
+  border: 2px dashed rgba(26,18,8,.15);
+  border-radius: var(--r2);
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+  transition: border-color .18s, background .18s;
+  background: var(--sand);
+}
+.upload-zone.drag, .upload-zone:focus-within {
+  border-color: var(--coral);
+  background: var(--coral-l);
+}
+.upload-zone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%;
+}
+.upload-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--sand2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px; font-size: 18px;
+}
+.upload-zone p { font-size: 13px; color: var(--ink2); opacity: .6; line-height: 1.5; }
+.upload-zone p strong { opacity: .9; color: var(--coral); }
+.upload-preview {
+  width: 90px; height: 90px;
+  border-radius: 14px; object-fit: cover;
+  margin: 0 auto 10px; display: block;
+  box-shadow: 0 4px 16px rgba(26,18,8,.12);
+}
+
+/* anim picker */
+.anim-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+}
+.anim-opt {
+  position: relative;
+  border: 2px solid rgba(26,18,8,.09);
+  border-radius: var(--r2);
+  padding: 12px 8px 10px;
+  text-align: center;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.anim-opt input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; }
+.anim-opt:hover { border-color: rgba(26,18,8,.2); background: var(--sand); transform: translateY(-2px); }
+.anim-opt.sel {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.anim-opt.sel .anim-lbl { color: white; }
+.anim-emoji { font-size: 24px; display: block; margin-bottom: 5px; line-height: 1; }
+.anim-lbl { font-size: 11px; font-weight: 600; color: var(--ink2); letter-spacing: .02em; }
+
+/* form actions */
+.form-actions { display: flex; gap: 10px; margin-top: 28px; }
+
+.btn-cancel {
+  flex: 0 0 auto;
+  background: var(--sand2);
+  color: var(--ink2);
+  border: none; border-radius: 40px;
+  padding: 14px 22px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  transition: background .15s;
+}
+.btn-cancel:hover { background: var(--sand3); }
+
+.btn-submit {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--ink);
+  color: white;
+  border: none; border-radius: 40px;
+  padding: 14px 24px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  box-shadow: 0 2px 0 rgba(0,0,0,.3), 0 6px 20px rgba(26,18,8,.18);
+  transition: transform .15s, box-shadow .15s, background .15s;
+  position: relative; overflow: hidden;
+}
+.btn-submit::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: rgba(255,255,255,.1); pointer-events: none;
+}
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 rgba(0,0,0,.27), 0 10px 28px rgba(26,18,8,.24);
+}
+.btn-submit:active:not(:disabled) { transform: translateY(0); }
+.btn-submit:disabled { opacity: .55; }
+
+/* spinner */
+.spin {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: white; border-radius: 50%;
+  animation: aspin .65s linear infinite;
+}
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 32px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: var(--ink); color: var(--sand);
+  padding: 12px 24px; border-radius: 40px;
+  font-size: 14px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(26,18,8,.25);
+  z-index: 9999; transition: transform .32s cubic-bezier(.22,.68,0,1.15);
+  white-space: nowrap; pointer-events: none;
+}
+.toast.on { transform: translateX(-50%) translateY(0); }
+
+/* ─── LOADING ─── */
+.page-loader {
+  position: fixed; inset: 0; z-index: 500;
+  background: var(--sand);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .4s, visibility .4s;
+}
+.page-loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 48px; font-weight: 900; letter-spacing: -2px;
+  color: var(--ink); opacity: 0;
+  animation: loaderPop .6s cubic-bezier(.22,.68,0,1.2) .2s forwards;
+}
+@keyframes loaderPop { to { opacity:1; } }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  header { padding: 0 20px; }
+  .logo-tld, .pill-count { display: none; }
+  .btn-add span { display: none; }
+  .btn-add { padding: 12px 16px; }
+  .hero { padding: 48px 24px 36px; }
+  .grid-section { padding: 0 20px 60px; }
+  .modal-header, .modal-body { padding-left: 24px; padding-right: 24px; }
+  .anim-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
 </head>
 <body>
-    <!-- LOCK SCREEN -->
-    <div class="lock-screen" id="lockScreen">
-        <div class="lock-time" id="lockTime">12:00</div>
-        <div class="lock-date" id="lockDate">lundi 12 février</div>
-        <div class="lock-avatar">👤</div>
-        <div class="lock-username">Utilisateur</div>
-        <button class="connect-btn" onclick="showDiscordAuth()">Se connecter</button>
+
+<!-- LOADER -->
+<div class="page-loader" id="loader">
+  <div class="loader-logo">adoptme<span style="color:var(--coral)">.</span></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    adopt<span class="logo-dot">·</span>me
+    <span class="logo-tld">.com</span>
+  </div>
+  <div class="header-right">
+    <div class="pill-count" id="countPill" style="display:none">
+      <strong id="countNum">0</strong> profils
     </div>
+    <button class="btn-add" onclick="openModal()">
+      <div class="plus-icon">+</div>
+      <span>Ajouter une personne</span>
+    </button>
+  </div>
+</header>
 
-    <!-- DISCORD AUTH -->
-    <div class="discord-auth" id="discordAuth">
-        <div class="discord-card">
-            <div class="discord-logo">💬</div>
-            <h2>Dev Center</h2>
-            <p>Connectez-vous avec Discord pour accéder au système</p>
-            <button class="discord-connect-btn" onclick="connectDiscord()">Se connecter à Discord</button>
-        </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><span>🏠</span> La plateforme d'adoption de personnes</div>
+  <h1>Adoptez<br><em>quelqu'un</em><br>d'incroyable</h1>
+  <p class="hero-sub">Chaque profil est unique, animé, et attend d'être découvert. Parcourez, ressentez, adoptez.</p>
+</section>
+
+<!-- GRID -->
+<div class="grid-section">
+  <div class="grid" id="grid">
+    <!-- cards rendered here -->
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="bgClose(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nouveau <span>profil</span></div>
+      <button class="btn-close" onclick="closeModal()">✕</button>
     </div>
+    <div class="modal-body">
 
-    <!-- DESKTOP -->
-    <div class="desktop" id="desktop">
-        <div class="desktop-icons">
-            <div class="desktop-icon" ondblclick="openWindow('discordWindow')">
-                <div class="desktop-icon-image">💬</div>
-                <div class="desktop-icon-label">Discord</div>
-            </div>
-            <div class="desktop-icon" ondblclick="openWindow('avisWindow')">
-                <div class="desktop-icon-image">📝</div>
-                <div class="desktop-icon-label">Avis</div>
-            </div>
-            <div class="desktop-icon" ondblclick="openWindow('modulesWindow')">
-                <div class="desktop-icon-image">📦</div>
-                <div class="desktop-icon-label">Modules</div>
-            </div>
-            <div class="desktop-icon" ondblclick="openWindow('partnerWindow')">
-                <div class="desktop-icon-image">🤝</div>
-                <div class="desktop-icon-label">World of Tools</div>
-            </div>
-            <div class="desktop-icon" ondblclick="openWindow('settingsWindow')">
-                <div class="desktop-icon-image">⚙️</div>
-                <div class="desktop-icon-label">Paramètres</div>
-            </div>
-            <div class="desktop-icon" ondblclick="openWindow('googleWindow')">
-                <div class="desktop-icon-image">🔍</div>
-                <div class="desktop-icon-label">Google</div>
-            </div>
+      <div class="fg">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="f-name" placeholder="Ex : Camille Morel" maxlength="60" autocomplete="off">
+      </div>
+
+      <div class="fg">
+        <label>Description <span class="req">*</span></label>
+        <textarea id="f-desc" placeholder="Parlez-nous de cette personne, ses qualités, ses passions…"></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Photo ou GIF</label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="f-file" accept="image/*,.gif" onchange="previewFile(this)">
+          <img id="f-preview" class="upload-preview" style="display:none" alt="preview">
+          <div class="upload-icon" id="uploadIcon">📎</div>
+          <p id="uploadLabel"><strong>Cliquez ou glissez</strong> une image ou un GIF ici</p>
         </div>
+      </div>
+
+      <div class="fg">
+        <label>Animation du profil</label>
+        <div class="anim-grid" id="animGrid">
+          <label class="anim-opt sel" data-val="float">
+            <input type="radio" name="anim" value="float" checked>
+            <span class="anim-emoji">🌊</span>
+            <span class="anim-lbl">Flottant</span>
+          </label>
+          <label class="anim-opt" data-val="bounce">
+            <input type="radio" name="anim" value="bounce">
+            <span class="anim-emoji">🏀</span>
+            <span class="anim-lbl">Rebond</span>
+          </label>
+          <label class="anim-opt" data-val="spin">
+            <input type="radio" name="anim" value="spin">
+            <span class="anim-emoji">🌀</span>
+            <span class="anim-lbl">Rotation</span>
+          </label>
+          <label class="anim-opt" data-val="shake">
+            <input type="radio" name="anim" value="shake">
+            <span class="anim-emoji">💥</span>
+            <span class="anim-lbl">Vibration</span>
+          </label>
+          <label class="anim-opt" data-val="pulse">
+            <input type="radio" name="anim" value="pulse">
+            <span class="anim-emoji">💓</span>
+            <span class="anim-lbl">Pulsation</span>
+          </label>
+          <label class="anim-opt" data-val="glow">
+            <input type="radio" name="anim" value="glow">
+            <span class="anim-emoji">✨</span>
+            <span class="anim-lbl">Lueur</span>
+          </label>
+          <label class="anim-opt" data-val="swing">
+            <input type="radio" name="anim" value="swing">
+            <span class="anim-emoji">🎭</span>
+            <span class="anim-lbl">Balancement</span>
+          </label>
+          <label class="anim-opt" data-val="rainbow">
+            <input type="radio" name="anim" value="rainbow">
+            <span class="anim-emoji">🌈</span>
+            <span class="anim-lbl">Arc-en-ciel</span>
+          </label>
+          <label class="anim-opt" data-val="none">
+            <input type="radio" name="anim" value="none">
+            <span class="anim-emoji">😴</span>
+            <span class="anim-lbl">Aucune</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-submit" id="btnSubmit" onclick="submitProfile()">
+          <span id="btnTxt">Publier le profil</span>
+        </button>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- DISCORD WINDOW -->
-    <div class="window" id="discordWindow" style="width: 1150px; height: 750px; top: 50px; left: 120px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">💬</span>
-                <span>Discord - Dev Center</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('discordWindow')">−</button>
-                <button onclick="maximizeWindow('discordWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('discordWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content" style="padding: 0;">
-            <div class="discord-app">
-                <div class="discord-topbar">
-                    <span style="font-size: 24px; color: #72767d;">#</span>
-                    <span class="discord-channel-name">général</span>
-                </div>
-                <div class="discord-main">
-                    <div class="discord-sidebar">
-                        <div class="discord-server-header">🎮 Dev Center</div>
-                        <div class="discord-channels">
-                            <div class="discord-channel active">
-                                <span style="font-size: 18px;">#</span>
-                                <span>général</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">#</span>
-                                <span>annonces</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">#</span>
-                                <span>support</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">#</span>
-                                <span>modules</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">#</span>
-                                <span>développement</span>
-                            </div>
-                            <div class="discord-channel" style="margin-top: 15px;">
-                                <span style="font-size: 18px;">🔊</span>
-                                <span>Vocal Général</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">🔊</span>
-                                <span>Salon VIP</span>
-                            </div>
-                            <div class="discord-channel">
-                                <span style="font-size: 18px;">🔊</span>
-                                <span>Gaming</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="discord-chat">
-                        <div class="discord-messages" id="discordMessages">
-                            <div class="discord-message">
-                                <div class="discord-avatar">👨‍💼</div>
-                                <div class="discord-message-content">
-                                    <div class="discord-message-header">
-                                        <span class="discord-username">Admin</span>
-                                        <span class="discord-timestamp">Aujourd'hui à 10:30</span>
-                                    </div>
-                                    <div class="discord-message-text">Bienvenue sur le serveur Dev Center ! 🎉 N'hésitez pas à consulter les différents modules disponibles.</div>
-                                </div>
-                            </div>
-                            <div class="discord-message">
-                                <div class="discord-avatar">🤖</div>
-                                <div class="discord-message-content">
-                                    <div class="discord-message-header">
-                                        <span class="discord-username">Dev Bot</span>
-                                        <span class="discord-timestamp">Aujourd'hui à 10:35</span>
-                                    </div>
-                                    <div class="discord-message-text">Pour voir la liste des commandes disponibles, tapez /help. Les modules Boss et Master offrent des avantages exclusifs !</div>
-                                </div>
-                            </div>
-                            <div class="discord-message">
-                                <div class="discord-avatar">👤</div>
-                                <div class="discord-message-content">
-                                    <div class="discord-message-header">
-                                        <span class="discord-username" id="discordChatUsername">Utilisateur</span>
-                                        <span class="discord-timestamp">Aujourd'hui à 10:42</span>
-                                    </div>
-                                    <div class="discord-message-text">Merci pour l'accueil ! J'ai hâte de découvrir toutes les fonctionnalités 😊</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="discord-input-container">
-                            <input type="text" class="discord-input" placeholder="Envoyer un message dans #général" onkeypress="sendDiscordMessage(event)">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ─── SUPABASE ─── */
+const SUPA_URL = 'https://sjuvymjlyvzmsminnjoh.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdXZ5bWpseXZ6bXNtaW1uam9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjA0ODUsImV4cCI6MjA4OTAzNjQ4NX0.XXQELFZsWy_ADXQ7Ag9YZEHkoh2ZaBO2BNc_6c42isk';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+/* ─── STATE ─── */
+let profiles = [];
+let fileToUpload = null;
+let adoptedSet = new Set(JSON.parse(localStorage.getItem('adopted') || '[]'));
+
+/* ─── LOADER ─── */
+window.addEventListener('load', async () => {
+  await loadProfiles();
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 500);
+});
+
+/* ─── MODAL ─── */
+function openModal() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('f-name').focus();
+}
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+function bgClose(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ─── ANIM PICKER ─── */
+document.getElementById('animGrid').addEventListener('click', e => {
+  const opt = e.target.closest('.anim-opt');
+  if (!opt) return;
+  document.querySelectorAll('.anim-opt').forEach(o => o.classList.remove('sel'));
+  opt.classList.add('sel');
+  opt.querySelector('input').checked = true;
+});
+
+/* ─── FILE UPLOAD PREVIEW ─── */
+function previewFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  fileToUpload = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('f-preview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    document.getElementById('uploadIcon').style.display = 'none';
+    document.getElementById('uploadLabel').innerHTML = `<strong>${esc(file.name)}</strong>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* drag-over zone */
+const uz = document.getElementById('uploadZone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
+uz.addEventListener('drop', e => {
+  e.preventDefault(); uz.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image')) {
+    document.getElementById('f-file').files = e.dataTransfer.files;
+    previewFile({ files: e.dataTransfer.files });
+  }
+});
+
+/* ─── SUBMIT ─── */
+async function submitProfile() {
+  const name = document.getElementById('f-name').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+  const anim = document.querySelector('input[name="anim"]:checked')?.value || 'float';
+
+  if (!name) { shake('f-name'); showToast('⚠️  Le nom est requis'); return; }
+  if (!desc) { shake('f-desc'); showToast('⚠️  La description est requise'); return; }
+
+  const btn = document.getElementById('btnSubmit');
+  const txt = document.getElementById('btnTxt');
+  btn.disabled = true;
+  txt.innerHTML = '<div class="spin"></div> Publication…';
+
+  let image_url = null;
+  if (fileToUpload) {
+    const ext = fileToUpload.name.split('.').pop().toLowerCase();
+    const fname = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error: upErr } = await sb.storage.from('avatars').upload(fname, fileToUpload, { contentType: fileToUpload.type });
+    if (!upErr) {
+      const { data: pub } = sb.storage.from('avatars').getPublicUrl(fname);
+      image_url = pub.publicUrl;
+    }
+  }
+
+  const { data, error } = await sb.from('profiles').insert([{ name, description: desc, image_url, animation: anim }]).select().single();
+
+  btn.disabled = false;
+  txt.textContent = 'Publier le profil';
+
+  if (error) { showToast('❌  Erreur : ' + error.message); return; }
+
+  /* reset form */
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-preview').style.display = 'none';
+  document.getElementById('uploadIcon').style.display = 'flex';
+  document.getElementById('uploadLabel').innerHTML = '<strong>Cliquez ou glissez</strong> une image ou un GIF ici';
+  document.getElementById('f-file').value = '';
+  fileToUpload = null;
+
+  closeModal();
+  profiles.unshift(data);
+  renderCard(data, true);
+  updateCount();
+  showToast('🎉  Profil publié avec succès !');
+}
+
+/* ─── LOAD ─── */
+async function loadProfiles() {
+  const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+  if (error || !data) return;
+  profiles = data;
+  renderAll();
+  updateCount();
+}
+
+/* ─── RENDER ALL ─── */
+function renderAll() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  if (!profiles.length) {
+    grid.innerHTML = `<div class="empty">
+      <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <circle cx="28" cy="20" r="10"/><path d="M6 50c0-12.1 9.9-22 22-22s22 9.9 22 22"/>
+      </svg>
+      <p>Aucun profil pour l'instant.<br><em>Soyez le premier à rejoindre !</em></p>
+    </div>`;
+    return;
+  }
+  profiles.forEach((p, i) => renderCard(p, false, i));
+}
+
+/* ─── RENDER CARD ─── */
+const EMOJIS = ['🦊','🐱','🐶','🐻','🦁','🐼','🦄','🐸','🌻','🎸','🍀','🌟','🦋','🎯','🍉'];
+const ANIM_LABELS = { float:'Flottant', bounce:'Rebond', spin:'Rotation', shake:'Vibration', pulse:'Pulsation', glow:'Lueur', swing:'Balancement', rainbow:'Arc-en-ciel', none:'Statique' };
+
+function renderCard(p, prepend = false, idx = 0) {
+  const grid = document.getElementById('grid');
+  if (prepend) { const e = grid.querySelector('.empty'); if (e) e.remove(); }
+
+  const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  const ac = p.animation && p.animation !== 'none' ? `anim-${p.animation}` : 'anim-none';
+  const label = ANIM_LABELS[p.animation] || 'Statique';
+  const isAdopted = adoptedSet.has(p.id);
+  const delay = prepend ? 0 : idx * 55;
+
+  const card = document.createElement('div');
+  card.className = `card ${ac}`;
+  card.style.animationDelay = delay + 'ms';
+  card.dataset.id = p.id;
+
+  card.innerHTML = `
+    <div class="card-media">
+      ${p.image_url
+        ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy">`
+        : `<div class="card-media-placeholder">${emoji}</div>`}
+      <div class="anim-badge"><div class="anim-badge-dot"></div>${esc(label)}</div>
+      <button class="btn-del" onclick="deleteProfile('${p.id}',this)" title="Supprimer" aria-label="Supprimer">✕</button>
     </div>
-
-    <!-- AVIS WINDOW -->
-    <div class="window" id="avisWindow" style="width: 750px; height: 600px; top: 120px; left: 150px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">📝</span>
-                <span>Avis</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('avisWindow')">−</button>
-                <button onclick="maximizeWindow('avisWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('avisWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <form onsubmit="submitAvis(event)">
-                <div class="form-group">
-                    <label>Votre nom</label>
-                    <input type="text" id="avisName" required placeholder="Entrez votre nom">
-                </div>
-                <div class="form-group">
-                    <label>Note (1-5 étoiles)</label>
-                    <input type="number" id="avisRating" min="1" max="5" required placeholder="5">
-                </div>
-                <div class="form-group">
-                    <label>Votre avis</label>
-                    <textarea id="avisMessage" required placeholder="Partagez votre expérience avec Dev Center..."></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Envoyer mon avis</button>
-                <div class="success-message" id="avisSuccess">✓ Votre avis a été envoyé avec succès !</div>
-            </form>
-        </div>
+    <div class="card-body">
+      <div class="card-name">${esc(p.name)}</div>
+      <div class="card-desc">${esc(p.description)}</div>
     </div>
-
-    <!-- MODULES WINDOW -->
-    <div class="window" id="modulesWindow" style="width: 850px; height: 650px; top: 90px; left: 220px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">📦</span>
-                <span>Modules disponibles</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('modulesWindow')">−</button>
-                <button onclick="maximizeWindow('modulesWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('modulesWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <div class="modules-grid">
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-name">Free</div>
-                        <div class="module-price">Gratuit</div>
-                    </div>
-                    <ul class="module-features">
-                        <li>Salon personnalisé</li>
-                        <li>Rôle personnalisé</li>
-                        <li>Pas de permissions effectuées</li>
-                    </ul>
-                </div>
-
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-name">Boss</div>
-                        <div class="module-price">1 Boost requis</div>
-                    </div>
-                    <ul class="module-features">
-                        <li>Salon personnalisé</li>
-                        <li>Rôle personnalisé</li>
-                        <li>Permissions avancées</li>
-                        <li>Système de suggestions</li>
-                        <li>Support prioritaire</li>
-                    </ul>
-                </div>
-
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-name">Master</div>
-                        <div class="module-price">2 Boosts requis</div>
-                    </div>
-                    <ul class="module-features">
-                        <li>Salon personnalisé</li>
-                        <li>Rôle personnalisé</li>
-                        <li>Permissions complètes</li>
-                        <li>Commandes bot personnalisées</li>
-                        <li>Support prioritaire VIP</li>
-                        <li>Accès mp all</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="card-footer">
+      <button class="btn-adopt${isAdopted ? ' adopted' : ''}" onclick="adoptProfile('${p.id}',this,'${esc(p.name)}')">
+        ${isAdopted ? '💛 Adopté·e' : '🤍 Adopter'}
+      </button>
+      <div class="card-meta">${timeAgo(p.created_at)}</div>
     </div>
+  `;
 
-    <!-- PARTNER WINDOW -->
-    <div class="window" id="partnerWindow" style="width: 800px; height: 620px; top: 140px; left: 280px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">🤝</span>
-                <span>World of Tools - Partenaire Officiel</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('partnerWindow')">−</button>
-                <button onclick="maximizeWindow('partnerWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('partnerWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <div class="partner-section">
-                <div class="partner-header">
-                    <h2 style="font-size: 32px; margin-bottom: 12px;">⚡ World of Tools</h2>
-                    <div style="opacity: 0.95; margin-bottom: 8px;">👤 Fondateur — Vipere (@non_dox)</div>
-                    <div style="opacity: 0.95;">ID: 1414040444878196857</div>
-                </div>
-                <div class="partner-content">
-                    World of Tools est partenaire officiel de Dev Center. Ce partenariat repose sur une vision commune : proposer des solutions innovantes, fiables et adaptées aux exigences des communautés Discord modernes.
-                    <br><br>
-                    Grâce à l'expertise technique de World of Tools et à l'engagement structurel de Dev Center, cette collaboration permet de renforcer la qualité des services proposés, d'optimiser les outils mis à disposition et de développer un écosystème cohérent, performant et durable.
-                    <br><br>
-                    Au-delà d'un simple accord, il s'agit d'une alliance stratégique fondée sur le professionnalisme, l'amélioration continue et la volonté commune d'apporter une réelle valeur ajoutée aux utilisateurs.
-                </div>
-                <div class="partner-buttons">
-                    <a href="https://worls-tl.com/" target="_blank" class="partner-btn">🌐 Visiter le site</a>
-                    <a href="https://discord.com/invite/p5rqbbjmHU" target="_blank" class="partner-btn">💬 Rejoindre Discord</a>
-                </div>
-            </div>
-        </div>
-    </div>
+  if (prepend) grid.prepend(card);
+  else grid.append(card);
+}
 
-    <!-- SETTINGS WINDOW -->
-    <div class="window" id="settingsWindow" style="width: 750px; height: 650px; top: 110px; left: 320px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">⚙️</span>
-                <span>Paramètres système</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('settingsWindow')">−</button>
-                <button onclick="maximizeWindow('settingsWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('settingsWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <div class="settings-section">
-                <h3>🎨 Thème d'apparence</h3>
-                <div class="theme-selector">
-                    <div class="theme-option active" onclick="setTheme('default')">
-                        🌓 Par défaut
-                    </div>
-                    <div class="theme-option" onclick="setTheme('light')">
-                        ☀️ Clair
-                    </div>
-                    <div class="theme-option" onclick="setTheme('dark')">
-                        🌙 Sombre
-                    </div>
-                </div>
-            </div>
-            <div class="settings-section">
-                <h3>🖼️ Fond d'écran</h3>
-                <div class="wallpaper-selector">
-                    <div class="wallpaper-option active" onclick="setWallpaper('default')" style="background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);">
-                        Défaut
-                    </div>
-                    <div class="wallpaper-option" onclick="setWallpaper('gradient1')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        Violet
-                    </div>
-                    <div class="wallpaper-option" onclick="setWallpaper('gradient2')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        Rose
-                    </div>
-                    <div class="wallpaper-option" onclick="setWallpaper('gradient3')" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                        Cyan
-                    </div>
-                    <div class="wallpaper-option" onclick="setWallpaper('gradient4')" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                        Vert
-                    </div>
-                    <div class="wallpaper-option" onclick="setWallpaper('gradient5')" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                        Sunset
-                    </div>
-                </div>
-            </div>
-            <div class="settings-section">
-                <h3>📁 Image personnalisée</h3>
-                <input type="file" id="customWallpaper" class="file-input" accept="image/*" onchange="setCustomWallpaper(event)">
-                <label for="customWallpaper" class="file-upload-btn">Choisir une image depuis mes fichiers</label>
-            </div>
-        </div>
-    </div>
+/* ─── ADOPT ─── */
+function adoptProfile(id, btn, name) {
+  if (adoptedSet.has(id)) return;
+  adoptedSet.add(id);
+  localStorage.setItem('adopted', JSON.stringify([...adoptedSet]));
+  btn.innerHTML = '💛 Adopté·e';
+  btn.classList.add('adopted');
+  showToast(`💛 Vous avez adopté ${name} !`);
+}
 
-    <!-- GOOGLE WINDOW -->
-    <div class="window" id="googleWindow" style="width: 1100px; height: 750px; top: 70px; left: 180px;">
-        <div class="window-titlebar">
-            <div class="window-title">
-                <span class="window-icon">🔍</span>
-                <span>Google</span>
-            </div>
-            <div class="window-controls">
-                <button onclick="minimizeWindow('googleWindow')">−</button>
-                <button onclick="maximizeWindow('googleWindow')">□</button>
-                <button class="close-btn" onclick="closeWindow('googleWindow')">×</button>
-            </div>
-        </div>
-        <div class="window-content" style="padding: 0;">
-            <iframe src="https://www.google.com/webhp?igu=1" class="google-frame" allow="fullscreen"></iframe>
-        </div>
-    </div>
+/* ─── DELETE ─── */
+async function deleteProfile(id, btn) {
+  if (!confirm('Supprimer ce profil définitivement ?')) return;
+  const card = btn.closest('.card');
+  card.style.transition = 'all .3s';
+  card.style.transform = 'scale(.88)';
+  card.style.opacity = '0';
 
-    <!-- TASKBAR -->
-    <div class="taskbar">
-        <div class="taskbar-center">
-            <button class="start-btn" onclick="toggleStartMenu()">🪟</button>
-            <input type="text" class="search-box" placeholder="Rechercher" id="searchBox" oninput="searchApps(this.value)">
-            <div class="taskbar-apps">
-                <button class="taskbar-app" onclick="openWindow('discordWindow')" title="Discord">💬</button>
-                <button class="taskbar-app" onclick="openWindow('avisWindow')" title="Avis">📝</button>
-                <button class="taskbar-app" onclick="openWindow('modulesWindow')" title="Modules">📦</button>
-                <button class="taskbar-app" onclick="openWindow('partnerWindow')" title="World of Tools">🤝</button>
-                <button class="taskbar-app" onclick="openWindow('googleWindow')" title="Google">🔍</button>
-            </div>
-        </div>
-        <div class="system-tray">
-            <span class="tray-icon">📶 Dev Center WiFi</span>
-            <span class="tray-icon">
-                🔋 <span id="batteryLevel">100%</span>
-            </span>
-            <span class="tray-icon" id="taskbarTime">12:00</span>
-        </div>
-    </div>
+  const { error } = await sb.from('profiles').delete().eq('id', id);
+  if (error) {
+    card.style.transform = '';
+    card.style.opacity = '';
+    showToast('❌  Erreur lors de la suppression');
+    return;
+  }
 
-    <!-- START MENU -->
-    <div class="start-menu" id="startMenu">
-        <div class="start-header">
-            <div class="start-user">
-                <div class="start-avatar">👤</div>
-                <div>
-                    <div style="font-weight: 600; font-size: 15px;">Utilisateur</div>
-                    <div style="font-size: 13px; color: var(--text-secondary);" id="discordUsername">Non connecté</div>
-                </div>
-            </div>
-        </div>
-        <div class="start-apps">
-            <div class="apps-grid">
-                <div class="app-tile" onclick="openWindow('discordWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">💬</div>
-                    <div class="app-tile-name">Discord</div>
-                </div>
-                <div class="app-tile" onclick="openWindow('avisWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">📝</div>
-                    <div class="app-tile-name">Avis</div>
-                </div>
-                <div class="app-tile" onclick="openWindow('modulesWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">📦</div>
-                    <div class="app-tile-name">Modules</div>
-                </div>
-                <div class="app-tile" onclick="openWindow('partnerWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">🤝</div>
-                    <div class="app-tile-name">World of Tools</div>
-                </div>
-                <div class="app-tile" onclick="openWindow('settingsWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">⚙️</div>
-                    <div class="app-tile-name">Paramètres</div>
-                </div>
-                <div class="app-tile" onclick="openWindow('googleWindow'); closeStartMenu()">
-                    <div class="app-tile-icon">🔍</div>
-                    <div class="app-tile-name">Google</div>
-                </div>
-            </div>
-        </div>
-    </div>
+  setTimeout(() => {
+    card.remove();
+    profiles = profiles.filter(p => p.id !== id);
+    updateCount();
+    if (!document.querySelector('.card')) renderAll();
+  }, 300);
+  showToast('🗑️  Profil supprimé');
+}
 
-    <!-- SEARCH RESULTS -->
-    <div class="search-results" id="searchResults"></div>
+/* ─── COUNT ─── */
+function updateCount() {
+  const pill = document.getElementById('countPill');
+  const num = document.getElementById('countNum');
+  num.textContent = profiles.length;
+  pill.style.display = profiles.length ? 'flex' : 'none';
+}
 
-    <script>
-        const DISCORD_CLIENT_ID = '1432479555079372920';
-        const DISCORD_REDIRECT_URI = 'https://jojolm24.github.io/test-/';
-        const DISCORD_CLIENT_SECRET = 'crszgWurxUwk8pizvUcQXNTCWruF8cry';
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1470398339437690883/BO4-s1zgnlGdszcdhp_GHGlGB7-oeWElx1OluZyA6SepV_Dl-ftXiljqXWKAboC35hTY';
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 2800);
+}
 
-        let draggedWindow = null;
-        let dragOffsetX = 0;
-        let dragOffsetY = 0;
+/* ─── SHAKE invalid ─── */
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.animation = 'ashake .4s ease-in-out';
+  el.style.borderColor = 'var(--coral)';
+  setTimeout(() => { el.style.animation = ''; el.style.borderColor = ''; }, 450);
+}
 
-        // TIME UPDATE
-        function updateTime() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-            document.getElementById('lockTime').textContent = time;
-            document.getElementById('lockDate').textContent = date;
-            document.getElementById('taskbarTime').textContent = time;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // BATTERY
-        let battery = 100;
-        setInterval(() => {
-            battery = Math.max(20, battery - Math.random() * 0.1);
-            document.getElementById('batteryLevel').textContent = Math.floor(battery) + '%';
-        }, 30000);
-
-        // DISCORD AUTH
-        function showDiscordAuth() {
-            document.getElementById('lockScreen').classList.add('hidden');
-            document.getElementById('discordAuth').classList.add('active');
-        }
-
-        function connectDiscord() {
-            const scope = 'identify email';
-            window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(scope)}`;
-        }
-
-        window.addEventListener('load', async () => {
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-
-            if (code) {
-                try {
-                    const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({
-                            client_id: DISCORD_CLIENT_ID,
-                            client_secret: DISCORD_CLIENT_SECRET,
-                            grant_type: 'authorization_code',
-                            code: code,
-                            redirect_uri: DISCORD_REDIRECT_URI,
-                        }),
-                    });
-
-                    const tokenData = await tokenRes.json();
-                    
-                    if (tokenData.access_token) {
-                        const userRes = await fetch('https://discord.com/api/users/@me', {
-                            headers: { Authorization: `Bearer ${tokenData.access_token}` },
-                        });
-
-                        const user = await userRes.json();
-                        
-                        document.getElementById('discordUsername').textContent = user.username;
-                        document.getElementById('discordChatUsername').textContent = user.username;
-                        document.querySelector('.lock-username').textContent = user.username;
-                        
-                        document.getElementById('lockScreen').classList.add('hidden');
-                        document.getElementById('discordAuth').classList.remove('active');
-                        
-                        window.history.replaceState({}, document.title, DISCORD_REDIRECT_URI);
-                    }
-                } catch (error) {
-                    console.error('Erreur OAuth:', error);
-                    alert('Erreur de connexion');
-                }
-            }
-        });
-
-        // WINDOW MANAGEMENT
-        function openWindow(id) {
-            const win = document.getElementById(id);
-            win.classList.add('active');
-            bringToFront(win);
-        }
-
-        function closeWindow(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        function minimizeWindow(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        function maximizeWindow(id) {
-            document.getElementById(id).classList.toggle('maximized');
-        }
-
-        function bringToFront(win) {
-            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 100);
-            win.style.zIndex = 101;
-        }
-
-        // DRAGGING
-        document.querySelectorAll('.window-titlebar').forEach(bar => {
-            bar.addEventListener('mousedown', (e) => {
-                if (e.target.closest('.window-controls')) return;
-                
-                draggedWindow = bar.closest('.window');
-                const rect = draggedWindow.getBoundingClientRect();
-                dragOffsetX = e.clientX - rect.left;
-                dragOffsetY = e.clientY - rect.top;
-                
-                bringToFront(draggedWindow);
-                
-                document.addEventListener('mousemove', dragWindow);
-                document.addEventListener('mouseup', stopDrag);
-            });
-        });
-
-        function dragWindow(e) {
-            if (!draggedWindow || draggedWindow.classList.contains('maximized')) return;
-            draggedWindow.style.left = (e.clientX - dragOffsetX) + 'px';
-            draggedWindow.style.top = (e.clientY - dragOffsetY) + 'px';
-        }
-
-        function stopDrag() {
-            draggedWindow = null;
-            document.removeEventListener('mousemove', dragWindow);
-            document.removeEventListener('mouseup', stopDrag);
-        }
-
-        // START MENU
-        function toggleStartMenu() {
-            document.getElementById('startMenu').classList.toggle('active');
-        }
-
-        function closeStartMenu() {
-            document.getElementById('startMenu').classList.remove('active');
-        }
-
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('startMenu');
-            const btn = document.querySelector('.start-btn');
-            if (!menu.contains(e.target) && !btn.contains(e.target)) {
-                closeStartMenu();
-            }
-
-            const results = document.getElementById('searchResults');
-            const box = document.getElementById('searchBox');
-            if (!results.contains(e.target) && !box.contains(e.target)) {
-                results.classList.remove('active');
-            }
-        });
-
-        // SEARCH
-        const apps = [
-            { name: 'Discord', icon: '💬', window: 'discordWindow' },
-            { name: 'Avis', icon: '📝', window: 'avisWindow' },
-            { name: 'Modules', icon: '📦', window: 'modulesWindow' },
-            { name: 'World of Tools', icon: '🤝', window: 'partnerWindow' },
-            { name: 'Paramètres', icon: '⚙️', window: 'settingsWindow' },
-            { name: 'Google', icon: '🔍', window: 'googleWindow' }
-        ];
-
-        function searchApps(query) {
-            const results = document.getElementById('searchResults');
-            
-            if (!query.trim()) {
-                results.classList.remove('active');
-                return;
-            }
-
-            const filtered = apps.filter(app => 
-                app.name.toLowerCase().includes(query.toLowerCase())
-            );
-
-            if (filtered.length === 0) {
-                results.innerHTML = '<div style="padding: 25px; text-align: center; color: var(--text-secondary);">Aucun résultat</div>';
-            } else {
-                results.innerHTML = filtered.map(app => `
-                    <div class="search-result-item" onclick="openWindow('${app.window}'); document.getElementById('searchResults').classList.remove('active'); document.getElementById('searchBox').value = '';">
-                        <span class="search-result-icon">${app.icon}</span>
-                        <span>${app.name}</span>
-                    </div>
-                `).join('');
-            }
-
-            results.classList.add('active');
-        }
-
-        // AVIS
-        async function submitAvis(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('avisName').value;
-            const rating = document.getElementById('avisRating').value;
-            const message = document.getElementById('avisMessage').value;
-
-            try {
-                await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: '📝 Nouvel Avis',
-                            color: 0x0078d4,
-                            fields: [
-                                { name: '👤 Utilisateur', value: name, inline: true },
-                                { name: '⭐ Note', value: '⭐'.repeat(parseInt(rating)), inline: true },
-                                { name: '💬 Message', value: message }
-                            ],
-                            timestamp: new Date().toISOString(),
-                            footer: { text: 'Dev Center OS' }
-                        }]
-                    })
-                });
-
-                document.getElementById('avisSuccess').classList.add('show');
-                e.target.reset();
-
-                setTimeout(() => {
-                    document.getElementById('avisSuccess').classList.remove('show');
-                }, 3000);
-            } catch (error) {
-                alert('Erreur lors de l\'envoi');
-            }
-        }
-
-        // SETTINGS
-        function setTheme(theme) {
-            document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (theme === 'light') {
-                document.body.setAttribute('data-theme', 'light');
-            } else if (theme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
-            } else {
-                document.body.removeAttribute('data-theme');
-            }
-        }
-
-        const wallpapers = {
-            default: 'linear-gradient(135deg, #0078d4 0%, #00bcf2 100%)',
-            gradient1: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            gradient2: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-            gradient3: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-            gradient4: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-            gradient5: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-        };
-
-        function setWallpaper(id) {
-            document.querySelectorAll('.wallpaper-option').forEach(opt => opt.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('desktop').style.background = wallpapers[id];
-        }
-
-        function setCustomWallpaper(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('desktop').style.backgroundImage = `url('${e.target.result}')`;
-                    document.querySelectorAll('.wallpaper-option').forEach(opt => opt.classList.remove('active'));
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // DISCORD CHAT
-        function sendDiscordMessage(event) {
-            if (event.key === 'Enter' && event.target.value.trim()) {
-                const container = document.getElementById('discordMessages');
-                const now = new Date();
-                const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                const username = document.getElementById('discordChatUsername').textContent;
-                
-                container.insertAdjacentHTML('beforeend', `
-                    <div class="discord-message">
-                        <div class="discord-avatar">👤</div>
-                        <div class="discord-message-content">
-                            <div class="discord-message-header">
-                                <span class="discord-username">${username}</span>
-                                <span class="discord-timestamp">Aujourd'hui à ${time}</span>
-                            </div>
-                            <div class="discord-message-text">${event.target.value}</div>
-                        </div>
-                    </div>
-                `);
-                
-                container.scrollTop = container.scrollHeight;
-                event.target.value = '';
-            }
-        }
-    </script>
+/* ─── UTILS ─── */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function timeAgo(iso) {
+  const s = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (s < 60) return 'À l\'instant';
+  if (s < 3600) return `${Math.floor(s/60)} min`;
+  if (s < 86400) return `${Math.floor(s/3600)} h`;
+  if (s < 604800) return `${Math.floor(s/86400)} j`;
+  return new Date(iso).toLocaleDateString('fr');
+}
+</script>
 </body>
 </html>
