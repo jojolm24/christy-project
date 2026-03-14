@@ -739,7 +739,9 @@ function openEdit(id){
 
 function closePM(){
   document.getElementById('pmOv').classList.remove('open');
-  setTimeout(resetForm,300);
+  editingId = null; // null immédiatement, pas après 300ms
+  fileToUpload = null;
+  setTimeout(resetForm, 300);
 }
 function pmBg(e){ if(e.target===document.getElementById('pmOv')) closePM(); }
 
@@ -820,13 +822,15 @@ async function submitProfile(){
 
   if(error){ toast('error',error.message); return; }
 
-  closePM();
   if(editingId){
-    profiles=profiles.map(p=>p.id===editingId?data:p);
-    const old=document.querySelector(`.card[data-id="${editingId}"]`);
-    if(old){ const nc=buildCard(data,0); old.replaceWith(nc); }
+    // Mettre à jour AVANT de fermer (closePM appelle resetForm qui pourrait interférer)
+    profiles = profiles.map(p => p.id===editingId ? data : p);
+    const old = document.querySelector(`.card[data-id="${editingId}"]`);
+    if(old){ const nc = buildCard(data, 0); old.replaceWith(nc); }
+    closePM();
     toast('ok','Profil modifié !');
   } else {
+    closePM();
     profiles.unshift(data);
     const g=document.getElementById('grid');
     const e=g.querySelector('.empty-st'); if(e) e.remove();
