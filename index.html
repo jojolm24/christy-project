@@ -406,8 +406,9 @@ let currentUser = null;
 let profiles = [];
 let editingId = null;
 let fileToUpload = null;
-let adopted = new Set(JSON.parse(localStorage.getItem('am_adopted')||'[]'));
+let adopted = new Set(); // will be loaded from DB
 let authMode = 'login';
+let skipNextAuthReload = false; // prevents reload after local edit
 
 /* ── BOOT ── */
 window.addEventListener('load', async () => {
@@ -418,7 +419,8 @@ window.addEventListener('load', async () => {
   sb.auth.onAuthStateChange((_, session) => {
     currentUser = session?.user || null;
     updateHdr();
-    loadProfiles(); // recharge + re-rend proprement
+    if(skipNextAuthReload){ skipNextAuthReload=false; return; }
+    loadProfiles();
   });
 
   await loadProfiles();
@@ -516,6 +518,15 @@ async function loadProfiles(){
   const { data, error } = await sb.from('profiles').select('*').order('created_at',{ascending:false});
   if(error){ toast('error',error.message); return; }
   profiles = data||[];
+
+  // Load adoptions for current user from DB
+  if(currentUser){
+    const { data: adData } = await sb.from('adoptions').select('profile_id').eq('adopter_id', currentUser.id);
+    adopted = new Set((adData||[]).map(a => a.profile_id));
+  } else {
+    adopted = new Set();
+  }
+
   renderAll();
   updateCount();
 }
@@ -603,9 +614,11 @@ function buildCard(p, delay=0){
       <div class="cdesc">${esc(p.description||'')}</div>
     </div>
     <div class="cfoot">
-      <button class="btn btn-coral${isAd?' done':''}" onclick="adoptP('${p.id}',this,'${esc(p.name)}')">
-        ${isAd ? hFill() : hEmpty()} ${isAd?'Adopté·e':'Adopter'}
-      </button>
+      ${isOwner
+        ? `<div class="ctime" style="font-size:12px;color:var(--ink3);opacity:.5;font-style:italic">Votre profil</div>`
+        : `<button class="btn btn-coral${isAd?' done':''}" onclick="adoptP('${p.id}',this,'${esc(p.name)}','${esc(p.owner_email||'')}')">
+          ${isAd ? hFill() : hEmpty()} ${isAd?'Désadopter':'Adopter'}
+        </button>`}
       <div class="ctime">
         <svg viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5"/><polyline points="5.5,3 5.5,5.5 7,7"/></svg>
         ${timeAgo(p.created_at)}
@@ -626,12 +639,52 @@ function buildCard(p, delay=0){
   return div;
 }
 
-/* ── ADOPT ── */
-function adoptP(id, btn, name){
-  if(adopted.has(id)) return;
-  adopted.add(id); localStorage.setItem('am_adopted',JSON.stringify([...adopted]));
-  btn.innerHTML = hFill()+' Adopté·e'; btn.classList.add('done');
-  toast('heart',`Vous avez adopté ${name} !`);
+/* ── ADOPT / UNADOPT ── */
+async function adoptP(id, btn, name, ownerEmail){
+  if(!currentUser){ showAuth(); return; }
+
+  const isAd = adopted.has(id);
+
+  if(isAd){
+    // Désadopter
+    const { error } = await sb.from('adoptions').delete()
+      .eq('profile_id', id).eq('adopter_id', currentUser.id);
+    if(error){ toast('error', error.message); return; }
+    adopted.delete(id);
+    btn.innerHTML = hEmpty()+' Adopter';
+    btn.classList.remove('done');
+    toast('ok', `Vous avez désadopté ${name}`);
+  } else {
+    // Adopter — vérifier que personne d'autre n'a déjà adopté
+    const { data: existing } = await sb.from('adoptions').select('id').eq('profile_id', id);
+    if(existing && existing.length > 0){
+      toast('warn', `${name} a déjà été adopté·e !`);
+      return;
+    }
+    const { error } = await sb.from('adoptions').insert([{
+      profile_id: id,
+      adopter_id: currentUser.id,
+      adopter_email: currentUser.email
+    }]);
+    if(error){ toast('error', error.message); return; }
+    adopted.add(id);
+    btn.innerHTML = hFill()+' Désadopter';
+    btn.classList.add('done');
+    toast('heart', `Vous avez adopté ${name} ! 💛`);
+
+    // Envoyer email à l'owner via Supabase (si email dispo)
+    if(ownerEmail && ownerEmail !== currentUser.email){
+      try {
+        await sb.functions.invoke('send-adoption-email', {
+          body: {
+            to: ownerEmail,
+            profileName: name,
+            adopterEmail: currentUser.email
+          }
+        });
+      } catch(e){ /* silently fail — edge function optional */ }
+    }
+  }
 }
 
 /* ── DELETE ── */
@@ -751,12 +804,12 @@ async function submitProfile(){
 
   let data, error;
   if(editingId){
-    // update ne retourne rien avec RLS — on reconstruit l'objet localement
+    skipNextAuthReload = true;
     const res = await sb.from('profiles').update({name, description:desc, image_url, animation:anim}).eq('id', editingId);
     error = res.error;
     data = error ? null : { ...profiles.find(p=>p.id===editingId), name, description:desc, image_url, animation:anim };
   } else {
-    const res = await sb.from('profiles').insert([{name, description:desc, image_url, animation:anim, user_id:currentUser.id}]).select();
+    const res = await sb.from('profiles').insert([{name, description:desc, image_url, animation:anim, user_id:currentUser.id, owner_email:currentUser.email}]).select();
     error = res.error;
     data = res.data?.[0] || null;
   }
