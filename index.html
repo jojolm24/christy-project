@@ -27,28 +27,88 @@ svg{display:block;flex-shrink:0}
 @keyframes popIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* AUTH WALL */
-#authWall{position:fixed;inset:0;z-index:600;background:rgba(245,240,232,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+#authWall{position:fixed;inset:0;z-index:600;background:rgba(245,240,232,.95);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;overflow-y:auto}
 #authWall.show{opacity:1;visibility:visible}
-.auth-card{background:#fff;border-radius:28px;width:100%;max-width:400px;box-shadow:0 0 0 1px rgba(26,18,8,.07),0 28px 64px rgba(26,18,8,.16);overflow:hidden;animation:authCardIn .45s cubic-bezier(.22,.68,0,1.2) both}
-@keyframes authCardIn{from{opacity:0;transform:translateY(32px) scale(.95)}to{opacity:1;transform:none}}
-#authWall.show .auth-card{animation:authCardIn .45s cubic-bezier(.22,.68,0,1.2) both}
-.auth-top{padding:32px 32px 0;text-align:center}
-.auth-logo{font-family:'Fraunces',serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);margin-bottom:8px}
-.auth-logo b{color:var(--coral)}
-.auth-sub{font-size:13.5px;color:var(--ink3);line-height:1.6;margin-bottom:24px;opacity:.8}
-.auth-tabs{display:flex;background:var(--sand2);border-radius:11px;padding:3px;margin:0 32px}
-.auth-tab{flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink3);transition:all .18s;border:none;background:none;font-family:'Instrument Sans',sans-serif}
-.auth-tab.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(26,18,8,.09)}
-.auth-body{padding:22px 32px 30px}
-.fg{margin-bottom:15px}
+
+/* Split card */
+.auth-card{
+  background:#fff;border-radius:28px;width:100%;max-width:780px;
+  box-shadow:0 0 0 1px rgba(26,18,8,.07),0 32px 80px rgba(26,18,8,.18);
+  overflow:hidden;display:flex;position:relative;
+  opacity:0;transform:translateY(28px) scale(.96);
+  transition:opacity .4s cubic-bezier(.22,.68,0,1.2),transform .4s cubic-bezier(.22,.68,0,1.2);
+}
+#authWall.show .auth-card{opacity:1;transform:none}
+
+/* Left — form panel */
+.auth-left{flex:1;padding:44px 40px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;min-width:0;order:1}
+.auth-left-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:var(--ink);margin-bottom:32px}
+.auth-left-logo b{color:var(--coral)}
+.auth-left-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;letter-spacing:-.8px;color:var(--ink);margin-bottom:6px;line-height:1.1}
+.auth-left-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;line-height:1.5}
+.fg{margin-bottom:14px}
 .flbl{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
 .flbl svg{width:11px;height:11px;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;fill:none}
 .fi{width:100%;background:var(--sand);border:1.5px solid rgba(26,18,8,.1);border-radius:11px;padding:12px 14px;font-family:'Instrument Sans',sans-serif;font-size:14.5px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
 .fi::placeholder{color:var(--ink3);opacity:.45}
 .fi:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,90,58,.1)}
-.auth-error{font-size:13px;color:var(--coral);margin-bottom:12px;min-height:18px;line-height:1.4}
-.auth-note{font-size:12px;color:var(--ink3);opacity:.7;text-align:center;margin-top:12px;line-height:1.5}
+.auth-error{font-size:13px;color:var(--coral);margin-bottom:10px;min-height:16px;line-height:1.4}
+.auth-note{font-size:12px;color:var(--ink3);opacity:.7;text-align:center;margin-top:14px;line-height:1.5}
 .auth-note a{color:var(--coral);cursor:pointer;text-decoration:underline}
+
+/* Right — decorative panel */
+.auth-right{
+  width:280px;flex-shrink:0;background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:44px 32px;text-align:center;position:relative;overflow:hidden;
+  transition:background .5s;order:2;min-height:420px;
+}
+.auth-right.signup-mode{background:var(--coral)}
+.auth-right-blob{
+  position:absolute;width:320px;height:320px;border-radius:50%;
+  background:rgba(255,255,255,.06);top:-80px;right:-80px;
+  transition:transform .6s cubic-bezier(.22,.68,0,1.2);
+}
+.auth-right.signup-mode .auth-right-blob{transform:scale(1.3) translate(-20px,20px)}
+.auth-right-blob2{
+  position:absolute;width:200px;height:200px;border-radius:50%;
+  background:rgba(255,255,255,.05);bottom:-60px;left:-40px;
+  transition:transform .6s cubic-bezier(.22,.68,0,1.2) .05s;
+}
+.auth-right.signup-mode .auth-right-blob2{transform:scale(1.4) translate(10px,-10px)}
+.auth-right-icon{
+  width:64px;height:64px;border-radius:20px;
+  background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  transition:transform .4s cubic-bezier(.22,.68,0,1.2);
+}
+#authWall.show .auth-right-icon{transform:none}
+.auth-right-icon svg{width:28px;height:28px;stroke:#fff;stroke-width:1.8;stroke-linecap:round;fill:none}
+.auth-right-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:-.5px;line-height:1.2;transition:opacity .3s}
+.auth-right-sub{font-size:13px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:24px;transition:opacity .3s}
+.auth-right-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.15);color:#fff;
+  border:1.5px solid rgba(255,255,255,.3);border-radius:40px;
+  padding:10px 20px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:background .18s,border-color .18s,transform .15s;
+  backdrop-filter:blur(4px);
+}
+.auth-right-btn:hover{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5);transform:translateY(-1px)}
+.auth-right-btn svg{width:13px;height:13px;stroke:#fff;stroke-width:2.5;stroke-linecap:round;fill:none}
+
+/* Slide animation between panels */
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.auth-left.anim-in{animation:slideInLeft .32s cubic-bezier(.22,.68,0,1.2) both}
+.auth-right-content.anim-in{animation:slideInRight .32s cubic-bezier(.22,.68,0,1.2) both}
+
+@media(max-width:640px){
+  .auth-right{display:none}
+  .auth-card{max-width:400px}
+  .auth-left{padding:36px 28px}
+}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:40px;font-family:'Instrument Sans',sans-serif;font-weight:600;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s,background .15s}
@@ -251,7 +311,6 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
   .hero{padding:44px 20px 34px}
   .gwrap{padding:0 18px 60px}
   .mhdr,.mbody{padding-left:22px;padding-right:22px}
-  .auth-tabs,.auth-body{padding-left:22px;padding-right:22px}
 }
 </style>
 </head>
@@ -262,34 +321,53 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
 <!-- AUTH WALL -->
 <div id="authWall">
   <div class="auth-card">
-    <div class="auth-top">
-      <div class="auth-logo">adopt<b>me</b><span style="color:var(--coral)">.</span></div>
-      <p class="auth-sub">Rejoignez la communauté et<br>créez votre profil unique ✨</p>
-    </div>
-    <div class="auth-tabs" id="authTabs">
-      <button class="auth-tab on" onclick="switchTab('login')">Se connecter</button>
-      <button class="auth-tab" onclick="switchTab('signup')">Créer un compte</button>
-    </div>
-    <div class="auth-body">
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/><circle cx="5.5" cy="3.5" r="2"/></svg>Email</div>
-        <input class="fi" id="a-email" type="email" placeholder="vous@exemple.com" autocomplete="email">
+
+    <!-- LEFT: form -->
+    <div class="auth-left" id="authLeft">
+      <div class="auth-left-logo">adopt<b>me</b><span style="color:var(--coral)">.</span></div>
+
+      <div id="authFormWrap">
+        <div class="auth-left-title" id="a-title">Bon retour !</div>
+        <p class="auth-left-sub" id="a-sub">Connectez-vous pour accéder à vos profils.</p>
+
+        <div class="fg">
+          <div class="flbl"><svg viewBox="0 0 11 11"><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/><circle cx="5.5" cy="3.5" r="2"/></svg>Email</div>
+          <input class="fi" id="a-email" type="email" placeholder="vous@exemple.com" autocomplete="email">
+        </div>
+        <div class="fg">
+          <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Mot de passe</div>
+          <input class="fi" id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="fg" id="a-p2w" style="display:none">
+          <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Confirmer le mot de passe</div>
+          <input class="fi" id="a-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <div class="auth-error" id="a-err"></div>
+        <button class="btn btn-dark btn-full" id="a-btn" onclick="doAuth()">
+          <svg id="a-ic" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7H2M8 3l4 4-4 4"/></svg>
+          <span id="a-tx">Se connecter</span>
+        </button>
+        <div class="auth-note" id="a-note">Pas encore de compte ? <a onclick="switchTab('signup')">Créer un compte</a></div>
       </div>
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Mot de passe</div>
-        <input class="fi" id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <div class="fg" id="a-p2w" style="display:none">
-        <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Confirmer le mot de passe</div>
-        <input class="fi" id="a-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
-      </div>
-      <div class="auth-error" id="a-err"></div>
-      <button class="btn btn-dark btn-full" id="a-btn" onclick="doAuth()">
-        <svg id="a-ic" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7H2M8 3l4 4-4 4"/></svg>
-        <span id="a-tx">Se connecter</span>
-      </button>
-      <div class="auth-note" id="a-note">Pas encore de compte ? <a onclick="switchTab('signup')">Créer un compte</a></div>
     </div>
+
+    <!-- RIGHT: decorative panel -->
+    <div class="auth-right" id="authRight">
+      <div class="auth-right-blob"></div>
+      <div class="auth-right-blob2"></div>
+      <div class="auth-right-content" id="authRightContent">
+        <div class="auth-right-icon" id="a-right-icon">
+          <svg viewBox="0 0 28 28"><path d="M14 2l2.5 5 5.5.8-4 3.9.9 5.5L14 14.5l-4.9 2.7.9-5.5-4-3.9 5.5-.8z"/></svg>
+        </div>
+        <div class="auth-right-title" id="a-right-title">Bonjour !</div>
+        <p class="auth-right-sub" id="a-right-sub">Pas encore de compte ?<br>Rejoignez la communauté adoptme et créez votre profil unique.</p>
+        <button class="auth-right-btn" onclick="switchTab('signup')">
+          <svg viewBox="0 0 13 13"><path d="M6.5 1v11M1 6.5h11"/></svg>
+          Créer un compte
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -420,7 +498,8 @@ window.addEventListener('load', async () => {
     currentUser = session?.user || null;
     updateHdr();
     if(skipNextAuthReload){ skipNextAuthReload=false; return; }
-    loadProfiles();
+    // setTimeout 0 pour sortir du contexte fetch de Supabase (évite DataCloneError Headers)
+    setTimeout(() => loadProfiles(), 0);
   });
 
   await loadProfiles();
@@ -433,13 +512,53 @@ function hideAuth(){ document.getElementById('authWall').classList.remove('show'
 
 function switchTab(mode){
   authMode = mode;
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('on', (i===0&&mode==='login')||(i===1&&mode==='signup')));
-  document.getElementById('a-p2w').style.display = mode==='signup' ? 'block' : 'none';
-  document.getElementById('a-tx').textContent = mode==='login' ? 'Se connecter' : 'Créer mon compte';
-  document.getElementById('a-note').innerHTML = mode==='login'
-    ? 'Pas encore de compte ? <a onclick="switchTab(\'signup\')">Créer un compte</a>'
-    : 'Déjà inscrit·e ? <a onclick="switchTab(\'login\')">Se connecter</a>';
-  document.getElementById('a-err').textContent = '';
+  const isSignup = mode === 'signup';
+
+  // Left panel fade out
+  const left = document.getElementById('authLeft');
+  left.style.opacity = '0';
+  left.style.transform = isSignup ? 'translateX(-12px)' : 'translateX(12px)';
+  left.style.transition = 'opacity .18s, transform .18s';
+
+  // Right panel bg : coral en signup, ink en login
+  document.getElementById('authRight').classList.toggle('signup-mode', isSignup);
+
+  // Right content fade out
+  const rc = document.getElementById('authRightContent');
+  rc.style.opacity = '0';
+  rc.style.transform = isSignup ? 'translateX(10px)' : 'translateX(-10px)';
+  rc.style.transition = 'opacity .18s, transform .18s';
+
+  setTimeout(() => {
+    // Left — update via getElementById (no captured DOM ref)
+    document.getElementById('a-title').textContent = isSignup ? 'Créer un compte' : 'Bon retour !';
+    document.getElementById('a-sub').textContent   = isSignup ? 'Rejoignez la communauté adoptme.' : 'Connectez-vous pour accéder à vos profils.';
+    document.getElementById('a-p2w').style.display = isSignup ? 'block' : 'none';
+    document.getElementById('a-tx').textContent    = isSignup ? 'Créer mon compte' : 'Se connecter';
+    document.getElementById('a-note').innerHTML    = isSignup
+      ? 'Déjà inscrit·e ? <a onclick="switchTab(\'login\')">Se connecter</a>'
+      : 'Pas encore de compte ? <a onclick="switchTab(\'signup\')">Créer un compte</a>';
+    document.getElementById('a-err').textContent = '';
+    document.getElementById('authLeft').style.transform = 'none';
+    document.getElementById('authLeft').style.opacity   = '1';
+
+    // Right content — update via getElementById
+    if(isSignup){
+      document.getElementById('a-right-title').textContent = 'Déjà un compte ?';
+      document.getElementById('a-right-sub').innerHTML     = 'Reconnectez-vous et retrouvez<br>tous vos profils adoptme.';
+      document.getElementById('a-right-icon').innerHTML    = `<svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"><circle cx="14" cy="10" r="5"/><path d="M4 24c0-5.5 4.5-10 10-10s10 4.5 10 10"/></svg>`;
+      document.getElementById('authRight').querySelector('.auth-right-btn').innerHTML = `<svg viewBox="0 0 13 13" width="13" height="13" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M9 6.5H1M5 3l-4 3.5L5 10"/></svg> Se connecter`;
+      document.getElementById('authRight').querySelector('.auth-right-btn').setAttribute('onclick',"switchTab('login')");
+    } else {
+      document.getElementById('a-right-title').textContent = 'Bonjour !';
+      document.getElementById('a-right-sub').innerHTML     = 'Pas encore de compte ?<br>Rejoignez la communauté adoptme.';
+      document.getElementById('a-right-icon').innerHTML    = `<svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"><path d="M14 2l2.5 5 5.5.8-4 3.9.9 5.5L14 14.5l-4.9 2.7.9-5.5-4-3.9 5.5-.8z"/></svg>`;
+      document.getElementById('authRight').querySelector('.auth-right-btn').innerHTML = `<svg viewBox="0 0 13 13" width="13" height="13" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M6.5 1v11M1 6.5h11"/></svg> Créer un compte`;
+      document.getElementById('authRight').querySelector('.auth-right-btn').setAttribute('onclick',"switchTab('signup')");
+    }
+    document.getElementById('authRightContent').style.transform = 'none';
+    document.getElementById('authRightContent').style.opacity   = '1';
+  }, 180);
 }
 
 async function doAuth(){
@@ -690,14 +809,25 @@ async function adoptP(id, btn, name, ownerEmail){
 /* ── DELETE ── */
 async function delProfile(id, btn){
   if(!confirm('Supprimer ce profil définitivement ?')) return;
-  const card=btn.closest('.card');
-  card.style.transition='all .28s'; card.style.transform='scale(.87)'; card.style.opacity='0';
-  const { error } = await sb.from('profiles').delete().eq('id',id);
-  if(error){ card.style.transform=''; card.style.opacity=''; toast('error',error.message); return; }
-  setTimeout(()=>{
-    card.remove(); profiles=profiles.filter(p=>p.id!==id); updateCount();
+  const card = btn.closest('.card');
+  card.style.transition='all .28s';
+  card.style.transform='scale(.87)';
+  card.style.opacity='0';
+  const { error } = await sb.from('profiles').delete().eq('id', id);
+  if(error){
+    card.style.transform='';
+    card.style.opacity='';
+    toast('error', error.message);
+    return;
+  }
+  // Capture only the string id, never the DOM node
+  setTimeout(() => {
+    const el = document.querySelector(`.card[data-id="${id}"]`);
+    if(el) el.remove();
+    profiles = profiles.filter(p => p.id !== id);
+    updateCount();
     if(!document.querySelector('.card')) renderAll();
-  },280);
+  }, 280);
   toast('trash','Profil supprimé');
 }
 
@@ -739,9 +869,9 @@ function openEdit(id){
 
 function closePM(){
   document.getElementById('pmOv').classList.remove('open');
-  editingId = null; // null immédiatement, pas après 300ms
+  editingId = null;
   fileToUpload = null;
-  setTimeout(resetForm, 300);
+  setTimeout(() => { resetForm(); }, 300);
 }
 function pmBg(e){ if(e.target===document.getElementById('pmOv')) closePM(); }
 
@@ -870,9 +1000,9 @@ let tT;
 function toast(type,msg){
   document.getElementById('t-ic').innerHTML=TICONS[type]||'';
   document.getElementById('t-msg').textContent=msg;
-  const el=document.getElementById('toast');
-  el.classList.add('on'); clearTimeout(tT);
-  tT=setTimeout(()=>el.classList.remove('on'),2800);
+  document.getElementById('toast').classList.add('on');
+  clearTimeout(tT);
+  tT=setTimeout(()=>{ document.getElementById('toast').classList.remove('on'); },2800);
 }
 
 /* ── SVG HELPERS ── */
@@ -884,7 +1014,7 @@ function shk(id){
   const el=document.getElementById(id);
   el.classList.add('err');
   el.animate([{transform:'none'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'none'}],{duration:340});
-  setTimeout(()=>el.classList.remove('err'),1100);
+  setTimeout(()=>{ document.getElementById(id).classList.remove('err'); },1100);
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function timeAgo(iso){
