@@ -29,7 +29,9 @@ svg{display:block;flex-shrink:0}
 /* AUTH WALL */
 #authWall{position:fixed;inset:0;z-index:600;background:rgba(245,240,232,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 #authWall.show{opacity:1;visibility:visible}
-.auth-card{background:#fff;border-radius:28px;width:100%;max-width:400px;box-shadow:0 0 0 1px rgba(26,18,8,.07),0 28px 64px rgba(26,18,8,.16);overflow:hidden}
+.auth-card{background:#fff;border-radius:28px;width:100%;max-width:400px;box-shadow:0 0 0 1px rgba(26,18,8,.07),0 28px 64px rgba(26,18,8,.16);overflow:hidden;animation:authCardIn .45s cubic-bezier(.22,.68,0,1.2) both}
+@keyframes authCardIn{from{opacity:0;transform:translateY(32px) scale(.95)}to{opacity:1;transform:none}}
+#authWall.show .auth-card{animation:authCardIn .45s cubic-bezier(.22,.68,0,1.2) both}
 .auth-top{padding:32px 32px 0;text-align:center}
 .auth-logo{font-family:'Fraunces',serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);margin-bottom:8px}
 .auth-logo b{color:var(--coral)}
@@ -416,7 +418,7 @@ window.addEventListener('load', async () => {
   sb.auth.onAuthStateChange((_, session) => {
     currentUser = session?.user || null;
     updateHdr();
-    renderAll();
+    loadProfiles(); // recharge + re-rend proprement
   });
 
   await loadProfiles();
@@ -519,8 +521,21 @@ async function loadProfiles(){
 }
 
 function renderAll(){
+  animTimers.forEach(t=>clearTimeout(t));
+  animTimers.length=0;
   const g=document.getElementById('grid');
+  const hero=document.querySelector('.hero');
+  const gwrap=document.querySelector('.gwrap');
   g.innerHTML='';
+
+  if(!currentUser){
+    hero.style.display='none';
+    gwrap.style.display='none';
+    return;
+  }
+  hero.style.display='';
+  gwrap.style.display='';
+
   if(!profiles.length){
     g.innerHTML=`<div class="empty-st">
       <svg viewBox="0 0 52 52" fill="none" stroke="var(--ink2)" stroke-width="1.2" stroke-linecap="round">
@@ -534,6 +549,7 @@ function renderAll(){
 }
 
 const ALBL={float:'Flottant',bounce:'Rebond',shake:'Vibration',pulse:'Pulsation',glow:'Lueur',swing:'Balancement',spin:'Rotation',rainbow:'Arc-en-ciel',flip:'Flip',none:'Statique'};
+const animTimers=[];
 
 function buildCard(p, delay=0){
   const anim  = p.animation||'none';
@@ -582,14 +598,15 @@ function buildCard(p, delay=0){
       </div>
     </div>`;
 
-  // hover scale on non-animated cards
-  if(anim==='none'){
-    div.style.transition = 'box-shadow .25s, transform .25s';
-  }
+  if(anim==='none') div.style.transition='box-shadow .25s, transform .25s';
 
-  // Wait for cardIn to finish, then add .go to start the loop animation
   if(anim !== 'none'){
-    setTimeout(() => div.classList.add('go'), delay + 460);
+    const cardId = p.id;
+    const t = setTimeout(() => {
+      const el = document.querySelector(`.card[data-id="${cardId}"]`);
+      if(el) el.classList.add('go');
+    }, delay + 460);
+    animTimers.push(t);
   }
 
   return div;
@@ -720,9 +737,14 @@ async function submitProfile(){
 
   let data, error;
   if(editingId){
-    ({data,error}=await sb.from('profiles').update({name,description:desc,image_url,animation:anim}).eq('id',editingId).select().single());
+    // update ne retourne rien avec RLS — on reconstruit l'objet localement
+    const res = await sb.from('profiles').update({name, description:desc, image_url, animation:anim}).eq('id', editingId);
+    error = res.error;
+    data = error ? null : { ...profiles.find(p=>p.id===editingId), name, description:desc, image_url, animation:anim };
   } else {
-    ({data,error}=await sb.from('profiles').insert([{name,description:desc,image_url,animation:anim,user_id:currentUser.id}]).select().single());
+    const res = await sb.from('profiles').insert([{name, description:desc, image_url, animation:anim, user_id:currentUser.id}]).select();
+    error = res.error;
+    data = res.data?.[0] || null;
   }
 
   btn.disabled=false;
