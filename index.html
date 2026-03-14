@@ -10,300 +10,283 @@
 :root{
   --ink:#1a1208;--ink2:#3d2e18;--ink3:#7a6850;
   --sand:#f5f0e8;--sand2:#ede6d8;--sand3:#e2d8c8;
-  --coral:#e05a3a;--coral-d:#b8401f;--coral-l:rgba(224,90,58,.08);
+  --coral:#e05a3a;--coral-d:#b8401f;
   --gold:#c8952a;--gold-l:#f0d48a;--gold-ll:#fdf6e0;
   --sage:#5a8a6a;--sage-d:#3d6a50;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px}
 body{font-family:'Instrument Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden}
 button,label{cursor:pointer}
-svg{display:block}
+svg{display:block;flex-shrink:0}
 
-/* ── LOADER ── */
+/* LOADER */
 #loader{position:fixed;inset:0;z-index:700;background:var(--sand);display:flex;align-items:center;justify-content:center;transition:opacity .35s,visibility .35s}
 #loader.gone{opacity:0;visibility:hidden;pointer-events:none}
 .l-word{font-family:'Fraunces',serif;font-size:52px;font-weight:900;letter-spacing:-2px;color:var(--ink);opacity:0;animation:popIn .5s .1s cubic-bezier(.22,.68,0,1.2) forwards}
 .l-word b{color:var(--coral)}
-@keyframes popIn{to{opacity:1;transform:none}from{opacity:0;transform:translateY(8px)}}
+@keyframes popIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ── AUTH WALL ── */
-#authWall{position:fixed;inset:0;z-index:600;background:var(--sand);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+/* AUTH WALL */
+#authWall{position:fixed;inset:0;z-index:600;background:rgba(245,240,232,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 #authWall.show{opacity:1;visibility:visible}
-.auth-card{background:#fff;border-radius:28px;width:100%;max-width:420px;box-shadow:0 0 0 1px rgba(26,18,8,.07),0 32px 72px rgba(26,18,8,.18);overflow:hidden;animation:slideUp .4s cubic-bezier(.22,.68,0,1.2) both}
-@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
-
-.auth-top{padding:36px 36px 0;text-align:center}
-.auth-logo{font-family:'Fraunces',serif;font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);margin-bottom:6px}
+.auth-card{background:#fff;border-radius:28px;width:100%;max-width:400px;box-shadow:0 0 0 1px rgba(26,18,8,.07),0 28px 64px rgba(26,18,8,.16);overflow:hidden}
+.auth-top{padding:32px 32px 0;text-align:center}
+.auth-logo{font-family:'Fraunces',serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);margin-bottom:8px}
 .auth-logo b{color:var(--coral)}
-.auth-sub{font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:28px}
-
-.auth-tabs{display:flex;background:var(--sand2);border-radius:12px;padding:4px;margin:0 36px 0}
-.auth-tab{flex:1;text-align:center;padding:9px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--ink3);transition:background .18s,color .18s,box-shadow .18s;border:none;background:none;font-family:'Instrument Sans',sans-serif}
-.auth-tab.active{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(26,18,8,.1)}
-
-.auth-body{padding:24px 36px 32px}
-.fg{margin-bottom:16px}
-.flbl{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.auth-sub{font-size:13.5px;color:var(--ink3);line-height:1.6;margin-bottom:24px;opacity:.8}
+.auth-tabs{display:flex;background:var(--sand2);border-radius:11px;padding:3px;margin:0 32px}
+.auth-tab{flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink3);transition:all .18s;border:none;background:none;font-family:'Instrument Sans',sans-serif}
+.auth-tab.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(26,18,8,.09)}
+.auth-body{padding:22px 32px 30px}
+.fg{margin-bottom:15px}
+.flbl{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
 .flbl svg{width:11px;height:11px;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;fill:none}
-.finput{width:100%;background:var(--sand);border:1.5px solid rgba(26,18,8,.1);border-radius:12px;padding:12px 15px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
-.finput::placeholder{color:var(--ink3);opacity:.45}
-.finput:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,90,58,.1)}
-.finput.err{border-color:var(--coral);animation:shk .35s ease-in-out}
-@keyframes shk{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fi{width:100%;background:var(--sand);border:1.5px solid rgba(26,18,8,.1);border-radius:11px;padding:12px 14px;font-family:'Instrument Sans',sans-serif;font-size:14.5px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.fi::placeholder{color:var(--ink3);opacity:.45}
+.fi:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,90,58,.1)}
+.auth-error{font-size:13px;color:var(--coral);margin-bottom:12px;min-height:18px;line-height:1.4}
+.auth-note{font-size:12px;color:var(--ink3);opacity:.7;text-align:center;margin-top:12px;line-height:1.5}
+.auth-note a{color:var(--coral);cursor:pointer;text-decoration:underline}
 
-.auth-err{font-size:13px;color:var(--coral);margin-top:-8px;margin-bottom:12px;display:none}
-.auth-err.show{display:block}
-
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:40px;font-family:'Instrument Sans',sans-serif;font-weight:600;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s,background .15s}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:40px;font-family:'Instrument Sans',sans-serif;font-weight:600;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s,background .15s}
 .btn::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.1);pointer-events:none}
-.btn:disabled{opacity:.5}
-.btn:active:not(:disabled){transform:translateY(1px) !important}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:active:not(:disabled){transform:translateY(1px)!important;box-shadow:none!important}
 
-.btn-dark{background:var(--ink);color:var(--sand);box-shadow:0 3px 0 rgba(0,0,0,.3),0 6px 18px rgba(26,18,8,.16);padding:13px 22px;font-size:15px;width:100%}
+.btn-dark{background:var(--ink);color:var(--sand);padding:13px 22px;font-size:14.5px;box-shadow:0 3px 0 rgba(0,0,0,.3),0 6px 18px rgba(26,18,8,.16)}
 .btn-dark:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 0 rgba(0,0,0,.27),0 10px 26px rgba(26,18,8,.2)}
+.btn-full{width:100%}
 
-.btn-coral{background:var(--coral);color:#fff;box-shadow:0 3px 0 var(--coral-d),0 5px 14px rgba(224,90,58,.28);padding:10px 18px;font-size:13px}
+.btn-coral{background:var(--coral);color:#fff;padding:10px 17px;font-size:13px;box-shadow:0 3px 0 var(--coral-d),0 5px 14px rgba(224,90,58,.28)}
 .btn-coral:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 0 var(--coral-d),0 9px 22px rgba(224,90,58,.35)}
-.btn-coral.done{background:var(--sage);box-shadow:0 3px 0 var(--sage-d),0 5px 14px rgba(90,138,106,.25)}
+.btn-coral.done{background:var(--sage);box-shadow:0 3px 0 var(--sage-d)}
 
-.btn-ghost{background:var(--sand2);color:var(--ink2);padding:11px 18px;font-size:13.5px}
-.btn-ghost:hover:not(:disabled){background:var(--sand3)}
+.btn-ghost{background:var(--sand2);color:var(--ink2);padding:13px 20px;font-size:14px}
+.btn-ghost:hover{background:var(--sand3)}
 
-.btn-sm-ghost{background:var(--sand2);color:var(--ink2);padding:8px 14px;font-size:12px;border-radius:30px}
-.btn-sm-ghost:hover{background:var(--sand3)}
+.btn-hdr{background:var(--ink);color:var(--sand);padding:10px 18px;font-size:13px;box-shadow:0 2px 0 rgba(0,0,0,.3),0 4px 14px rgba(26,18,8,.14)}
+.btn-hdr:hover{transform:translateY(-2px);box-shadow:0 4px 0 rgba(0,0,0,.27),0 8px 20px rgba(26,18,8,.18)}
 
-.btn-icon{width:32px;height:32px;border-radius:50%;background:var(--sand2);border:none;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .18s}
-.btn-icon:hover{background:var(--sand3)}
-.btn-icon svg{width:14px;height:14px;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;fill:none}
+.icon-btn{width:30px;height:30px;border-radius:50%;background:rgba(26,18,8,.6);backdrop-filter:blur(8px);border:none;display:flex;align-items:center;justify-content:center;transition:background .15s;cursor:pointer}
+.icon-btn svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;stroke-linecap:round;fill:none}
+.icon-btn.edit:hover{background:var(--ink)!important}
+.icon-btn.del:hover{background:var(--coral)!important}
 
-/* ── HEADER ── */
+/* HEADER */
 header{position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:70px;background:rgba(245,240,232,.88);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid rgba(26,18,8,.07)}
 .logo{font-family:'Fraunces',serif;font-size:27px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);user-select:none}
 .logo b{color:var(--coral)}
-.logo small{font-size:12px;font-weight:400;font-family:'Instrument Sans',sans-serif;color:var(--ink3);margin-left:3px;opacity:.55}
+.logo small{font-size:12px;font-weight:400;font-family:'Instrument Sans',sans-serif;color:var(--ink3);margin-left:2px;opacity:.5}
 .hdr-r{display:flex;align-items:center;gap:10px}
-.cpill{display:none;align-items:center;gap:6px;background:var(--sand2);border-radius:30px;padding:6px 13px;font-size:13px;color:var(--ink2)}
+.cpill{display:none;align-items:center;gap:6px;background:var(--sand2);border-radius:30px;padding:5px 13px;font-size:13px;color:var(--ink2)}
 .cpill b{color:var(--ink)}
-.user-pill{display:flex;align-items:center;gap:8px;background:var(--sand2);border-radius:30px;padding:5px 5px 5px 14px;font-size:13px;color:var(--ink2)}
-.user-avatar{width:26px;height:26px;border-radius:50%;background:var(--coral);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.upill{display:flex;align-items:center;gap:8px;background:var(--sand2);border-radius:30px;padding:5px 5px 5px 13px}
+.upill-name{font-size:13px;color:var(--ink2)}
+.uav{width:26px;height:26px;border-radius:50%;background:var(--coral);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.upill-logout{width:28px;height:28px;border-radius:50%;background:none;border:none;display:flex;align-items:center;justify-content:center;transition:background .15s;cursor:pointer}
+.upill-logout:hover{background:var(--sand3)}
+.upill-logout svg{width:13px;height:13px;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;fill:none}
 
-.btn-add-hdr{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--sand);border:none;border-radius:40px;padding:11px 20px;font-family:'Instrument Sans',sans-serif;font-size:13.5px;font-weight:600;box-shadow:0 3px 0 rgba(0,0,0,.3),0 5px 16px rgba(26,18,8,.15);transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
-.btn-add-hdr::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.09);pointer-events:none}
-.btn-add-hdr:hover{transform:translateY(-2px);box-shadow:0 5px 0 rgba(0,0,0,.27),0 9px 24px rgba(26,18,8,.2)}
-.btn-add-hdr:active{transform:translateY(1px)}
-.btn-add-hdr svg{width:14px;height:14px;flex-shrink:0}
-
-/* ── HERO ── */
+/* HERO */
 .hero{padding:68px 40px 48px;text-align:center}
 .eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--gold-ll);border:1px solid var(--gold-l);border-radius:30px;padding:5px 16px;font-size:11.5px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px}
-.eyebrow svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.eyebrow svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .hero h1{font-family:'Fraunces',serif;font-size:clamp(42px,6vw,78px);font-weight:900;line-height:1.0;letter-spacing:-3px;color:var(--ink);margin-bottom:16px}
 .hero h1 em{font-style:italic;font-weight:300;color:var(--coral)}
-.hero p{font-size:16px;color:var(--ink2);opacity:.7;max-width:420px;margin:0 auto;line-height:1.75}
+.hero p{font-size:16px;color:var(--ink2);opacity:.7;max-width:400px;margin:0 auto;line-height:1.75}
 
-/* ── GRID ── */
+/* GRID */
 .gwrap{padding:0 40px 80px;max-width:1280px;margin:0 auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:26px}
-.empty-st{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:88px 32px;gap:14px;opacity:.4}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px}
+.empty-st{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:88px 32px;gap:14px;opacity:.38}
+.empty-st svg{width:52px;height:52px}
 .empty-st p{font-size:15px;color:var(--ink2);text-align:center;line-height:1.7}
 
-/* ── CARD ── */
-.card{background:#fff;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(26,18,8,.06),0 4px 18px rgba(26,18,8,.07);transition:box-shadow .25s,transform .25s;will-change:transform}
-.card:hover{box-shadow:0 0 0 1px rgba(26,18,8,.08),0 18px 50px rgba(26,18,8,.14);transform:translateY(-7px) scale(1.015)}
+/* CARD BASE */
+.card{background:#fff;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(26,18,8,.06),0 4px 18px rgba(26,18,8,.07);will-change:transform}
+.card:hover{box-shadow:0 0 0 1px rgba(26,18,8,.08),0 18px 50px rgba(26,18,8,.14)}
 @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
 
 .cmedia{width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--sand2)}
-.cmedia img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
-.card:hover .cmedia img{transform:scale(1.06)}
+.cmedia img{width:100%;height:100%;object-fit:cover;display:block}
 .cph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--sand2),var(--sand3))}
 .cph svg{width:64px;height:64px;opacity:.28}
 
-.abadge{position:absolute;top:12px;left:12px;background:rgba(26,18,8,.68);backdrop-filter:blur(8px);border-radius:20px;padding:5px 10px 5px 8px;font-size:11px;font-weight:500;color:#fff;display:flex;align-items:center;gap:5px}
+.abadge{position:absolute;top:12px;left:12px;background:rgba(26,18,8,.68);backdrop-filter:blur(8px);border-radius:20px;padding:4px 10px 4px 8px;font-size:10.5px;font-weight:500;color:#fff;display:flex;align-items:center;gap:5px}
 .adot{width:5px;height:5px;border-radius:50%;background:var(--gold-l);animation:blink 1.8s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-.card-actions{position:absolute;top:10px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity .2s}
-.card:hover .card-actions{opacity:1}
-.card-actions .btn-icon{width:30px;height:30px;background:rgba(26,18,8,.62);backdrop-filter:blur(8px)}
-.card-actions .btn-icon svg{stroke:#fff;width:13px;height:13px}
-.card-actions .btn-icon:hover{background:var(--coral) !important}
-.card-actions .edit-btn:hover{background:var(--ink) !important}
+.card-acts{position:absolute;top:10px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity .2s}
+.card:hover .card-acts{opacity:1}
 
 .cbody{padding:20px 22px 10px}
 .cname{font-family:'Fraunces',serif;font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--ink);margin-bottom:6px;line-height:1.1}
 .cdesc{font-size:13.5px;line-height:1.65;color:var(--ink2);opacity:.8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .cfoot{padding:14px 22px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.ctime{font-size:11.5px;color:var(--ink3);opacity:.5;display:flex;align-items:center;gap:4px}
-.ctime svg{width:11px;height:11px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;fill:none}
-.cowner{font-size:11px;color:var(--ink3);opacity:.5}
+.ctime{font-size:11px;color:var(--ink3);opacity:.5;display:flex;align-items:center;gap:4px}
+.ctime svg{width:10px;height:10px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;fill:none}
 
 /* ── CARD ANIMATIONS ── */
-/* float */
-@keyframes c-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1)}}
-/* bounce */
-@keyframes c-bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-22px)}50%{transform:translateY(-10px)}70%{transform:translateY(-18px)}}
-/* shake */
-@keyframes c-shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-8px)}30%{transform:translateX(8px)}45%{transform:translateX(-6px)}60%{transform:translateX(6px)}75%{transform:translateX(-3px)}90%{transform:translateX(3px)}}
-/* pulse */
-@keyframes c-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-/* glow */
-@keyframes c-glow{0%,100%{box-shadow:0 0 0 rgba(224,90,58,0),0 0 0 1px rgba(26,18,8,.06),0 4px 18px rgba(26,18,8,.07)}50%{box-shadow:0 0 38px rgba(224,90,58,.55),0 0 0 2px rgba(224,90,58,.3),0 4px 18px rgba(26,18,8,.07)}}
-/* swing */
-@keyframes c-swing{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(0)}}
-/* rainbow on media */
-@keyframes c-rainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
-/* spin on image */
-@keyframes c-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-/* flip */
-@keyframes c-flip{0%,100%{transform:perspective(400px) rotateY(0)}50%{transform:perspective(400px) rotateY(180deg)}}
 
-/* apply animations — important: no cardIn conflict */
-.anim-float{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-float.ready{animation:c-float 3.5s ease-in-out infinite}
+/* NONE — just cardIn */
+.card.an-none{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
 
-.anim-bounce{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-bounce.ready{animation:c-bounce 1.4s cubic-bezier(.36,.07,.19,.97) infinite}
+/* FLOAT */
+@keyframes kFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.card.an-float{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-float.go{animation:kFloat 3.5s ease-in-out infinite}
+.card.an-float.go:hover{animation-play-state:paused}
 
-.anim-shake{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-shake.ready{animation:c-shake .6s ease-in-out infinite}
+/* BOUNCE */
+@keyframes kBounce{0%,100%{transform:translateY(0)}35%{transform:translateY(-22px)}55%{transform:translateY(-8px)}75%{transform:translateY(-16px)}}
+.card.an-bounce{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-bounce.go{animation:kBounce 1.4s cubic-bezier(.36,.07,.19,.97) infinite}
 
-.anim-pulse{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-pulse.ready{animation:c-pulse 2s ease-in-out infinite}
+/* SHAKE */
+@keyframes kShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-8px)}30%{transform:translateX(8px)}45%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-2px)}}
+.card.an-shake{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-shake.go{animation:kShake .65s ease-in-out infinite}
 
-.anim-glow{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-glow.ready{animation:c-glow 2.5s ease-in-out infinite}
+/* PULSE */
+@keyframes kPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
+.card.an-pulse{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-pulse.go{animation:kPulse 2s ease-in-out infinite}
 
-.anim-swing{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both;transform-origin:50% 0}
-.anim-swing.ready{animation:c-swing 2.5s ease-in-out infinite;transform-origin:50% 0}
+/* GLOW */
+@keyframes kGlow{
+  0%,100%{box-shadow:0 0 0 rgba(224,90,58,0),0 0 0 1px rgba(26,18,8,.06),0 4px 18px rgba(26,18,8,.07)}
+  50%{box-shadow:0 0 40px rgba(224,90,58,.55),0 0 0 2px rgba(224,90,58,.3),0 4px 18px rgba(26,18,8,.07)}
+}
+.card.an-glow{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-glow.go{animation:kGlow 2.5s ease-in-out infinite}
 
-.anim-spin .card-img-inner{animation:c-spin 5s linear infinite;transform-origin:center}
-.anim-spin{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+/* SWING */
+@keyframes kSwing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.card.an-swing{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both;transform-origin:50% 0}
+.card.an-swing.go{animation:kSwing 2.5s ease-in-out infinite;transform-origin:50% 0}
 
-.anim-rainbow .cmedia{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-rainbow.ready .cmedia{animation:c-rainbow 4s linear infinite}
+/* SPIN — rotates the image inside */
+@keyframes kSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.card.an-spin{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-spin.go .spin-target{animation:kSpin 5s linear infinite;transform-origin:center center}
 
-.anim-flip{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
-.anim-flip.ready{animation:c-flip 3s ease-in-out infinite}
+/* RAINBOW — hue-rotate on the media zone */
+@keyframes kRainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+.card.an-rainbow{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-rainbow.go .cmedia{animation:kRainbow 4s linear infinite}
 
-.anim-none{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+/* FLIP — 3D flip on whole card */
+@keyframes kFlip{0%,100%{transform:perspective(600px) rotateY(0deg)}45%,55%{transform:perspective(600px) rotateY(180deg)}}
+.card.an-flip{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.card.an-flip.go{animation:kFlip 3.5s ease-in-out infinite}
 
-/* ── MODAL (shared) ── */
+/* hover scale only for non-animated cards */
+.card.an-none:hover,.card:not(.go):hover{transform:translateY(-7px) scale(1.015)}
+
+/* MODAL */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(26,18,8,.45);backdrop-filter:blur(10px) saturate(1.3);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
 .overlay.open{opacity:1;pointer-events:all}
 .overlay.open .modal{transform:none}
 .modal{background:#fff;border-radius:28px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;transform:translateY(28px) scale(.97);transition:transform .3s cubic-bezier(.22,.68,0,1.15);box-shadow:0 0 0 1px rgba(26,18,8,.06),0 40px 80px rgba(26,18,8,.24);scrollbar-width:none}
 .modal::-webkit-scrollbar{display:none}
-.mhdr{padding:30px 34px 0;display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2;padding-bottom:20px;border-bottom:1px solid rgba(26,18,8,.06)}
-.mtitle{font-family:'Fraunces',serif;font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--ink);line-height:1.1}
+.mhdr{padding:28px 32px 0;display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2;padding-bottom:20px;border-bottom:1px solid rgba(26,18,8,.06)}
+.mtitle{font-family:'Fraunces',serif;font-size:25px;font-weight:900;letter-spacing:-1px;color:var(--ink);line-height:1.1}
 .mtitle em{font-style:italic;font-weight:300;color:var(--coral)}
-.mbody{padding:24px 34px 34px}
-
-/* close btn */
-.btn-close{width:33px;height:33px;border-radius:50%;background:var(--sand2);border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:background .15s,transform .2s}
+.btn-close{width:32px;height:32px;border-radius:50%;background:var(--sand2);border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:background .15s,transform .2s;cursor:pointer}
 .btn-close:hover{background:var(--sand3);transform:rotate(90deg)}
-.btn-close svg{width:13px;height:13px;stroke:var(--ink2);stroke-width:2.5;stroke-linecap:round;fill:none}
+.btn-close svg{width:12px;height:12px;stroke:var(--ink2);stroke-width:2.5;stroke-linecap:round;fill:none}
+.mbody{padding:22px 32px 32px}
 
-/* ── FORM FIELDS ── */
-.fg{margin-bottom:18px}
-.fg .flbl{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
-.fg .flbl svg{width:11px;height:11px;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;fill:none}
+/* FORM */
+.mfg{margin-bottom:17px}
+.mflbl{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.mflbl svg{width:11px;height:11px;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;fill:none}
 .req{color:var(--coral)}
-.finput2{width:100%;background:var(--sand);border:1.5px solid rgba(26,18,8,.1);border-radius:12px;padding:12px 15px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
-.finput2::placeholder{color:var(--ink3);opacity:.45}
-.finput2:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,90,58,.1)}
-.finput2.err{border-color:var(--coral)}
-textarea.finput2{resize:vertical;min-height:90px;line-height:1.65}
+.mfi{width:100%;background:var(--sand);border:1.5px solid rgba(26,18,8,.1);border-radius:11px;padding:12px 14px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.mfi::placeholder{color:var(--ink3);opacity:.45}
+.mfi:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,90,58,.1)}
+.mfi.err{border-color:var(--coral)}
+textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
 
-/* upload */
-.uzone{border:2px dashed rgba(26,18,8,.14);border-radius:12px;padding:22px 20px;text-align:center;position:relative;transition:border-color .18s,background .18s;background:var(--sand)}
+/* UPLOAD */
+.uzone{border:2px dashed rgba(26,18,8,.14);border-radius:11px;padding:22px 18px;text-align:center;position:relative;transition:border-color .18s,background .18s;background:var(--sand)}
 .uzone:focus-within,.uzone.drag{border-color:var(--coral);background:rgba(224,90,58,.04)}
 .uzone input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
-.u-icon{width:42px;height:42px;border-radius:11px;background:var(--sand2);display:flex;align-items:center;justify-content:center;margin:0 auto 9px}
-.u-icon svg{width:20px;height:20px;stroke:var(--ink3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
-.uzone p{font-size:13px;color:var(--ink3);line-height:1.5}
+.u-ico{width:40px;height:40px;border-radius:10px;background:var(--sand2);display:flex;align-items:center;justify-content:center;margin:0 auto 9px}
+.u-ico svg{width:19px;height:19px;stroke:var(--ink3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.uzone p{font-size:12.5px;color:var(--ink3);line-height:1.5}
 .uzone p b{color:var(--coral)}
-.uprev{width:84px;height:84px;border-radius:13px;object-fit:cover;display:block;margin:0 auto 9px;box-shadow:0 4px 14px rgba(26,18,8,.12)}
+.uprev{width:80px;height:80px;border-radius:12px;object-fit:cover;display:block;margin:0 auto 9px;box-shadow:0 4px 14px rgba(26,18,8,.12)}
 
-/* anim picker */
+/* ANIM GRID */
 .agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.aopt{position:relative;border:2px solid rgba(26,18,8,.09);border-radius:12px;padding:11px 8px 9px;text-align:center;transition:border-color .14s,background .14s,transform .12s}
+.aopt{position:relative;border:2px solid rgba(26,18,8,.09);border-radius:11px;padding:10px 6px 8px;text-align:center;transition:border-color .14s,background .14s,transform .12s;cursor:pointer}
 .aopt input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
 .aopt:hover{border-color:rgba(26,18,8,.2);background:var(--sand);transform:translateY(-2px)}
 .aopt.sel{border-color:var(--ink);background:var(--ink)}
 .aopt.sel .aname{color:#fff}
 .aopt.sel .ai svg{stroke:#fff}
-.ai{display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin:0 auto 5px}
-.ai svg{width:20px;height:20px;stroke:var(--ink3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none;transition:stroke .14s}
-.aname{font-size:11px;font-weight:600;color:var(--ink2);letter-spacing:.02em;transition:color .14s}
+.ai{display:flex;align-items:center;justify-content:center;width:28px;height:28px;margin:0 auto 5px}
+.ai svg{width:19px;height:19px;stroke:var(--ink3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none;transition:stroke .14s}
+.aname{font-size:10.5px;font-weight:600;color:var(--ink2);letter-spacing:.02em;transition:color .14s}
 
-.factions{display:flex;gap:10px;margin-top:24px}
+.factions{display:flex;gap:10px;margin-top:22px}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:var(--sand);padding:11px 20px;border-radius:40px;font-size:14px;font-weight:500;box-shadow:0 8px 28px rgba(26,18,8,.24);z-index:9999;transition:transform .3s cubic-bezier(.22,.68,0,1.15);white-space:nowrap;pointer-events:none;display:flex;align-items:center;gap:8px}
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:var(--sand);padding:11px 20px;border-radius:40px;font-size:13.5px;font-weight:500;box-shadow:0 8px 28px rgba(26,18,8,.24);z-index:9999;transition:transform .3s cubic-bezier(.22,.68,0,1.15);white-space:nowrap;pointer-events:none;display:flex;align-items:center;gap:8px}
 .toast svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none;flex-shrink:0}
 .toast.on{transform:translateX(-50%) translateY(0)}
 
-/* spin utility */
 @keyframes spin360{to{transform:rotate(360deg)}}
 .spinning{animation:spin360 .65s linear infinite;transform-origin:center}
 
 @media(max-width:640px){
   header{padding:0 18px}
   .logo small,.cpill{display:none}
-  .btn-add-hdr .btxt{display:none}
-  .btn-add-hdr{padding:10px 14px}
+  .btn-hdr .btxt{display:none}
+  .btn-hdr{padding:10px 13px}
   .hero{padding:44px 20px 34px}
   .gwrap{padding:0 18px 60px}
-  .mhdr,.mbody,.auth-body,.auth-tabs{padding-left:22px;padding-right:22px}
-  .auth-tabs{margin-left:22px;margin-right:22px}
+  .mhdr,.mbody{padding-left:22px;padding-right:22px}
+  .auth-tabs,.auth-body{padding-left:22px;padding-right:22px}
 }
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader"><div class="l-word">adopt<b>me</b><span style="color:var(--coral)">.</span></div></div>
 
 <!-- AUTH WALL -->
 <div id="authWall">
   <div class="auth-card">
     <div class="auth-top">
-      <div class="auth-logo">adopt<b>me</b><span style="color:var(--coral);font-style:italic;font-weight:300">.</span></div>
+      <div class="auth-logo">adopt<b>me</b><span style="color:var(--coral)">.</span></div>
       <p class="auth-sub">Rejoignez la communauté et<br>créez votre profil unique ✨</p>
     </div>
     <div class="auth-tabs" id="authTabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Se connecter</button>
+      <button class="auth-tab on" onclick="switchTab('login')">Se connecter</button>
       <button class="auth-tab" onclick="switchTab('signup')">Créer un compte</button>
     </div>
     <div class="auth-body">
       <div class="fg">
-        <div class="flbl">
-          <svg viewBox="0 0 11 11"><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/><circle cx="5.5" cy="3.5" r="2"/></svg>
-          Email
-        </div>
-        <input class="finput" id="a-email" type="email" placeholder="vous@exemple.com" autocomplete="email">
+        <div class="flbl"><svg viewBox="0 0 11 11"><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/><circle cx="5.5" cy="3.5" r="2"/></svg>Email</div>
+        <input class="fi" id="a-email" type="email" placeholder="vous@exemple.com" autocomplete="email">
       </div>
       <div class="fg">
-        <div class="flbl">
-          <svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>
-          Mot de passe
-        </div>
-        <input class="finput" id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Mot de passe</div>
+        <input class="fi" id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <div class="fg" id="a-pass2-wrap" style="display:none">
-        <div class="flbl">
-          <svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>
-          Confirmer le mot de passe
-        </div>
-        <input class="finput" id="a-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
+      <div class="fg" id="a-p2w" style="display:none">
+        <div class="flbl"><svg viewBox="0 0 11 11"><rect x="2" y="5" width="7" height="5.5" rx="1"/><path d="M3.5 5V3.5a2 2 0 0 1 4 0V5"/></svg>Confirmer le mot de passe</div>
+        <input class="fi" id="a-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
       </div>
-      <div class="auth-err" id="a-err"></div>
-      <button class="btn btn-dark" id="a-btn" onclick="doAuth()">
-        <svg id="a-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7.5H3M7.5 3l4.5 4.5-4.5 4.5"/></svg>
-        <span id="a-txt">Se connecter</span>
+      <div class="auth-error" id="a-err"></div>
+      <button class="btn btn-dark btn-full" id="a-btn" onclick="doAuth()">
+        <svg id="a-ic" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7H2M8 3l4 4-4 4"/></svg>
+        <span id="a-tx">Se connecter</span>
       </button>
+      <div class="auth-note" id="a-note">Pas encore de compte ? <a onclick="switchTab('signup')">Créer un compte</a></div>
     </div>
   </div>
 </div>
@@ -313,18 +296,18 @@ textarea.finput2{resize:vertical;min-height:90px;line-height:1.65}
   <div class="logo">adopt<b>me</b><small>.com</small></div>
   <div class="hdr-r">
     <div class="cpill" id="cpill"><b id="cnum">0</b> profils</div>
-    <button class="btn-add-hdr" id="btnAdd" onclick="openProfileModal()" style="display:none">
-      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7.5 1v13M1 7.5h13"/></svg>
+    <button class="btn btn-hdr" id="btnAdd" onclick="openProfileModal()" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6.5 1v11M1 6.5h11"/></svg>
       <span class="btxt">Ajouter un profil</span>
     </button>
-    <div class="user-pill" id="userPill" style="display:none">
-      <span id="userEmail" style="font-size:13px;color:var(--ink2)"></span>
-      <div class="user-avatar" id="userAv">?</div>
-      <button class="btn-icon" onclick="signOut()" title="Déconnexion">
-        <svg viewBox="0 0 14 14" fill="none"><path d="M5 7h8M10 4l3 3-3 3"/><path d="M8 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h5"/></svg>
+    <div class="upill" id="upill" style="display:none">
+      <span class="upill-name" id="uname"></span>
+      <div class="uav" id="uav">?</div>
+      <button class="upill-logout" onclick="signOut()" title="Déconnexion">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M5 6.5h7M9 4l3 2.5L9 9"/><path d="M7 2H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4"/></svg>
       </button>
     </div>
-    <button class="btn btn-ghost" id="btnLogin" onclick="showAuth()" style="font-size:13.5px;padding:10px 18px">
+    <button class="btn btn-ghost" id="btnLogin" onclick="showAuth()" style="padding:10px 18px;font-size:13px">
       Se connecter
     </button>
   </div>
@@ -333,131 +316,90 @@ textarea.finput2{resize:vertical;min-height:90px;line-height:1.65}
 <!-- HERO -->
 <section class="hero">
   <div class="eyebrow">
-    <svg viewBox="0 0 13 13"><polyline points="6.5,1 8,4.5 12,5 9,8 9.8,12 6.5,10 3.2,12 4,8 1,5 5,4.5"/></svg>
+    <svg viewBox="0 0 13 13"><polyline points="6.5,1 8,4.2 12,4.8 9.2,7.5 9.9,11.5 6.5,9.7 3.1,11.5 3.8,7.5 1,4.8 5,4.2"/></svg>
     La plateforme d'adoption de personnes
   </div>
   <h1>Adoptez<br><em>quelqu'un</em><br>d'incroyable</h1>
   <p>Chaque profil est unique, animé, et attend d'être découvert.</p>
 </section>
 
-<!-- GRID -->
 <div class="gwrap"><div class="grid" id="grid"></div></div>
 
-<!-- PROFILE MODAL (create / edit) -->
-<div class="overlay" id="pmOverlay" onclick="pmBgClose(event)">
-  <div class="modal" id="pmModal">
+<!-- PROFILE MODAL -->
+<div class="overlay" id="pmOv" onclick="pmBg(event)">
+  <div class="modal">
     <div class="mhdr">
       <div class="mtitle" id="pmTitle">Nouveau <em>profil</em></div>
-      <button class="btn-close" onclick="closeProfileModal()">
-        <svg viewBox="0 0 13 13"><path d="M1 1l11 11M12 1L1 12"/></svg>
-      </button>
+      <button class="btn-close" onclick="closePM()"><svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
     </div>
     <div class="mbody">
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/></svg>Nom <span class="req">*</span></div>
-        <input type="text" class="finput2" id="p-name" placeholder="Ex : Camille Morel" maxlength="60" autocomplete="off">
+      <div class="mfg">
+        <div class="mflbl"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 9.5c0-2.5 2-4.5 4.5-4.5S10 7 10 9.5"/></svg>Nom <span class="req">*</span></div>
+        <input type="text" class="mfi" id="p-name" placeholder="Ex : Camille Morel" maxlength="60" autocomplete="off">
       </div>
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><path d="M1 2.5h9M1 5.5h7M1 8.5h5"/></svg>Description <span class="req">*</span></div>
-        <textarea class="finput2" id="p-desc" placeholder="Ses qualités, passions, ce qui la rend unique…"></textarea>
+      <div class="mfg">
+        <div class="mflbl"><svg viewBox="0 0 11 11"><path d="M1 2.5h9M1 5.5h7M1 8.5h5"/></svg>Description <span class="req">*</span></div>
+        <textarea class="mfi" id="p-desc" placeholder="Ses qualités, passions, ce qui la rend unique…"></textarea>
       </div>
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><rect x="1" y="1" width="9" height="9" rx="1.5"/><circle cx="4" cy="4" r="1"/><path d="M1 7.5l2.5-2.5 2 2 2-2.5 2.5 3"/></svg>Photo ou GIF</div>
+      <div class="mfg">
+        <div class="mflbl"><svg viewBox="0 0 11 11"><rect x="1" y="1" width="9" height="9" rx="1.5"/><circle cx="3.8" cy="3.8" r=".9"/><path d="M1 7.5l2.5-2.5 2 2 2-2.5 2.5 3"/></svg>Photo ou GIF</div>
         <div class="uzone" id="uzone">
           <input type="file" id="p-file" accept="image/*,.gif" onchange="previewFile(this)">
           <img id="p-prev" class="uprev" style="display:none" alt="">
-          <div class="u-icon" id="u-icon">
-            <svg viewBox="0 0 20 20"><path d="M10 13V3M6 7l4-4 4 4"/><path d="M3 15h14"/></svg>
-          </div>
+          <div class="u-ico" id="u-ico"><svg viewBox="0 0 20 20"><path d="M10 13V3M6 7l4-4 4 4"/><path d="M3 15h14"/></svg></div>
           <p id="u-lbl"><b>Cliquez ou glissez</b> une image ou GIF</p>
         </div>
       </div>
-      <div class="fg">
-        <div class="flbl"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4"/><path d="M3.5 5.5h4M5.5 3.5v4" opacity=".5"/></svg>Animation</div>
+      <div class="mfg">
+        <div class="mflbl"><svg viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4"/><path d="M3.5 5.5h4M5.5 3.5v4" opacity=".4"/></svg>Animation</div>
         <div class="agrid" id="agrid">
-
-          <label class="aopt sel" data-v="float">
-            <input type="radio" name="anim" value="float" checked>
-            <div class="ai"><svg viewBox="0 0 22 22"><path d="M3 17c4-8 12-8 16 0"/><path d="M3 12c4-6 12-6 16 0"/><path d="M3 7c4-5 12-5 16 0"/></svg></div>
-            <div class="aname">Flottant</div>
-          </label>
-
-          <label class="aopt" data-v="bounce">
-            <input type="radio" name="anim" value="bounce">
-            <div class="ai"><svg viewBox="0 0 22 22"><circle cx="11" cy="8" r="5"/><path d="M6 19c0-2.2 2.2-4 5-4s5 1.8 5 4"/></svg></div>
-            <div class="aname">Rebond</div>
-          </label>
-
-          <label class="aopt" data-v="shake">
-            <input type="radio" name="anim" value="shake">
-            <div class="ai"><svg viewBox="0 0 22 22"><path d="M2 11h3M17 11h3"/><path d="M6 6l-2 1.5 2 1.5"/><path d="M16 6l2 1.5-2 1.5"/><rect x="6" y="8" width="10" height="6" rx="2"/></svg></div>
-            <div class="aname">Vibration</div>
-          </label>
-
-          <label class="aopt" data-v="pulse">
-            <input type="radio" name="anim" value="pulse">
-            <div class="ai"><svg viewBox="0 0 22 22"><polyline points="1,11 5,11 7,5 10,17 13,8 15,13 17,11 21,11"/></svg></div>
-            <div class="aname">Pulsation</div>
-          </label>
-
-          <label class="aopt" data-v="glow">
-            <input type="radio" name="anim" value="glow">
-            <div class="ai"><svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="4"/><line x1="11" y1="2" x2="11" y2="4"/><line x1="11" y1="18" x2="11" y2="20"/><line x1="2" y1="11" x2="4" y2="11"/><line x1="18" y1="11" x2="20" y2="11"/><line x1="5" y1="5" x2="6.5" y2="6.5"/><line x1="15.5" y1="15.5" x2="17" y2="17"/><line x1="5" y1="17" x2="6.5" y2="15.5"/><line x1="15.5" y1="6.5" x2="17" y2="5"/></svg></div>
-            <div class="aname">Lueur</div>
-          </label>
-
-          <label class="aopt" data-v="swing">
-            <input type="radio" name="anim" value="swing">
-            <div class="ai"><svg viewBox="0 0 22 22"><line x1="11" y1="1" x2="11" y2="5"/><circle cx="11" cy="9.5" r="3.5"/><path d="M7.5 13c-2 3-3.5 4.5-4.5 6"/><path d="M14.5 13c2 3 3.5 4.5 4.5 6"/></svg></div>
-            <div class="aname">Balancement</div>
-          </label>
-
-          <label class="aopt" data-v="spin">
-            <input type="radio" name="anim" value="spin">
-            <div class="ai"><svg viewBox="0 0 22 22"><path d="M20 11A9 9 0 1 1 4 4.5"/><polyline points="20,5 20,11 14,11"/></svg></div>
-            <div class="aname">Rotation</div>
-          </label>
-
-          <label class="aopt" data-v="rainbow">
-            <input type="radio" name="anim" value="rainbow">
-            <div class="ai"><svg viewBox="0 0 22 22"><path d="M2 17a9 9 0 0 1 18 0"/><path d="M5 17a6 6 0 0 1 12 0"/><path d="M8 17a3 3 0 0 1 6 0"/></svg></div>
-            <div class="aname">Arc-en-ciel</div>
-          </label>
-
-          <label class="aopt" data-v="flip">
-            <input type="radio" name="anim" value="flip">
-            <div class="ai"><svg viewBox="0 0 22 22"><rect x="3" y="5" width="16" height="12" rx="2"/><path d="M8 9l3 3-3 3"/><path d="M14 9l-3 3 3 3" opacity=".4"/></svg></div>
-            <div class="aname">Flip</div>
-          </label>
-
+          <label class="aopt sel" data-v="float"><input type="radio" name="anim" value="float" checked>
+            <div class="ai"><svg viewBox="0 0 20 20"><path d="M2 15c3.5-7 12.5-7 16 0"/><path d="M2 10c3.5-5.5 12.5-5.5 16 0"/><path d="M2 5c3.5-4 12.5-4 16 0"/></svg></div>
+            <div class="aname">Flottant</div></label>
+          <label class="aopt" data-v="bounce"><input type="radio" name="anim" value="bounce">
+            <div class="ai"><svg viewBox="0 0 20 20"><circle cx="10" cy="7.5" r="5"/><path d="M5 17.5c0-2.2 2.2-4 5-4s5 1.8 5 4"/></svg></div>
+            <div class="aname">Rebond</div></label>
+          <label class="aopt" data-v="shake"><input type="radio" name="anim" value="shake">
+            <div class="ai"><svg viewBox="0 0 20 20"><path d="M1 10h3M16 10h3"/><path d="M5 5.5l-2 1.5 2 1.5"/><path d="M15 5.5l2 1.5-2 1.5"/><rect x="5" y="7.5" width="10" height="5" rx="2"/></svg></div>
+            <div class="aname">Vibration</div></label>
+          <label class="aopt" data-v="pulse"><input type="radio" name="anim" value="pulse">
+            <div class="ai"><svg viewBox="0 0 20 20"><polyline points="1,10 4,10 6,4 9.5,16 12.5,7 14.5,12 16.5,10 19,10"/></svg></div>
+            <div class="aname">Pulsation</div></label>
+          <label class="aopt" data-v="glow"><input type="radio" name="anim" value="glow">
+            <div class="ai"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="4"/><line x1="10" y1="1" x2="10" y2="3.5"/><line x1="10" y1="16.5" x2="10" y2="19"/><line x1="1" y1="10" x2="3.5" y2="10"/><line x1="16.5" y1="10" x2="19" y2="10"/><line x1="4" y1="4" x2="5.8" y2="5.8"/><line x1="14.2" y1="14.2" x2="16" y2="16"/><line x1="4" y1="16" x2="5.8" y2="14.2"/><line x1="14.2" y1="5.8" x2="16" y2="4"/></svg></div>
+            <div class="aname">Lueur</div></label>
+          <label class="aopt" data-v="swing"><input type="radio" name="anim" value="swing">
+            <div class="ai"><svg viewBox="0 0 20 20"><line x1="10" y1="1" x2="10" y2="5"/><circle cx="10" cy="9.5" r="3.5"/><path d="M6.5 13c-2 3-3 4.5-4 6"/><path d="M13.5 13c2 3 3 4.5 4 6"/></svg></div>
+            <div class="aname">Balancement</div></label>
+          <label class="aopt" data-v="spin"><input type="radio" name="anim" value="spin">
+            <div class="ai"><svg viewBox="0 0 20 20"><path d="M18 10A8 8 0 1 1 4 3.5"/><polyline points="18,4 18,10 12,10"/></svg></div>
+            <div class="aname">Rotation</div></label>
+          <label class="aopt" data-v="rainbow"><input type="radio" name="anim" value="rainbow">
+            <div class="ai"><svg viewBox="0 0 20 20"><path d="M2 16a8 8 0 0 1 16 0"/><path d="M5 16a5 5 0 0 1 10 0"/><path d="M8 16a2 2 0 0 1 4 0"/></svg></div>
+            <div class="aname">Arc-en-ciel</div></label>
+          <label class="aopt" data-v="flip"><input type="radio" name="anim" value="flip">
+            <div class="ai"><svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M7.5 8.5l3 3-3 3"/><path d="M12.5 8.5l-3 3 3 3" opacity=".35"/></svg></div>
+            <div class="aname">Flip</div></label>
         </div>
       </div>
       <div class="factions">
-        <button class="btn btn-ghost" onclick="closeProfileModal()" style="padding:13px 20px;font-size:14px;font-weight:600;border-radius:40px">
-          Annuler
-        </button>
+        <button class="btn btn-ghost" onclick="closePM()" style="border-radius:40px;font-weight:600">Annuler</button>
         <button class="btn btn-dark" id="p-sub" onclick="submitProfile()" style="flex:1;padding:13px 22px;font-size:15px">
-          <svg id="p-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7H2M8 3l4 4-4 4"/></svg>
-          <span id="p-txt">Publier le profil</span>
+          <svg id="p-ic" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 7H2M8 3l4 4-4 4"/></svg>
+          <span id="p-tx">Publier le profil</span>
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <svg id="t-icon" viewBox="0 0 14 14"></svg>
-  <span id="t-msg"></span>
-</div>
+<div class="toast" id="toast"><svg id="t-ic" viewBox="0 0 14 14"></svg><span id="t-msg"></span></div>
 
 <script>
-/* ─── SUPABASE ─── */
 const SUPA_URL = 'https://sjuvymjlyvzmsminnjoh.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdXZ5bWpseXZ6bXNtaW5uam9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjA0ODUsImV4cCI6MjA4OTAzNjQ4NX0.XXQELFZsWy_ADXQ7Ag9YZEHkoh2ZaBO2BNc_6c42isk';
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-/* ─── STATE ─── */
 let currentUser = null;
 let profiles = [];
 let editingId = null;
@@ -465,172 +407,174 @@ let fileToUpload = null;
 let adopted = new Set(JSON.parse(localStorage.getItem('am_adopted')||'[]'));
 let authMode = 'login';
 
-/* ─── BOOT ─── */
+/* ── BOOT ── */
 window.addEventListener('load', async () => {
-  sb.auth.onAuthStateChange((event, session) => {
-    currentUser = session?.user || null;
-    updateHeaderUI();
-  });
-  const { data: { session } } = await sb.auth.getSession();
+  const { data:{ session } } = await sb.auth.getSession();
   currentUser = session?.user || null;
-  updateHeaderUI();
+  updateHdr();
+
+  sb.auth.onAuthStateChange((_, session) => {
+    currentUser = session?.user || null;
+    updateHdr();
+    renderAll();
+  });
+
   await loadProfiles();
   setTimeout(() => document.getElementById('loader').classList.add('gone'), 380);
 });
 
-/* ─── AUTH UI ─── */
-function showAuth() {
-  document.getElementById('authWall').classList.add('show');
-}
-function hideAuth() {
-  document.getElementById('authWall').classList.remove('show');
-}
-function switchTab(mode) {
+/* ── AUTH ── */
+function showAuth(){ document.getElementById('authWall').classList.add('show'); }
+function hideAuth(){ document.getElementById('authWall').classList.remove('show'); }
+
+function switchTab(mode){
   authMode = mode;
-  const tabs = document.querySelectorAll('.auth-tab');
-  tabs[0].classList.toggle('active', mode === 'login');
-  tabs[1].classList.toggle('active', mode === 'signup');
-  document.getElementById('a-pass2-wrap').style.display = mode === 'signup' ? 'block' : 'none';
-  document.getElementById('a-txt').textContent = mode === 'login' ? 'Se connecter' : 'Créer mon compte';
-  document.getElementById('a-err').classList.remove('show');
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('on', (i===0&&mode==='login')||(i===1&&mode==='signup')));
+  document.getElementById('a-p2w').style.display = mode==='signup' ? 'block' : 'none';
+  document.getElementById('a-tx').textContent = mode==='login' ? 'Se connecter' : 'Créer mon compte';
+  document.getElementById('a-note').innerHTML = mode==='login'
+    ? 'Pas encore de compte ? <a onclick="switchTab(\'signup\')">Créer un compte</a>'
+    : 'Déjà inscrit·e ? <a onclick="switchTab(\'login\')">Se connecter</a>';
+  document.getElementById('a-err').textContent = '';
 }
 
-/* ─── DO AUTH ─── */
-async function doAuth() {
+async function doAuth(){
   const email = document.getElementById('a-email').value.trim();
   const pass  = document.getElementById('a-pass').value;
   const pass2 = document.getElementById('a-pass2').value;
   const errEl = document.getElementById('a-err');
-  errEl.classList.remove('show');
+  errEl.textContent = '';
 
-  if (!email || !pass) { showAErr('Email et mot de passe requis.'); return; }
-  if (authMode === 'signup' && pass !== pass2) { showAErr('Les mots de passe ne correspondent pas.'); return; }
-  if (authMode === 'signup' && pass.length < 6) { showAErr('Le mot de passe doit faire 6 caractères min.'); return; }
+  if(!email || !pass){ errEl.textContent = 'Email et mot de passe requis.'; return; }
+  if(authMode==='signup' && pass.length<6){ errEl.textContent = 'Mot de passe : 6 caractères minimum.'; return; }
+  if(authMode==='signup' && pass!==pass2){ errEl.textContent = 'Les mots de passe ne correspondent pas.'; return; }
 
-  const btn = document.getElementById('a-btn');
-  const ic  = document.getElementById('a-icon');
-  btn.disabled = true;
-  ic.innerHTML = `<circle cx="7.5" cy="7.5" r="5.5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/><path class="spinning" d="M7.5 2a5.5 5.5 0 0 1 5.5 5.5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>`;
+  const btn=document.getElementById('a-btn'), ic=document.getElementById('a-ic'), tx=document.getElementById('a-tx');
+  btn.disabled=true;
+  ic.innerHTML=`<circle cx="7" cy="7" r="5.5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2.5"/><path class="spinning" d="M7 1.5A5.5 5.5 0 0 1 12.5 7" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>`;
 
-  let error;
-  if (authMode === 'login') {
-    const res = await sb.auth.signInWithPassword({ email, password: pass });
-    error = res.error;
+  let res;
+  if(authMode==='login'){
+    res = await sb.auth.signInWithPassword({ email, password:pass });
   } else {
-    const res = await sb.auth.signUp({ email, password: pass });
-    error = res.error;
-    if (!error) {
-      toast('ok', 'Compte créé ! Vous êtes connecté·e 🎉');
-    }
+    res = await sb.auth.signUp({ email, password:pass, options:{ data:{} } });
   }
 
-  btn.disabled = false;
-  ic.innerHTML = `<path d="M12 7.5H3M7.5 3l4.5 4.5-4.5 4.5"/>`;
+  btn.disabled=false;
+  ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
 
-  if (error) { showAErr(error.message); return; }
+  if(res.error){
+    // translate common errors
+    let msg = res.error.message;
+    if(msg.includes('Invalid login')) msg = 'Email ou mot de passe incorrect.';
+    if(msg.includes('already registered')) msg = 'Cet email est déjà utilisé.';
+    if(msg.includes('Email not confirmed')) msg = 'Confirmez votre email d\'abord (vérifiez votre boîte mail).';
+    errEl.textContent = msg;
+    return;
+  }
 
-  document.getElementById('a-email').value = '';
-  document.getElementById('a-pass').value = '';
-  document.getElementById('a-pass2').value = '';
+  // If signup and email confirmation required, warn
+  if(authMode==='signup' && !res.data.session){
+    errEl.style.color='var(--sage)';
+    errEl.textContent = '✓ Compte créé ! Vérifiez vos emails pour confirmer, ou désactivez la confirmation dans Supabase > Auth > Settings.';
+    return;
+  }
+
+  document.getElementById('a-email').value='';
+  document.getElementById('a-pass').value='';
+  document.getElementById('a-pass2').value='';
   hideAuth();
-  if (authMode === 'login') toast('ok', 'Bienvenue ! 👋');
+  toast('ok', authMode==='login' ? 'Bienvenue ! 👋' : 'Compte créé, bienvenue ! 🎉');
 }
-function showAErr(msg) {
-  const el = document.getElementById('a-err');
-  el.textContent = msg; el.classList.add('show');
-}
-document.getElementById('a-pass').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
-document.getElementById('a-email').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
 
-/* ─── SIGN OUT ─── */
-async function signOut() {
+['a-email','a-pass','a-pass2'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
+});
+
+async function signOut(){
   await sb.auth.signOut();
-  currentUser = null;
-  updateHeaderUI();
-  toast('ok', 'Déconnecté·e');
+  toast('ok','Déconnecté·e');
 }
 
-/* ─── HEADER UI ─── */
-function updateHeaderUI() {
-  const loggedIn = !!currentUser;
-  document.getElementById('btnAdd').style.display   = loggedIn ? 'inline-flex' : 'none';
-  document.getElementById('userPill').style.display = loggedIn ? 'flex' : 'none';
-  document.getElementById('btnLogin').style.display = loggedIn ? 'none' : 'inline-flex';
-  if (loggedIn) {
-    const em = currentUser.email || '';
-    document.getElementById('userEmail').textContent = em.split('@')[0];
-    document.getElementById('userAv').textContent = em[0].toUpperCase();
+/* ── HEADER ── */
+function updateHdr(){
+  const li = !!currentUser;
+  document.getElementById('btnAdd').style.display   = li ? 'inline-flex' : 'none';
+  document.getElementById('upill').style.display    = li ? 'flex' : 'none';
+  document.getElementById('btnLogin').style.display = li ? 'none' : 'inline-flex';
+  if(li){
+    const em = currentUser.email||'';
+    document.getElementById('uname').textContent = em.split('@')[0];
+    document.getElementById('uav').textContent   = em[0].toUpperCase();
   }
-  renderAll(); // re-render so action buttons appear/disappear
 }
 
-/* ─── LOAD PROFILES ─── */
-async function loadProfiles() {
-  const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
-  if (error) { toast('error', error.message); return; }
-  profiles = data || [];
+/* ── PROFILES ── */
+async function loadProfiles(){
+  const { data, error } = await sb.from('profiles').select('*').order('created_at',{ascending:false});
+  if(error){ toast('error',error.message); return; }
+  profiles = data||[];
   renderAll();
   updateCount();
 }
 
-/* ─── RENDER ALL ─── */
-function renderAll() {
-  const g = document.getElementById('grid');
-  g.innerHTML = '';
-  if (!profiles.length) {
-    g.innerHTML = `<div class="empty-st">
-      <svg width="52" height="52" viewBox="0 0 52 52" fill="none" stroke="var(--ink2)" stroke-width="1.2" stroke-linecap="round">
+function renderAll(){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  if(!profiles.length){
+    g.innerHTML=`<div class="empty-st">
+      <svg viewBox="0 0 52 52" fill="none" stroke="var(--ink2)" stroke-width="1.2" stroke-linecap="round">
         <circle cx="26" cy="19" r="10"/><path d="M6 46c0-11.1 9-20 20-20s20 8.9 20 20"/>
       </svg>
       <p>Aucun profil pour l'instant.<br><b>Soyez le premier à rejoindre !</b></p>
     </div>`;
     return;
   }
-  profiles.forEach((p, i) => g.appendChild(buildCard(p, i * 50)));
+  profiles.forEach((p,i) => g.appendChild(buildCard(p, i*55)));
 }
 
-/* ─── BUILD CARD ─── */
-const ANIM_LABELS = { float:'Flottant', bounce:'Rebond', shake:'Vibration', pulse:'Pulsation', glow:'Lueur', swing:'Balancement', spin:'Rotation', rainbow:'Arc-en-ciel', flip:'Flip', none:'Statique' };
+const ALBL={float:'Flottant',bounce:'Rebond',shake:'Vibration',pulse:'Pulsation',glow:'Lueur',swing:'Balancement',spin:'Rotation',rainbow:'Arc-en-ciel',flip:'Flip',none:'Statique'};
 
-function buildCard(p, delay = 0) {
-  const anim = p.animation || 'none';
+function buildCard(p, delay=0){
+  const anim  = p.animation||'none';
   const isOwner = currentUser && currentUser.id === p.user_id;
-  const isAdopted = adopted.has(p.id);
+  const isAd  = adopted.has(p.id);
 
   const div = document.createElement('div');
-  div.className = `card anim-${anim}`;
-  div.style.animationDelay = delay + 'ms';
+  div.className = `card an-${anim}`;
+  div.style.animationDelay = delay+'ms';
   div.dataset.id = p.id;
 
-  // For spin, we need a wrapper on the img
-  const imgContent = p.image_url
-    ? `<div class="card-img-inner" style="width:100%;height:100%"><img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
-    : `<div class="cph"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink3)" stroke-width="1.2" stroke-linecap="round"><circle cx="32" cy="22" r="12"/><path d="M8 58c0-13.3 10.7-24 24-24s24 10.7 24 24"/></svg></div>`;
+  // For spin: wrap image so only img rotates
+  let mediaInner = '';
+  if(p.image_url){
+    mediaInner = `<div class="spin-target" style="width:100%;height:100%"><img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s"></div>`;
+  } else {
+    mediaInner = `<div class="cph spin-target"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink3)" stroke-width="1.2" stroke-linecap="round"><circle cx="32" cy="22" r="12"/><path d="M8 58c0-13.3 10.7-24 24-24s24 10.7 24 24"/></svg></div>`;
+  }
 
-  const ownerActions = isOwner ? `
-    <div class="card-actions">
-      <button class="btn-icon edit-btn" onclick="openEditModal('${p.id}')" title="Modifier">
-        <svg viewBox="0 0 13 13" fill="none"><path d="M9 2l2 2-7 7H2v-2z"/><path d="M7.5 3.5l2 2"/></svg>
-      </button>
-      <button class="btn-icon" onclick="deleteProfile('${p.id}',this)" title="Supprimer">
-        <svg viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11"/></svg>
-      </button>
-    </div>` : '';
+  const ownerBtns = isOwner ? `<div class="card-acts">
+    <button class="icon-btn edit" onclick="openEdit('${p.id}')" title="Modifier">
+      <svg viewBox="0 0 12 12"><path d="M8.5 1.5l2 2-7 7H1.5v-2z"/><path d="M7 3l2 2"/></svg>
+    </button>
+    <button class="icon-btn del" onclick="delProfile('${p.id}',this)" title="Supprimer">
+      <svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11"/></svg>
+    </button>
+  </div>` : '';
 
-  div.innerHTML = `
+  div.innerHTML=`
     <div class="cmedia">
-      ${imgContent}
-      <div class="abadge"><div class="adot"></div>${esc(ANIM_LABELS[anim]||'Statique')}</div>
-      ${ownerActions}
+      ${mediaInner}
+      <div class="abadge"><div class="adot"></div>${esc(ALBL[anim]||'Statique')}</div>
+      ${ownerBtns}
     </div>
     <div class="cbody">
       <div class="cname">${esc(p.name)}</div>
       <div class="cdesc">${esc(p.description||'')}</div>
     </div>
     <div class="cfoot">
-      <button class="btn btn-coral${isAdopted?' done':''}" onclick="adoptProfile('${p.id}',this,'${esc(p.name)}')">
-        ${isAdopted ? icoHeartFill() : icoHeart()}
-        ${isAdopted ? 'Adopté·e' : 'Adopter'}
+      <button class="btn btn-coral${isAd?' done':''}" onclick="adoptP('${p.id}',this,'${esc(p.name)}')">
+        ${isAd ? hFill() : hEmpty()} ${isAd?'Adopté·e':'Adopter'}
       </button>
       <div class="ctime">
         <svg viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5"/><polyline points="5.5,3 5.5,5.5 7,7"/></svg>
@@ -638,247 +582,223 @@ function buildCard(p, delay = 0) {
       </div>
     </div>`;
 
-  // Start animation after cardIn finishes (420ms)
-  if (anim !== 'none' && anim !== 'spin' && anim !== 'rainbow') {
-    setTimeout(() => div.classList.add('ready'), delay + 480);
+  // hover scale on non-animated cards
+  if(anim==='none'){
+    div.style.transition = 'box-shadow .25s, transform .25s';
   }
-  if (anim === 'rainbow') {
-    setTimeout(() => div.classList.add('ready'), delay + 480);
+
+  // Wait for cardIn to finish, then add .go to start the loop animation
+  if(anim !== 'none'){
+    setTimeout(() => div.classList.add('go'), delay + 460);
   }
+
   return div;
 }
 
-/* ─── ADOPT ─── */
-function adoptProfile(id, btn, name) {
-  if (adopted.has(id)) return;
-  adopted.add(id);
-  localStorage.setItem('am_adopted', JSON.stringify([...adopted]));
-  btn.innerHTML = icoHeartFill() + ' Adopté·e';
-  btn.classList.add('done');
-  toast('heart', `Vous avez adopté ${name} !`);
+/* ── ADOPT ── */
+function adoptP(id, btn, name){
+  if(adopted.has(id)) return;
+  adopted.add(id); localStorage.setItem('am_adopted',JSON.stringify([...adopted]));
+  btn.innerHTML = hFill()+' Adopté·e'; btn.classList.add('done');
+  toast('heart',`Vous avez adopté ${name} !`);
 }
 
-/* ─── DELETE ─── */
-async function deleteProfile(id, btn) {
-  if (!confirm('Supprimer ce profil définitivement ?')) return;
-  const card = btn.closest('.card');
-  card.style.transition = 'all .28s';
-  card.style.transform = 'scale(.87)'; card.style.opacity = '0';
-
-  const { error } = await sb.from('profiles').delete().eq('id', id);
-  if (error) {
-    card.style.transform = ''; card.style.opacity = '';
-    toast('error', error.message); return;
-  }
-  setTimeout(() => {
-    card.remove();
-    profiles = profiles.filter(p => p.id !== id);
-    updateCount();
-    if (!document.querySelector('.card')) renderAll();
-  }, 280);
-  toast('trash', 'Profil supprimé');
+/* ── DELETE ── */
+async function delProfile(id, btn){
+  if(!confirm('Supprimer ce profil définitivement ?')) return;
+  const card=btn.closest('.card');
+  card.style.transition='all .28s'; card.style.transform='scale(.87)'; card.style.opacity='0';
+  const { error } = await sb.from('profiles').delete().eq('id',id);
+  if(error){ card.style.transform=''; card.style.opacity=''; toast('error',error.message); return; }
+  setTimeout(()=>{
+    card.remove(); profiles=profiles.filter(p=>p.id!==id); updateCount();
+    if(!document.querySelector('.card')) renderAll();
+  },280);
+  toast('trash','Profil supprimé');
 }
 
-/* ─── PROFILE MODAL ─── */
-function openProfileModal(id = null) {
-  if (!currentUser) { showAuth(); return; }
-  editingId = id;
-  const isEdit = !!id;
-  document.getElementById('pmTitle').innerHTML = isEdit ? 'Modifier <em>le profil</em>' : 'Nouveau <em>profil</em>';
-  document.getElementById('p-txt').textContent = isEdit ? 'Enregistrer' : 'Publier le profil';
-
-  if (isEdit) {
-    const p = profiles.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('p-name').value = p.name;
-    document.getElementById('p-desc').value = p.description || '';
-    // set anim
-    document.querySelectorAll('.aopt').forEach(o => {
-      o.classList.toggle('sel', o.dataset.v === p.animation);
-      if (o.dataset.v === p.animation) o.querySelector('input').checked = true;
-    });
-    if (p.image_url) {
-      document.getElementById('p-prev').src = p.image_url;
-      document.getElementById('p-prev').style.display = 'block';
-      document.getElementById('u-icon').style.display = 'none';
-      document.getElementById('u-lbl').innerHTML = '<b>Changer l\'image</b> (optionnel)';
-    } else {
-      resetUploadZone();
-    }
-  } else {
-    resetForm();
-  }
-
-  document.getElementById('pmOverlay').classList.add('open');
-  setTimeout(() => document.getElementById('p-name').focus(), 80);
+/* ── PROFILE MODAL ── */
+function openProfileModal(){
+  if(!currentUser){ showAuth(); return; }
+  editingId=null;
+  document.getElementById('pmTitle').innerHTML='Nouveau <em>profil</em>';
+  document.getElementById('p-tx').textContent='Publier le profil';
+  resetForm();
+  document.getElementById('pmOv').classList.add('open');
+  setTimeout(()=>document.getElementById('p-name').focus(),80);
 }
 
-function openEditModal(id) { openProfileModal(id); }
-
-function closeProfileModal() {
-  document.getElementById('pmOverlay').classList.remove('open');
-  setTimeout(resetForm, 300);
+function openEdit(id){
+  if(!currentUser){ showAuth(); return; }
+  const p=profiles.find(x=>x.id===id); if(!p) return;
+  editingId=id;
+  document.getElementById('pmTitle').innerHTML='Modifier <em>le profil</em>';
+  document.getElementById('p-tx').textContent='Enregistrer';
+  document.getElementById('p-name').value=p.name;
+  document.getElementById('p-desc').value=p.description||'';
+  // anim
+  document.querySelectorAll('.aopt').forEach(o=>{
+    const active = o.dataset.v===p.animation;
+    o.classList.toggle('sel',active);
+    if(active) o.querySelector('input').checked=true;
+  });
+  // image
+  if(p.image_url){
+    document.getElementById('p-prev').src=p.image_url;
+    document.getElementById('p-prev').style.display='block';
+    document.getElementById('u-ico').style.display='none';
+    document.getElementById('u-lbl').innerHTML='<b>Changer l\'image</b> (optionnel)';
+  } else { resetUpload(); }
+  document.getElementById('pmOv').classList.add('open');
+  setTimeout(()=>document.getElementById('p-name').focus(),80);
 }
 
-function pmBgClose(e) {
-  if (e.target === document.getElementById('pmOverlay')) closeProfileModal();
+function closePM(){
+  document.getElementById('pmOv').classList.remove('open');
+  setTimeout(resetForm,300);
+}
+function pmBg(e){ if(e.target===document.getElementById('pmOv')) closePM(); }
+
+function resetForm(){
+  editingId=null; fileToUpload=null;
+  document.getElementById('p-name').value='';
+  document.getElementById('p-desc').value='';
+  resetUpload();
+  document.querySelectorAll('.aopt').forEach(o=>o.classList.toggle('sel',o.dataset.v==='float'));
+  document.querySelector('.aopt[data-v="float"] input').checked=true;
+}
+function resetUpload(){
+  document.getElementById('p-prev').style.display='none';
+  document.getElementById('u-ico').style.display='flex';
+  document.getElementById('u-lbl').innerHTML='<b>Cliquez ou glissez</b> une image ou GIF';
+  document.getElementById('p-file').value='';
 }
 
-function resetForm() {
-  editingId = null; fileToUpload = null;
-  document.getElementById('p-name').value = '';
-  document.getElementById('p-desc').value = '';
-  resetUploadZone();
-  // reset anim to float
-  document.querySelectorAll('.aopt').forEach(o => { o.classList.toggle('sel', o.dataset.v === 'float'); });
-  document.querySelector('.aopt[data-v="float"] input').checked = true;
-}
-
-function resetUploadZone() {
-  document.getElementById('p-prev').style.display = 'none';
-  document.getElementById('u-icon').style.display = 'flex';
-  document.getElementById('u-lbl').innerHTML = '<b>Cliquez ou glissez</b> une image ou GIF';
-  document.getElementById('p-file').value = '';
-}
-
-/* ─── FILE ─── */
-function previewFile(input) {
-  const f = input.files[0]; if (!f) return;
-  fileToUpload = f;
-  const r = new FileReader();
-  r.onload = e => {
-    const p = document.getElementById('p-prev');
-    p.src = e.target.result; p.style.display = 'block';
-    document.getElementById('u-icon').style.display = 'none';
-    document.getElementById('u-lbl').innerHTML = `<b>${esc(f.name)}</b>`;
+/* ── FILE ── */
+function previewFile(input){
+  const f=input.files[0]; if(!f) return; fileToUpload=f;
+  const r=new FileReader();
+  r.onload=e=>{
+    document.getElementById('p-prev').src=e.target.result;
+    document.getElementById('p-prev').style.display='block';
+    document.getElementById('u-ico').style.display='none';
+    document.getElementById('u-lbl').innerHTML=`<b>${esc(f.name)}</b>`;
   };
   r.readAsDataURL(f);
 }
-const uz = document.getElementById('uzone');
-uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
-['dragleave','drop'].forEach(ev => uz.addEventListener(ev, () => uz.classList.remove('drag')));
-uz.addEventListener('drop', e => {
+const uz=document.getElementById('uzone');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
+['dragleave','drop'].forEach(ev=>uz.addEventListener(ev,()=>uz.classList.remove('drag')));
+uz.addEventListener('drop',e=>{
   e.preventDefault();
-  const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image')) { document.getElementById('p-file').files = e.dataTransfer.files; previewFile({ files: e.dataTransfer.files }); }
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image')){document.getElementById('p-file').files=e.dataTransfer.files;previewFile({files:e.dataTransfer.files});}
 });
 
-/* ─── SUBMIT ─── */
-async function submitProfile() {
-  if (!currentUser) { showAuth(); return; }
-  const name = document.getElementById('p-name').value.trim();
-  const desc = document.getElementById('p-desc').value.trim();
-  const anim = document.querySelector('input[name="anim"]:checked')?.value || 'float';
-  if (!name) { shakeFld('p-name'); toast('warn','Nom requis'); return; }
-  if (!desc) { shakeFld('p-desc'); toast('warn','Description requise'); return; }
+/* ── SUBMIT ── */
+async function submitProfile(){
+  if(!currentUser){ showAuth(); return; }
+  const name=document.getElementById('p-name').value.trim();
+  const desc=document.getElementById('p-desc').value.trim();
+  const anim=document.querySelector('input[name="anim"]:checked')?.value||'float';
+  if(!name){ shk('p-name'); toast('warn','Nom requis'); return; }
+  if(!desc){ shk('p-desc'); toast('warn','Description requise'); return; }
 
-  const btn = document.getElementById('p-sub');
-  const ic  = document.getElementById('p-icon');
-  const tx  = document.getElementById('p-txt');
-  btn.disabled = true;
-  ic.innerHTML = `<circle cx="7" cy="7" r="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/><path class="spinning" d="M7 2a5 5 0 0 1 5 5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>`;
-  tx.textContent = editingId ? 'Enregistrement…' : 'Publication…';
+  const btn=document.getElementById('p-sub'),ic=document.getElementById('p-ic'),tx=document.getElementById('p-tx');
+  btn.disabled=true;
+  ic.innerHTML=`<circle cx="7" cy="7" r="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2.5"/><path class="spinning" d="M7 2a5 5 0 0 1 5 5" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>`;
+  tx.textContent=editingId?'Enregistrement…':'Publication…';
 
-  let image_url = editingId ? (profiles.find(p=>p.id===editingId)?.image_url || null) : null;
+  let image_url = editingId ? (profiles.find(p=>p.id===editingId)?.image_url||null) : null;
 
-  if (fileToUpload) {
-    const ext = fileToUpload.name.split('.').pop().toLowerCase();
-    const fname = `${currentUser.id}-${Date.now()}.${ext}`;
-    const { error: ue } = await sb.storage.from('avatars').upload(fname, fileToUpload, { contentType: fileToUpload.type, upsert: true });
-    if (!ue) image_url = sb.storage.from('avatars').getPublicUrl(fname).data.publicUrl;
+  if(fileToUpload){
+    const ext=fileToUpload.name.split('.').pop().toLowerCase();
+    const fname=`${currentUser.id}-${Date.now()}.${ext}`;
+    const { error:ue } = await sb.storage.from('avatars').upload(fname,fileToUpload,{contentType:fileToUpload.type,upsert:true});
+    if(!ue) image_url=sb.storage.from('avatars').getPublicUrl(fname).data.publicUrl;
   }
 
   let data, error;
-  if (editingId) {
-    const res = await sb.from('profiles').update({ name, description: desc, image_url, animation: anim }).eq('id', editingId).select().single();
-    data = res.data; error = res.error;
+  if(editingId){
+    ({data,error}=await sb.from('profiles').update({name,description:desc,image_url,animation:anim}).eq('id',editingId).select().single());
   } else {
-    const res = await sb.from('profiles').insert([{ name, description: desc, image_url, animation: anim, user_id: currentUser.id }]).select().single();
-    data = res.data; error = res.error;
+    ({data,error}=await sb.from('profiles').insert([{name,description:desc,image_url,animation:anim,user_id:currentUser.id}]).select().single());
   }
 
-  btn.disabled = false;
-  ic.innerHTML = `<path d="M12 7H2M8 3l4 4-4 4"/>`;
-  tx.textContent = editingId ? 'Enregistrer' : 'Publier le profil';
+  btn.disabled=false;
+  ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
+  tx.textContent=editingId?'Enregistrer':'Publier le profil';
 
-  if (error) { toast('error', error.message); return; }
+  if(error){ toast('error',error.message); return; }
 
-  closeProfileModal();
-
-  if (editingId) {
-    profiles = profiles.map(p => p.id === editingId ? data : p);
-    const old = document.querySelector(`.card[data-id="${editingId}"]`);
-    if (old) { const nc = buildCard(data); old.replaceWith(nc); }
-    toast('ok', 'Profil modifié !');
+  closePM();
+  if(editingId){
+    profiles=profiles.map(p=>p.id===editingId?data:p);
+    const old=document.querySelector(`.card[data-id="${editingId}"]`);
+    if(old){ const nc=buildCard(data,0); old.replaceWith(nc); }
+    toast('ok','Profil modifié !');
   } else {
     profiles.unshift(data);
-    const g = document.getElementById('grid');
-    const e = g.querySelector('.empty-st'); if (e) e.remove();
-    g.prepend(buildCard(data, 0));
+    const g=document.getElementById('grid');
+    const e=g.querySelector('.empty-st'); if(e) e.remove();
+    g.prepend(buildCard(data,0));
     updateCount();
-    toast('ok', `"${data.name}" publié !`);
+    toast('ok',`"${data.name}" publié !`);
   }
 }
 
-/* ─── ANIM PICKER CLICK ─── */
-document.getElementById('agrid').addEventListener('click', e => {
-  const o = e.target.closest('.aopt'); if (!o) return;
-  document.querySelectorAll('.aopt').forEach(x => x.classList.remove('sel'));
-  o.classList.add('sel'); o.querySelector('input').checked = true;
+/* ── ANIM PICKER ── */
+document.getElementById('agrid').addEventListener('click',e=>{
+  const o=e.target.closest('.aopt'); if(!o) return;
+  document.querySelectorAll('.aopt').forEach(x=>x.classList.remove('sel'));
+  o.classList.add('sel'); o.querySelector('input').checked=true;
 });
 
-/* ─── COUNT ─── */
-function updateCount() {
-  const pill = document.getElementById('cpill');
-  document.getElementById('cnum').textContent = profiles.length;
-  pill.style.display = profiles.length ? 'flex' : 'none';
+/* ── COUNT ── */
+function updateCount(){
+  const p=document.getElementById('cpill');
+  document.getElementById('cnum').textContent=profiles.length;
+  p.style.display=profiles.length?'flex':'none';
 }
 
-/* ─── TOAST ─── */
-const TICONS = {
-  ok:    `<path d="M2 7l4 4 6-6"/>`,
-  error: `<path d="M1 1l12 12M13 1L1 13"/>`,
-  warn:  `<path d="M7 2.5v5M7 10.5v.5"/><circle cx="7" cy="7" r="6"/>`,
-  heart: `<path d="M7 13S1 9 1 5A3 3 0 0 1 7 3.5 3 3 0 0 1 13 5C13 9 7 13 7 13z" fill="currentColor" stroke="none"/>`,
-  trash: `<path d="M1 4.5h12M4 4.5V3h4v1.5M3 4.5l1 7h6l1-7"/>`,
+/* ── TOAST ── */
+const TICONS={
+  ok:`<path d="M2 7l4 4 6-6"/>`,
+  error:`<path d="M1 1l12 12M13 1L1 13"/>`,
+  warn:`<path d="M7 3v5M7 11v.5"/><circle cx="7" cy="7" r="6"/>`,
+  heart:`<path d="M7 13S1 9 1 5A3.5 3.5 0 0 1 7 2.5 3.5 3.5 0 0 1 13 5C13 9 7 13 7 13z" fill="currentColor" stroke="none"/>`,
+  trash:`<path d="M1 4.5h12M4 4.5V3h4v1.5M3 4.5l1 7h6l1-7"/>`,
 };
-let tTimer;
-function toast(type, msg) {
-  document.getElementById('t-icon').innerHTML = TICONS[type] || '';
-  document.getElementById('t-msg').textContent = msg;
-  const el = document.getElementById('toast');
-  el.classList.add('on');
-  clearTimeout(tTimer);
-  tTimer = setTimeout(() => el.classList.remove('on'), 2800);
+let tT;
+function toast(type,msg){
+  document.getElementById('t-ic').innerHTML=TICONS[type]||'';
+  document.getElementById('t-msg').textContent=msg;
+  const el=document.getElementById('toast');
+  el.classList.add('on'); clearTimeout(tT);
+  tT=setTimeout(()=>el.classList.remove('on'),2800);
 }
 
-/* ─── SVG HELPERS ─── */
-function icoHeart() { return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12.5S1 8.5 1 4.5A3.5 3.5 0 0 1 7 3a3.5 3.5 0 0 1 6 1.5C13 8.5 7 12.5 7 12.5z"/></svg>`; }
-function icoHeartFill() { return `<svg width="14" height="14" viewBox="0 0 14 14" fill="white" stroke="none"><path d="M7 12.5S1 8.5 1 4.5A3.5 3.5 0 0 1 7 3a3.5 3.5 0 0 1 6 1.5C13 8.5 7 12.5 7 12.5z"/></svg>`; }
+/* ── SVG HELPERS ── */
+function hEmpty(){ return `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 11.5S1 8 1 4.5A2.8 2.8 0 0 1 6.5 3a2.8 2.8 0 0 1 5.5 1.5C12 8 6.5 11.5 6.5 11.5z"/></svg>`; }
+function hFill(){ return `<svg width="13" height="13" viewBox="0 0 13 13" fill="white" stroke="none"><path d="M6.5 11.5S1 8 1 4.5A2.8 2.8 0 0 1 6.5 3a2.8 2.8 0 0 1 5.5 1.5C12 8 6.5 11.5 6.5 11.5z"/></svg>`; }
 
-/* ─── UTILS ─── */
-function shakeFld(id) {
-  const el = document.getElementById(id);
+/* ── UTILS ── */
+function shk(id){
+  const el=document.getElementById(id);
   el.classList.add('err');
-  el.animate([{transform:'none'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'none'}],{duration:350});
-  setTimeout(() => el.classList.remove('err'), 1200);
+  el.animate([{transform:'none'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'none'}],{duration:340});
+  setTimeout(()=>el.classList.remove('err'),1100);
 }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function timeAgo(iso) {
-  const s = Math.floor((Date.now() - new Date(iso)) / 1000);
-  if (s < 60) return 'À l\'instant';
-  if (s < 3600) return Math.floor(s/60) + ' min';
-  if (s < 86400) return Math.floor(s/3600) + ' h';
-  if (s < 604800) return Math.floor(s/86400) + ' j';
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function timeAgo(iso){
+  const s=Math.floor((Date.now()-new Date(iso))/1000);
+  if(s<60) return 'À l\'instant';
+  if(s<3600) return Math.floor(s/60)+' min';
+  if(s<86400) return Math.floor(s/3600)+' h';
+  if(s<604800) return Math.floor(s/86400)+' j';
   return new Date(iso).toLocaleDateString('fr');
 }
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeProfileModal();
-    hideAuth();
-  }
-});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePM(); hideAuth(); } });
 </script>
 </body>
 </html>
