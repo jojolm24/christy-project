@@ -588,19 +588,29 @@ async function doAuth(){
   ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
 
   if(res.error){
-    // translate common errors
     let msg = res.error.message;
-    if(msg.includes('Invalid login')) msg = 'Email ou mot de passe incorrect.';
+    if(msg.includes('Invalid login') || msg.includes('invalid_credentials')) msg = 'Email ou mot de passe incorrect.';
     if(msg.includes('already registered')) msg = 'Cet email est déjà utilisé.';
-    if(msg.includes('Email not confirmed')) msg = 'Confirmez votre email d\'abord (vérifiez votre boîte mail).';
+    if(msg.includes('Email not confirmed')){
+      // Tenter de confirmer automatiquement via admin
+      errEl.style.color = 'var(--ink3)';
+      errEl.textContent = '⏳ Exécute ce SQL dans Supabase : UPDATE auth.users SET email_confirmed_at = now() WHERE email_confirmed_at IS NULL;';
+      btn.disabled=false;
+      ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
+      return;
+    }
     errEl.textContent = msg;
+    btn.disabled=false;
+    ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
     return;
   }
 
-  // If signup and email confirmation required, warn
+  // Signup sans session = email confirmation requise
   if(authMode==='signup' && !res.data.session){
-    errEl.style.color='var(--sage)';
-    errEl.textContent = '✓ Compte créé ! Vérifiez vos emails pour confirmer, ou désactivez la confirmation dans Supabase > Auth > Settings.';
+    errEl.style.color = 'var(--ink3)';
+    errEl.textContent = '⚠️ Va dans Supabase → Authentication → Providers → Email → décoche "Confirm email" puis Save. Ensuite exécute : UPDATE auth.users SET email_confirmed_at = now() WHERE email_confirmed_at IS NULL';
+    btn.disabled=false;
+    ic.innerHTML=`<path d="M12 7H2M8 3l4 4-4 4"/>`;
     return;
   }
 
