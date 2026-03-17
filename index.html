@@ -699,6 +699,8 @@ let skipNextAuthReload = false; // prevents reload after local edit
 
 /* ── BOOT ── */
 window.addEventListener('load', async () => {
+  // Afficher les tags fixes immédiatement dès le chargement
+  buildTicker();
   const { data:{ session } } = await sb.auth.getSession();
   currentUser = session?.user || null;
   updateHdr();
@@ -1233,20 +1235,19 @@ if(localStorage.getItem('dm')==='1'){ document.body.classList.add('dark'); docum
 const TAGS_FIXED = ['#ados','#gênant','#tetoi','#hier j\'ai mangé une cacahuète','#profil rare','#adoptemoi','#disponible','#pascher','#édition limitée','#incroyable','#célébrité locale','#legendaire','#trop mignon','#urgence adoption','#offre spéciale','#unefois','#unijour','#croisez les doigts'];
 
 function buildTicker(){
-  // Mélange tags fixes + noms des profils + animations des profils
   const profileTags = profiles.flatMap(p => {
     const tags = [];
     if(p.name) tags.push(`#${p.name.split(' ')[0].toLowerCase()}`);
-    if(p.animation && p.animation !== 'none') tags.push(`#${ALBL[p.animation]||p.animation}`);
+    if(p.animation && p.animation !== 'none') tags.push(`#${(ALBL&&ALBL[p.animation])||p.animation}`);
     return tags;
   });
   const all = [...TAGS_FIXED, ...profileTags].sort(()=>Math.random()-.5);
-  // Duplique pour le scroll infini
   const items = [...all,...all].map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
-  document.getElementById('tickerA').innerHTML = items;
-  document.getElementById('tickerB').innerHTML = items;
+  const a = document.getElementById('tickerA');
+  const b = document.getElementById('tickerB');
+  if(a) a.innerHTML = items;
+  if(b) b.innerHTML = items;
 }
-buildTicker();
 
 /* ── DURATION MODAL ── */
 let durTarget = null;
