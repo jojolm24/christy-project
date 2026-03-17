@@ -69,15 +69,14 @@ body.dark .auth-right-blob2{background:rgba(255,255,255,.03) !important}
 body.dark .btn-dark{background:#f0ebe2 !important;color:#1a1612 !important;box-shadow:0 3px 0 rgba(0,0,0,.4) !important}
 
 /* TICKER */
-.ticker-wrap{width:100%;overflow:hidden;background:var(--ink);padding:10px 0;margin-top:-1px}
+.ticker-wrap{width:100%;overflow:hidden;background:var(--ink);padding:10px 0}
 body.dark .ticker-wrap{background:var(--sand2)}
-.ticker{display:flex;gap:0;white-space:nowrap;animation:ticker 28s linear infinite}
+.ticker{display:flex;width:max-content;animation:ticker 35s linear infinite}
 .ticker:hover{animation-play-state:paused}
-.ticker-inner{display:flex;gap:0;flex-shrink:0}
-.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 24px;font-size:13px;font-weight:600;color:rgba(245,240,232,.7);letter-spacing:.02em}
-body.dark .ticker-item{color:rgba(26,18,8,.6)}
+.ticker-item{display:inline-flex;align-items:center;gap:6px;padding:0 20px;font-size:13px;font-weight:600;color:rgba(245,240,232,.7);letter-spacing:.02em;white-space:nowrap}
+body.dark .ticker-item{color:rgba(26,18,8,.55)}
 .ticker-item b{color:var(--coral);font-weight:700}
-.ticker-sep{color:rgba(245,240,232,.2);padding:0 4px}
+.ticker-sep{color:rgba(245,240,232,.25);margin-left:20px}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* FOOTER */
@@ -531,10 +530,7 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker">
-    <div class="ticker-inner" id="tickerA"></div>
-    <div class="ticker-inner" id="tickerB"></div>
-  </div>
+  <div class="ticker" id="tickerTrack"></div>
 </div>
 
 <!-- HERO -->
@@ -1242,11 +1238,10 @@ function buildTicker(){
     return tags;
   });
   const all = [...TAGS_FIXED, ...profileTags].sort(()=>Math.random()-.5);
-  const items = [...all,...all].map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
-  const a = document.getElementById('tickerA');
-  const b = document.getElementById('tickerB');
-  if(a) a.innerHTML = items;
-  if(b) b.innerHTML = items;
+  // Double the list so -50% translateX loops perfectly
+  const half = all.map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
+  const track = document.getElementById('tickerTrack');
+  if(track) track.innerHTML = half + half;
 }
 
 /* ── DURATION MODAL ── */
