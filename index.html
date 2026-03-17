@@ -14,6 +14,81 @@
   --gold:#c8952a;--gold-l:#f0d48a;--gold-ll:#fdf6e0;
   --sage:#5a8a6a;--sage-d:#3d6a50;
 }
+body.dark{
+  --ink:#f0ebe2;--ink2:#c8bfb0;--ink3:#8a7d6e;
+  --sand:#1a1612;--sand2:#242018;--sand3:#2e281e;
+  --gold:#f0d48a;--gold-l:#c8952a;--gold-ll:#2a2210;
+}
+body.dark header{background:rgba(26,22,18,.88)}
+body.dark .auth-card,.dark .modal{background:#1e1a15}
+body.dark .fi,.dark .mfi,.dark .finput2{background:#2a2418;border-color:rgba(255,255,255,.1);color:var(--ink)}
+body.dark .card{background:#1e1a15;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 4px 18px rgba(0,0,0,.3)}
+body.dark .auth-left,.dark .mbody,.dark .mhdr{background:#1e1a15}
+body.dark .btn-ghost{background:rgba(255,255,255,.08);color:var(--ink2)}
+body.dark #loader{background:var(--sand)}
+
+/* TICKER */
+.ticker-wrap{width:100%;overflow:hidden;background:var(--ink);padding:10px 0;margin-top:-1px}
+body.dark .ticker-wrap{background:var(--sand2)}
+.ticker{display:flex;gap:0;white-space:nowrap;animation:ticker 28s linear infinite}
+.ticker:hover{animation-play-state:paused}
+.ticker-inner{display:flex;gap:0;flex-shrink:0}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 24px;font-size:13px;font-weight:600;color:rgba(245,240,232,.7);letter-spacing:.02em}
+body.dark .ticker-item{color:rgba(26,18,8,.6)}
+.ticker-item b{color:var(--coral);font-weight:700}
+.ticker-sep{color:rgba(245,240,232,.2);padding:0 4px}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(245,240,232,.6);padding:40px;margin-top:0}
+body.dark footer{background:var(--sand2)}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:rgba(245,240,232,.9)}
+.footer-logo b{color:var(--coral)}
+.footer-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.footer-link{display:inline-flex;align-items:center;gap:6px;color:rgba(245,240,232,.55);font-size:13px;font-weight:500;text-decoration:none;transition:color .15s}
+.footer-link:hover{color:rgba(245,240,232,.9)}
+.footer-link svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.footer-copy{font-size:12px;color:rgba(245,240,232,.35);width:100%;text-align:center;padding-top:20px;border-top:1px solid rgba(245,240,232,.08);margin-top:8px}
+
+/* DARK MODE TOGGLE */
+.dm-btn{width:34px;height:34px;border-radius:50%;background:var(--sand2);border:none;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .2s;flex-shrink:0}
+.dm-btn:hover{background:var(--sand3);transform:rotate(20deg)}
+.dm-btn svg{width:15px;height:15px;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;fill:none}
+
+/* DURATION MODAL */
+.dur-overlay{position:fixed;inset:0;z-index:300;background:rgba(26,18,8,.45);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.dur-overlay.open{opacity:1;pointer-events:all}
+.dur-overlay.open .dur-card{transform:none}
+.dur-card{background:#fff;border-radius:24px;width:100%;max-width:400px;padding:32px;box-shadow:0 0 0 1px rgba(26,18,8,.06),0 24px 60px rgba(26,18,8,.2);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.22,.68,0,1.15)}
+body.dark .dur-card{background:#1e1a15}
+.dur-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;letter-spacing:-.5px;color:var(--ink);margin-bottom:6px}
+.dur-sub{font-size:13px;color:var(--ink3);margin-bottom:24px;line-height:1.5}
+.dur-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.dur-opt{border:2px solid rgba(26,18,8,.1);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;background:var(--sand)}
+.dur-opt:hover{border-color:var(--coral);background:rgba(224,90,58,.06)}
+.dur-opt.picked{border-color:var(--coral);background:rgba(224,90,58,.1)}
+.dur-opt .dur-d{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);line-height:1}
+.dur-opt .dur-l{font-size:11px;color:var(--ink3);margin-top:3px;font-weight:600}
+.dur-paypal{display:flex;align-items:center;gap:10px;background:var(--sand2);border-radius:14px;padding:14px 16px;margin-bottom:20px;text-decoration:none;transition:background .15s;border:none;width:100%;cursor:pointer}
+.dur-paypal:hover{background:var(--sand3)}
+.dur-paypal-ico{width:36px;height:36px;border-radius:10px;background:#003087;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dur-paypal-txt{text-align:left}
+.dur-paypal-txt b{display:block;font-size:13.5px;color:var(--ink);font-weight:600}
+.dur-paypal-txt small{font-size:12px;color:var(--ink3)}
+.dur-actions{display:flex;gap:10px}
+
+/* CHRISTY ANIMATION */
+@keyframes c-christy{
+  0%{transform:translateY(0) rotate(-1deg) scale(1)}
+  20%{transform:translateY(-18px) rotate(2deg) scale(1.03)}
+  40%{transform:translateY(-8px) rotate(-1.5deg) scale(1.01)}
+  60%{transform:translateY(-22px) rotate(1deg) scale(1.04)}
+  80%{transform:translateY(-12px) rotate(-2deg) scale(1.02)}
+  100%{transform:translateY(0) rotate(-1deg) scale(1)}
+}
+.an-christy{animation:cardIn .42s cubic-bezier(.22,.68,0,1.2) both}
+.an-christy.go{animation:c-christy 3s ease-in-out infinite}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Instrument Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden}
 button,label{cursor:pointer}
@@ -387,12 +462,23 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
         <svg viewBox="0 0 13 13" fill="none"><path d="M5 6.5h7M9 4l3 2.5L9 9"/><path d="M7 2H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4"/></svg>
       </button>
     </div>
+    <button class="dm-btn" id="dmBtn" onclick="toggleDark()" title="Mode sombre">
+      <svg id="dmIco" viewBox="0 0 15 15"><path d="M13 9.5A6 6 0 0 1 5.5 2a6 6 0 1 0 7.5 7.5z"/></svg>
+    </button>
     <button id="btnLogin" onclick="showAuth()" style="display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--ink);border:1.5px solid rgba(26,18,8,.18);border-radius:40px;padding:9px 18px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,transform .15s" onmouseover="this.style.background='rgba(26,18,8,.06)';this.style.borderColor='rgba(26,18,8,.35)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(26,18,8,.18)'">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6.5H2M5.5 3.5l3 3-3 3"/><path d="M6.5 1H11a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6.5"/></svg>
         Se connecter
       </button>
   </div>
 </header>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-inner" id="tickerA"></div>
+    <div class="ticker-inner" id="tickerB"></div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -458,9 +544,9 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
           <label class="aopt" data-v="rainbow"><input type="radio" name="anim" value="rainbow">
             <div class="ai"><svg viewBox="0 0 20 20"><path d="M2 16a8 8 0 0 1 16 0"/><path d="M5 16a5 5 0 0 1 10 0"/><path d="M8 16a2 2 0 0 1 4 0"/></svg></div>
             <div class="aname">Arc-en-ciel</div></label>
-          <label class="aopt" data-v="flip"><input type="radio" name="anim" value="flip">
-            <div class="ai"><svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M7.5 8.5l3 3-3 3"/><path d="M12.5 8.5l-3 3 3 3" opacity=".35"/></svg></div>
-            <div class="aname">Flip</div></label>
+          <label class="aopt" data-v="christy"><input type="radio" name="anim" value="christy">
+            <div class="ai"><svg viewBox="0 0 20 20"><path d="M10 2c0 0-4 3-4 8s4 8 4 8"/><path d="M10 2c0 0 4 3 4 8s-4 8-4 8"/><path d="M2 10h16"/></svg></div>
+            <div class="aname">Christy</div></label>
         </div>
       </div>
       <div class="factions">
@@ -470,6 +556,61 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
           <span id="p-tx">Publier le profil</span>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">adopt<b>me</b><span style="color:var(--coral)">.</span></div>
+    <div class="footer-links">
+      <a class="footer-link" href="https://paypal.me/JoanMauge" target="_blank">
+        <svg viewBox="0 0 13 13"><path d="M6.5 1v11M1 6.5h11"/></svg>
+        Faire un don PayPal
+      </a>
+      <a class="footer-link" href="https://paypal.me/JoanMauge" target="_blank">
+        <svg viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5.5"/><path d="M6.5 4v3l2 1.5"/></svg>
+        paypal.me/JoanMauge
+      </a>
+    </div>
+    <div class="footer-copy">Créé par <b style="color:rgba(245,240,232,.7)">joan_off</b> · Tous droits réservés © 2025 adoptme.com</div>
+  </div>
+</footer>
+
+<!-- DURATION MODAL -->
+<div class="dur-overlay" id="durOv" onclick="durBgClose(event)">
+  <div class="dur-card">
+    <div class="dur-title">⏱️ Durée d'adoption</div>
+    <p class="dur-sub" id="dur-sub">Combien de temps souhaitez-vous adopter <b id="dur-name"></b> ?</p>
+    <div class="dur-options">
+      <div class="dur-opt" onclick="pickDur(1,this)">
+        <div class="dur-d">1</div>
+        <div class="dur-l">jour</div>
+      </div>
+      <div class="dur-opt" onclick="pickDur(2,this)">
+        <div class="dur-d">2</div>
+        <div class="dur-l">jours</div>
+      </div>
+      <div class="dur-opt" onclick="pickDur(3,this)">
+        <div class="dur-d">3</div>
+        <div class="dur-l">jours</div>
+      </div>
+    </div>
+    <a class="dur-paypal" href="https://paypal.me/JoanMauge" target="_blank" id="dur-paypal-link">
+      <div class="dur-paypal-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M7.6 21.6H4.4l.5-3.1H8l-.4 3.1zm13-14.3c.3-1.7 0-2.9-.9-3.9C18.7 2.3 17 2 14.9 2H8.5c-.4 0-.8.3-.9.7L5 19.2c-.1.3.2.6.5.6h3.8l.9-5.9-.1.4c.1-.4.5-.7.9-.7h1.9c3.7 0 6.6-1.5 7.4-5.8.1-.3.1-.6.2-.9v.4z"/></svg>
+      </div>
+      <div class="dur-paypal-txt">
+        <b>Payer via PayPal</b>
+        <small id="dur-price-lbl">1€ par jour · paypal.me/JoanMauge</small>
+      </div>
+    </a>
+    <div class="dur-actions">
+      <button class="btn btn-ghost" onclick="closeDur()" style="border-radius:40px;font-weight:600;padding:12px 20px">Annuler</button>
+      <button class="btn btn-dark" id="dur-confirm" onclick="confirmAdopt()" style="flex:1;padding:12px 20px;font-size:14px" disabled>
+        Confirmer l'adoption
+      </button>
     </div>
   </div>
 </div>
@@ -703,7 +844,7 @@ function renderAll(){
   profiles.forEach((p,i) => g.appendChild(buildCard(p, i*55)));
 }
 
-const ALBL={float:'Flottant',bounce:'Rebond',shake:'Vibration',pulse:'Pulsation',glow:'Lueur',swing:'Balancement',spin:'Rotation',rainbow:'Arc-en-ciel',flip:'Flip',none:'Statique'};
+const ALBL={float:'Flottant',bounce:'Rebond',shake:'Vibration',pulse:'Pulsation',glow:'Lueur',swing:'Balancement',spin:'Rotation',rainbow:'Arc-en-ciel',flip:'Flip',christy:'Christy',none:'Statique'};
 const animTimers=[];
 
 function buildCard(p, delay=0){
@@ -772,48 +913,18 @@ function buildCard(p, delay=0){
 /* ── ADOPT / UNADOPT ── */
 async function adoptP(id, btn, name, ownerEmail){
   if(!currentUser){ showAuth(); return; }
-
   const isAd = adopted.has(id);
-
   if(isAd){
     // Désadopter
-    const { error } = await sb.from('adoptions').delete()
-      .eq('profile_id', id).eq('adopter_id', currentUser.id);
+    const { error } = await sb.from('adoptions').delete().eq('profile_id', id).eq('adopter_id', currentUser.id);
     if(error){ toast('error', error.message); return; }
     adopted.delete(id);
     btn.innerHTML = hEmpty()+' Adopter';
     btn.classList.remove('done');
     toast('ok', `Vous avez désadopté ${name}`);
   } else {
-    // Adopter — vérifier que personne d'autre n'a déjà adopté
-    const { data: existing } = await sb.from('adoptions').select('id').eq('profile_id', id);
-    if(existing && existing.length > 0){
-      toast('warn', `${name} a déjà été adopté·e !`);
-      return;
-    }
-    const { error } = await sb.from('adoptions').insert([{
-      profile_id: id,
-      adopter_id: currentUser.id,
-      adopter_email: currentUser.email
-    }]);
-    if(error){ toast('error', error.message); return; }
-    adopted.add(id);
-    btn.innerHTML = hFill()+' Désadopter';
-    btn.classList.add('done');
-    toast('heart', `Vous avez adopté ${name} ! 💛`);
-
-    // Envoyer email à l'owner via Supabase (si email dispo)
-    if(ownerEmail && ownerEmail !== currentUser.email){
-      try {
-        await sb.functions.invoke('send-adoption-email', {
-          body: {
-            to: ownerEmail,
-            profileName: name,
-            adopterEmail: currentUser.email
-          }
-        });
-      } catch(e){ /* silently fail — edge function optional */ }
-    }
+    // Ouvrir la modal de durée
+    openDur(id, name, ownerEmail);
   }
 }
 
@@ -1036,7 +1147,76 @@ function timeAgo(iso){
   if(s<604800) return Math.floor(s/86400)+' j';
   return new Date(iso).toLocaleDateString('fr');
 }
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePM(); hideAuth(); } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePM(); hideAuth(); closeDur(); } });
+
+/* ── DARK MODE ── */
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const on = document.body.classList.contains('dark');
+  localStorage.setItem('dm', on?'1':'0');
+  document.getElementById('dmIco').innerHTML = on
+    ? '<circle cx="7.5" cy="7.5" r="5.5"/><line x1="7.5" y1="1" x2="7.5" y2="2.5"/><line x1="7.5" y1="12.5" x2="7.5" y2="14"/><line x1="1" y1="7.5" x2="2.5" y2="7.5"/><line x1="12.5" y1="7.5" x2="14" y2="7.5"/>'
+    : '<path d="M13 9.5A6 6 0 0 1 5.5 2a6 6 0 1 0 7.5 7.5z"/>';
+}
+if(localStorage.getItem('dm')==='1'){ document.body.classList.add('dark'); document.getElementById('dmIco').innerHTML='<circle cx="7.5" cy="7.5" r="5.5"/><line x1="7.5" y1="1" x2="7.5" y2="2.5"/><line x1="7.5" y1="12.5" x2="7.5" y2="14"/><line x1="1" y1="7.5" x2="2.5" y2="7.5"/><line x1="12.5" y1="7.5" x2="14" y2="7.5"/>'; }
+
+/* ── TICKER ── */
+const TAGS = ['#ados','#gênant','#tetoi','#hier j\'ai mangé une cacahuète','#profil rare','#adoptemoi','#disponible','#pascher','#édition limitée','#incroyable','#célébrité locale','#legendaire','#trop mignon','#urgence adoption','#offre spéciale','#unefois','#unijour','#croisez les doigts'];
+function buildTicker(){
+  const items = [...TAGS,...TAGS].map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
+  document.getElementById('tickerA').innerHTML = items;
+  document.getElementById('tickerB').innerHTML = items;
+}
+buildTicker();
+
+/* ── DURATION MODAL ── */
+let durTarget = null; // {id, name, ownerEmail}
+let durDays = 0;
+
+function openDur(id, name, ownerEmail){
+  durTarget = {id, name, ownerEmail};
+  durDays = 0;
+  document.getElementById('dur-name').textContent = name;
+  document.querySelectorAll('.dur-opt').forEach(o=>o.classList.remove('picked'));
+  document.getElementById('dur-confirm').disabled = true;
+  document.getElementById('dur-price-lbl').textContent = '1€ par jour · paypal.me/JoanMauge';
+  document.getElementById('durOv').classList.add('open');
+}
+function closeDur(){
+  document.getElementById('durOv').classList.remove('open');
+  durTarget = null; durDays = 0;
+}
+function durBgClose(e){ if(e.target===document.getElementById('durOv')) closeDur(); }
+function pickDur(days, el){
+  durDays = days;
+  document.querySelectorAll('.dur-opt').forEach(o=>o.classList.remove('picked'));
+  el.classList.add('picked');
+  document.getElementById('dur-confirm').disabled = false;
+  document.getElementById('dur-price-lbl').textContent = `${days}€ pour ${days} jour${days>1?'s':''} · paypal.me/JoanMauge`;
+  document.getElementById('dur-paypal-link').href = `https://paypal.me/JoanMauge/${days}EUR`;
+}
+async function confirmAdopt(){
+  if(!durTarget || !durDays) return;
+  const {id, name, ownerEmail} = durTarget;
+  // Check not already adopted
+  const { data: existing } = await sb.from('adoptions').select('id').eq('profile_id', id);
+  if(existing && existing.length > 0){ toast('warn', `${name} a déjà été adopté·e !`); closeDur(); return; }
+  const { error } = await sb.from('adoptions').insert([{
+    profile_id: id, adopter_id: currentUser.id, adopter_email: currentUser.email
+  }]);
+  if(error){ toast('error', error.message); return; }
+  adopted.add(id);
+  // Update button on card
+  const card = document.querySelector(`.card[data-id="${id}"]`);
+  if(card){
+    const btn = card.querySelector('.btn-coral');
+    if(btn){ btn.innerHTML = hFill()+' Désadopter'; btn.classList.add('done'); }
+  }
+  closeDur();
+  toast('heart', `Vous avez adopté ${name} pour ${durDays} jour${durDays>1?'s':''} ! 💛`);
+  // Open PayPal
+  window.open(`https://paypal.me/JoanMauge/${durDays}EUR`, '_blank');
+}
 </script>
 </body>
 </html>
