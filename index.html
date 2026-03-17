@@ -118,7 +118,23 @@ body.dark .dur-card{background:#1e1a15}
 .dur-paypal-txt small{font-size:12px;color:var(--ink3)}
 .dur-actions{display:flex;gap:10px}
 
-/* CHRISTY — signature animation : bounce irrégulier + twist + shimmer */
+/* CHRISTY — pluie de mots */
+@keyframes c-tag-fall{
+  0%{opacity:0;transform:translateY(-40px) rotate(var(--r)) scale(.7)}
+  15%{opacity:1;transform:translateY(0) rotate(var(--r)) scale(1)}
+  80%{opacity:1;transform:translateY(var(--dy)) rotate(var(--r)) scale(1)}
+  100%{opacity:0;transform:translateY(var(--dy)) rotate(var(--r)) scale(.8)}
+}
+.christy-tag{
+  position:absolute;z-index:20;pointer-events:none;
+  background:rgba(26,18,8,.82);backdrop-filter:blur(4px);
+  color:#fff;font-family:'Instrument Sans',sans-serif;
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;
+  white-space:nowrap;letter-spacing:.02em;
+  animation:c-tag-fall var(--dur) ease-in-out var(--delay) infinite;
+  opacity:0;
+}
+.christy-tag b{color:var(--coral)}
 @keyframes c-christy{
   0%  {transform:translateY(0)    rotate(0deg)    scale(1)}
   8%  {transform:translateY(-24px) rotate(-3deg)  scale(1.04)}
@@ -968,12 +984,37 @@ function buildCard(p, delay=0){
     const cardId = p.id;
     const t = setTimeout(() => {
       const el = document.querySelector(`.card[data-id="${cardId}"]`);
-      if(el) el.classList.add('go');
+      if(!el) return;
+      el.classList.add('go');
+      // Christy : injecter la pluie de tags
+      if(anim === 'christy') injectChristyTags(el);
     }, delay + 460);
     animTimers.push(t);
   }
 
   return div;
+}
+
+/* ── CHRISTY RAIN ── */
+const RAIN_TAGS = ['#ados','#gênant','#tetoi','#hier j\'ai mangé une cacahuète','#profil rare','#adoptemoi','#disponible','#pascher','#incroyable','#legendaire','#trop mignon','#urgence','#unefois','#unijour','#célébrité'];
+function injectChristyTags(card){
+  // Nettoyer les anciens tags s'il y en a
+  card.querySelectorAll('.christy-tag').forEach(t=>t.remove());
+  const count = 8;
+  for(let i=0;i<count;i++){
+    const tag = document.createElement('span');
+    tag.className = 'christy-tag';
+    const txt = RAIN_TAGS[Math.floor(Math.random()*RAIN_TAGS.length)];
+    tag.innerHTML = `<b>${txt}</b>`;
+    // Position aléatoire horizontale, part du haut
+    const x = 5 + Math.random()*80;
+    const dy = 60 + Math.random()*120;
+    const rot = -15 + Math.random()*30;
+    const dur = 1.8 + Math.random()*1.4;
+    const del = i * 0.28;
+    tag.style.cssText = `left:${x}%;top:10%;--r:${rot}deg;--dy:${dy}px;--dur:${dur}s;--delay:${del}s`;
+    card.querySelector('.cmedia').appendChild(tag);
+  }
 }
 
 /* ── ADOPT / UNADOPT ── */
