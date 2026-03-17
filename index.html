@@ -867,6 +867,7 @@ async function loadProfiles(){
 
   renderAll();
   updateCount();
+  buildTicker();
 }
 
 function renderAll(){
@@ -1159,6 +1160,7 @@ async function submitProfile(){
     const e=g.querySelector('.empty-st'); if(e) e.remove();
     g.prepend(buildCard(data,0));
     updateCount();
+    buildTicker();
     toast('ok',`"${data.name}" publié !`);
   }
 }
@@ -1228,9 +1230,19 @@ function toggleDark(){
 if(localStorage.getItem('dm')==='1'){ document.body.classList.add('dark'); document.getElementById('dmIco').innerHTML='<circle cx="7.5" cy="7.5" r="5.5"/><line x1="7.5" y1="1" x2="7.5" y2="2.5"/><line x1="7.5" y1="12.5" x2="7.5" y2="14"/><line x1="1" y1="7.5" x2="2.5" y2="7.5"/><line x1="12.5" y1="7.5" x2="14" y2="7.5"/>'; }
 
 /* ── TICKER ── */
-const TAGS = ['#ados','#gênant','#tetoi','#hier j\'ai mangé une cacahuète','#profil rare','#adoptemoi','#disponible','#pascher','#édition limitée','#incroyable','#célébrité locale','#legendaire','#trop mignon','#urgence adoption','#offre spéciale','#unefois','#unijour','#croisez les doigts'];
+const TAGS_FIXED = ['#ados','#gênant','#tetoi','#hier j\'ai mangé une cacahuète','#profil rare','#adoptemoi','#disponible','#pascher','#édition limitée','#incroyable','#célébrité locale','#legendaire','#trop mignon','#urgence adoption','#offre spéciale','#unefois','#unijour','#croisez les doigts'];
+
 function buildTicker(){
-  const items = [...TAGS,...TAGS].map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
+  // Mélange tags fixes + noms des profils + animations des profils
+  const profileTags = profiles.flatMap(p => {
+    const tags = [];
+    if(p.name) tags.push(`#${p.name.split(' ')[0].toLowerCase()}`);
+    if(p.animation && p.animation !== 'none') tags.push(`#${ALBL[p.animation]||p.animation}`);
+    return tags;
+  });
+  const all = [...TAGS_FIXED, ...profileTags].sort(()=>Math.random()-.5);
+  // Duplique pour le scroll infini
+  const items = [...all,...all].map(t=>`<span class="ticker-item"><b>${t}</b><span class="ticker-sep">·</span></span>`).join('');
   document.getElementById('tickerA').innerHTML = items;
   document.getElementById('tickerB').innerHTML = items;
 }
