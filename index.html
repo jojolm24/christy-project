@@ -59,7 +59,10 @@ body.dark .overlay{background:rgba(0,0,0,.6)}
 body.dark .cpill{background:#2a2418;color:#c8bfb0}
 body.dark .abadge{background:rgba(0,0,0,.7)}
 body.dark .ctime{color:#6a5e50}
-body.dark .eyebrow{background:#2a2210;border-color:#3a3010}
+body.dark .auth-right{background:var(--ink) !important}
+body.dark .auth-right.signup-mode{background:var(--coral) !important}
+body.dark .btn-dark{background:#f0ebe2;color:#1a1612}
+body.dark .auth-left .btn-dark{background:#f0ebe2 !important;color:#1a1612 !important;box-shadow:0 3px 0 rgba(0,0,0,.4) !important}
 
 /* TICKER */
 .ticker-wrap{width:100%;overflow:hidden;background:var(--ink);padding:10px 0;margin-top:-1px}
@@ -1242,20 +1245,22 @@ function pickDur(days, el){
   document.querySelectorAll('.dur-opt').forEach(o=>o.classList.remove('picked'));
   el.classList.add('picked');
   document.getElementById('dur-confirm').disabled = true;
-  document.getElementById('dur-price-lbl').textContent = `${days}€ pour ${days} jour${days>1?'s':''} · Cliquez PayPal pour payer`;
-  document.getElementById('dur-paypal-link').href = `https://paypal.me/JoanMauge/${days}EUR`;
+  document.getElementById('dur-price-lbl').textContent = `${days}€ pour ${days} jour${days>1?'s':''} — cliquez PayPal pour payer`;
+  document.getElementById('dur-paypal-link') && (document.getElementById('dur-paypal-link').href = `https://paypal.me/JoanMauge/${days}EUR`);
+  // Reafficher le bouton PayPal si on rechange après avoir payé
   document.getElementById('dur-pay-status').style.display = 'none';
   document.getElementById('dur-pay-btn').style.display = 'flex';
 }
 
 function openPaypal(){
   if(!durDays){ toast('warn','Choisissez d\'abord une durée'); return; }
+  // Ouvre PayPal
   window.open(`https://paypal.me/JoanMauge/${durDays}EUR`, '_blank');
-  // Après 3s, montrer le bouton "J'ai payé"
-  setTimeout(()=>{
-    document.getElementById('dur-pay-btn').style.display = 'none';
-    document.getElementById('dur-pay-status').style.display = 'flex';
-  }, 3000);
+  // Affiche immédiatement le bouton "J'ai payé" — sans délai
+  document.getElementById('dur-pay-btn').style.display = 'none';
+  document.getElementById('dur-pay-status').style.display = 'flex';
+  // Le bouton confirmer reste désactivé jusqu'à clic sur "Oui, payé"
+  document.getElementById('dur-confirm').disabled = true;
 }
 
 function confirmPaid(){
