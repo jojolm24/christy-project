@@ -19,13 +19,47 @@ body.dark{
   --sand:#1a1612;--sand2:#242018;--sand3:#2e281e;
   --gold:#f0d48a;--gold-l:#c8952a;--gold-ll:#2a2210;
 }
-body.dark header{background:rgba(26,22,18,.88)}
-body.dark .auth-card,.dark .modal{background:#1e1a15}
-body.dark .fi,.dark .mfi,.dark .finput2{background:#2a2418;border-color:rgba(255,255,255,.1);color:var(--ink)}
+body.dark header{background:rgba(20,17,14,.9)}
+body.dark .auth-card{background:#1e1a15}
+body.dark .auth-left{background:#1e1a15}
+body.dark .auth-left-title{color:#f0ebe2}
+body.dark .auth-left-sub{color:#8a7d6e}
+body.dark .auth-left-logo{color:#f0ebe2}
+body.dark .fi{background:#2a2418 !important;border-color:rgba(255,255,255,.12) !important;color:#f0ebe2 !important}
+body.dark .fi::placeholder{color:#6a5e50;opacity:1}
+body.dark .fi:focus{border-color:var(--coral) !important;box-shadow:0 0 0 3px rgba(224,90,58,.15) !important}
+body.dark .auth-error{color:var(--coral)}
+body.dark .auth-note{color:#6a5e50}
+body.dark .auth-note a{color:var(--coral)}
+body.dark .flbl{color:#6a5e50}
+body.dark .flbl svg{stroke:#6a5e50}
+body.dark .modal,.dark .mhdr,.dark .mbody{background:#1e1a15}
+body.dark .mhdr{border-bottom-color:rgba(255,255,255,.07)}
+body.dark .mfi{background:#2a2418;border-color:rgba(255,255,255,.1);color:#f0ebe2}
+body.dark .mflbl{color:#6a5e50}
+body.dark .mfi::placeholder{color:#6a5e50;opacity:1}
 body.dark .card{background:#1e1a15;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 4px 18px rgba(0,0,0,.3)}
-body.dark .auth-left,.dark .mbody,.dark .mhdr{background:#1e1a15}
-body.dark .btn-ghost{background:rgba(255,255,255,.08);color:var(--ink2)}
-body.dark #loader{background:var(--sand)}
+body.dark .cbody .cname{color:#f0ebe2}
+body.dark .cbody .cdesc{color:#8a7d6e}
+body.dark .btn-ghost{background:rgba(255,255,255,.08);color:#c8bfb0}
+body.dark .btn-close{background:#2e281e;color:#8a7d6e}
+body.dark .dur-card{background:#1e1a15}
+body.dark .dur-title{color:#f0ebe2}
+body.dark .dur-sub{color:#8a7d6e}
+body.dark .dur-opt{background:#2a2418;border-color:rgba(255,255,255,.1)}
+body.dark .dur-opt .dur-d{color:#f0ebe2}
+body.dark .dur-paypal{background:#2a2418}
+body.dark .dur-paypal-txt b{color:#f0ebe2}
+body.dark .uzone{background:#2a2418;border-color:rgba(255,255,255,.1)}
+body.dark #loader{background:#1a1612}
+body.dark .aopt{border-color:rgba(255,255,255,.1);background:#1e1a15}
+body.dark .aopt:hover{background:#2a2418}
+body.dark .aopt .aname{color:#8a7d6e}
+body.dark .overlay{background:rgba(0,0,0,.6)}
+body.dark .cpill{background:#2a2418;color:#c8bfb0}
+body.dark .abadge{background:rgba(0,0,0,.7)}
+body.dark .ctime{color:#6a5e50}
+body.dark .eyebrow{background:#2a2210;border-color:#3a3010}
 
 /* TICKER */
 .ticker-wrap{width:100%;overflow:hidden;background:var(--ink);padding:10px 0;margin-top:-1px}
@@ -582,30 +616,40 @@ textarea.mfi{resize:vertical;min-height:88px;line-height:1.65}
 <div class="dur-overlay" id="durOv" onclick="durBgClose(event)">
   <div class="dur-card">
     <div class="dur-title">⏱️ Durée d'adoption</div>
-    <p class="dur-sub" id="dur-sub">Combien de temps souhaitez-vous adopter <b id="dur-name"></b> ?</p>
+    <p class="dur-sub">Combien de temps pour <b id="dur-name"></b> ? (1€/jour)</p>
     <div class="dur-options">
       <div class="dur-opt" onclick="pickDur(1,this)">
-        <div class="dur-d">1</div>
-        <div class="dur-l">jour</div>
+        <div class="dur-d">1</div><div class="dur-l">jour — 1€</div>
       </div>
       <div class="dur-opt" onclick="pickDur(2,this)">
-        <div class="dur-d">2</div>
-        <div class="dur-l">jours</div>
+        <div class="dur-d">2</div><div class="dur-l">jours — 2€</div>
       </div>
       <div class="dur-opt" onclick="pickDur(3,this)">
-        <div class="dur-d">3</div>
-        <div class="dur-l">jours</div>
+        <div class="dur-d">3</div><div class="dur-l">jours — 3€</div>
       </div>
     </div>
-    <a class="dur-paypal" href="https://paypal.me/JoanMauge" target="_blank" id="dur-paypal-link">
+
+    <!-- Step 1: pay button -->
+    <button class="dur-paypal" id="dur-pay-btn" onclick="openPaypal()">
       <div class="dur-paypal-ico">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M7.6 21.6H4.4l.5-3.1H8l-.4 3.1zm13-14.3c.3-1.7 0-2.9-.9-3.9C18.7 2.3 17 2 14.9 2H8.5c-.4 0-.8.3-.9.7L5 19.2c-.1.3.2.6.5.6h3.8l.9-5.9-.1.4c.1-.4.5-.7.9-.7h1.9c3.7 0 6.6-1.5 7.4-5.8.1-.3.1-.6.2-.9v.4z"/></svg>
       </div>
       <div class="dur-paypal-txt">
         <b>Payer via PayPal</b>
-        <small id="dur-price-lbl">1€ par jour · paypal.me/JoanMauge</small>
+        <small id="dur-price-lbl">Choisissez d'abord une durée</small>
       </div>
-    </a>
+    </button>
+
+    <!-- Step 2: after clicking paypal -->
+    <div id="dur-pay-status" style="display:none;align-items:center;gap:12px;background:var(--sand2);border-radius:14px;padding:14px 16px;margin-bottom:16px">
+      <div style="font-size:22px">💳</div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:600;color:var(--ink)">Vous avez payé sur PayPal ?</div>
+        <div style="font-size:12px;color:var(--ink3)">Confirmez pour activer l'adoption</div>
+      </div>
+      <button onclick="confirmPaid()" style="background:var(--sage);color:#fff;border:none;border-radius:30px;padding:8px 16px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">Oui, payé ✓</button>
+    </div>
+
     <div class="dur-actions">
       <button class="btn btn-ghost" onclick="closeDur()" style="border-radius:40px;font-weight:600;padding:12px 20px">Annuler</button>
       <button class="btn btn-dark" id="dur-confirm" onclick="confirmAdopt()" style="flex:1;padding:12px 20px;font-size:14px" disabled>
@@ -1170,35 +1214,59 @@ function buildTicker(){
 buildTicker();
 
 /* ── DURATION MODAL ── */
-let durTarget = null; // {id, name, ownerEmail}
+let durTarget = null;
 let durDays = 0;
+let durPaid = false;
 
 function openDur(id, name, ownerEmail){
   durTarget = {id, name, ownerEmail};
   durDays = 0;
+  durPaid = false;
   document.getElementById('dur-name').textContent = name;
   document.querySelectorAll('.dur-opt').forEach(o=>o.classList.remove('picked'));
   document.getElementById('dur-confirm').disabled = true;
   document.getElementById('dur-price-lbl').textContent = '1€ par jour · paypal.me/JoanMauge';
+  document.getElementById('dur-pay-status').style.display = 'none';
+  document.getElementById('dur-pay-btn').style.display = 'flex';
   document.getElementById('durOv').classList.add('open');
 }
 function closeDur(){
   document.getElementById('durOv').classList.remove('open');
-  durTarget = null; durDays = 0;
+  durTarget = null; durDays = 0; durPaid = false;
 }
 function durBgClose(e){ if(e.target===document.getElementById('durOv')) closeDur(); }
+
 function pickDur(days, el){
   durDays = days;
+  durPaid = false;
   document.querySelectorAll('.dur-opt').forEach(o=>o.classList.remove('picked'));
   el.classList.add('picked');
-  document.getElementById('dur-confirm').disabled = false;
-  document.getElementById('dur-price-lbl').textContent = `${days}€ pour ${days} jour${days>1?'s':''} · paypal.me/JoanMauge`;
+  document.getElementById('dur-confirm').disabled = true;
+  document.getElementById('dur-price-lbl').textContent = `${days}€ pour ${days} jour${days>1?'s':''} · Cliquez PayPal pour payer`;
   document.getElementById('dur-paypal-link').href = `https://paypal.me/JoanMauge/${days}EUR`;
+  document.getElementById('dur-pay-status').style.display = 'none';
+  document.getElementById('dur-pay-btn').style.display = 'flex';
 }
+
+function openPaypal(){
+  if(!durDays){ toast('warn','Choisissez d\'abord une durée'); return; }
+  window.open(`https://paypal.me/JoanMauge/${durDays}EUR`, '_blank');
+  // Après 3s, montrer le bouton "J'ai payé"
+  setTimeout(()=>{
+    document.getElementById('dur-pay-btn').style.display = 'none';
+    document.getElementById('dur-pay-status').style.display = 'flex';
+  }, 3000);
+}
+
+function confirmPaid(){
+  durPaid = true;
+  document.getElementById('dur-confirm').disabled = false;
+  document.getElementById('dur-price-lbl').textContent = `✓ Paiement confirmé — ${durDays} jour${durDays>1?'s':''}`;
+}
+
 async function confirmAdopt(){
-  if(!durTarget || !durDays) return;
-  const {id, name, ownerEmail} = durTarget;
-  // Check not already adopted
+  if(!durTarget || !durDays || !durPaid) return;
+  const {id, name} = durTarget;
   const { data: existing } = await sb.from('adoptions').select('id').eq('profile_id', id);
   if(existing && existing.length > 0){ toast('warn', `${name} a déjà été adopté·e !`); closeDur(); return; }
   const { error } = await sb.from('adoptions').insert([{
@@ -1206,16 +1274,10 @@ async function confirmAdopt(){
   }]);
   if(error){ toast('error', error.message); return; }
   adopted.add(id);
-  // Update button on card
   const card = document.querySelector(`.card[data-id="${id}"]`);
-  if(card){
-    const btn = card.querySelector('.btn-coral');
-    if(btn){ btn.innerHTML = hFill()+' Désadopter'; btn.classList.add('done'); }
-  }
+  if(card){ const btn=card.querySelector('.btn-coral'); if(btn){ btn.innerHTML=hFill()+' Désadopter'; btn.classList.add('done'); } }
   closeDur();
   toast('heart', `Vous avez adopté ${name} pour ${durDays} jour${durDays>1?'s':''} ! 💛`);
-  // Open PayPal
-  window.open(`https://paypal.me/JoanMauge/${durDays}EUR`, '_blank');
 }
 </script>
 </body>
